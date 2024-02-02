@@ -40,54 +40,57 @@ void HandleRequest(IAsyncResult result)
         
         playerOne.BeginGetContext(new AsyncCallback(HandleRequest), playerOne);
     }
+}
 
-    void Router(HttpListenerContext context)
+void Router(HttpListenerContext context)
+{
+    HttpListenerRequest request = context.Request;
+    HttpListenerResponse response = context.Response;
+
+    switch (request.HttpMethod, request.Url?.AbsolutePath)
     {
-        HttpListenerRequest request = context.Request;
-        HttpListenerResponse response = context.Response;
-
-        switch (request.HttpMethod, request.Url?.AbsolutePath)
-        {
-            case ("GET", "/intro"):
-                IntroGet(response);
-                break;
-            case ("GET", "/game"):
-                GameGet(response);
-                break;
-            default:
-                NotFound(response);
-                break;
-        }
+        case ("GET", "/playerOne/intro"):
+            IntroGet(response);
+            break;
+        case ("GET", "/playerOne/game"):
+            GameGet(response);
+            break;
+        default:
+            NotFound(response);
+            break;
     }
-    void IntroGet(HttpListenerResponse response)
-    {
-        string message =
-            $@"You've woken up in darkness with no past memories. It's cold and when you scream for help it echoes...
+}
+
+void IntroGet(HttpListenerResponse response)
+{
+    string message = @"You've woken up in darkness with no past memories. It's cold and when you scream for help it echoes...
 You hear a faint voice coming from a device on the ground. You pick it up and someone responds with 'Who is this? Where am I?'.
 After a while they realise no-one knows how they got there. All they know is they have to escape this place through working together..."; // byt ut till vilken text som ska skickas tillbaka
-        byte[] buffer = Encoding.UTF8.GetBytes(message);
-        response.ContentType = "text/plain";
-        response.StatusCode = (int)HttpStatusCode.OK;
+    byte[] buffer = Encoding.UTF8.GetBytes(message);
+    response.ContentType = "text/plain";
+    response.StatusCode = (int)HttpStatusCode.OK;
 
-        response.OutputStream.Write(buffer, 0, buffer.Length);
-        response.OutputStream.Close();
-    }
+    response.OutputStream.Write(buffer, 0, buffer.Length);
+    response.OutputStream.Close();
+}
     
-    void GameGet(HttpListenerResponse response)
-    {
-        string message = "\n\ngame one";
-        byte[] buffer = Encoding.UTF8.GetBytes(message);
-        response.ContentType = "text/plain";
-        response.StatusCode = (int)HttpStatusCode.OK;
+void GameGet(HttpListenerResponse response)
+{
+    string message = "You look around in the dark and find some matches.\nWhen you light up a match you find yourself in a cave surrounded by tunnels.\nDo you go to the:\n\n"+
+                     "A. Right tunnel\n"+
+                     "B. Tunnel in front of you\n"+
+                     "C. Left tunnel\n"+
+                     "D. Tunnel behind you";
+    byte[] buffer = Encoding.UTF8.GetBytes(message);
+    response.ContentType = "text/plain";
+    response.StatusCode = (int)HttpStatusCode.OK;
 
-        response.OutputStream.Write(buffer, 0, buffer.Length);
-        response.OutputStream.Close();
-    }
+    response.OutputStream.Write(buffer, 0, buffer.Length);
+    response.OutputStream.Close();
+}
     
-    void NotFound(HttpListenerResponse res)
-    {
-        res.StatusCode = (int)HttpStatusCode.NotFound;
-        res.Close();
-    }
-    
+void NotFound(HttpListenerResponse res)
+{
+    res.StatusCode = (int)HttpStatusCode.NotFound;
+    res.Close();
 }
