@@ -13,6 +13,7 @@ Console.CancelKeyPress += delegate(object? sender, ConsoleCancelEventArgs e)
 
 int port = 3000;
 listen = true;
+string? game = string.Empty;
 
 HttpListener playerOne = new();
 playerOne.Prefixes.Add($"http://localhost:{port}/playerOne/"); // <host> kan t.ex. vara 127.0.0.1, 0.0.0.0, ...
@@ -34,42 +35,36 @@ void HandleRequest(IAsyncResult result)
     if (result.AsyncState is HttpListener playerOne)
     {
         HttpListenerContext context = playerOne.EndGetContext(result);
+
+        Router(context);
+        
+        playerOne.BeginGetContext(new AsyncCallback(HandleRequest), playerOne);
+    }
+
+    void Router(HttpListenerContext context)
+    {
         HttpListenerRequest request = context.Request;
-        Console.WriteLine($"{request.Url}, {request.HttpMethod}");
         HttpListenerResponse response = context.Response;
 
-        string? message = string.Empty;
-        string? path = request.Url?.AbsolutePath ?? "";
-
-        if (path.Contains("intro"))
+        switch (request.HttpMethod, request.Url?.AbsolutePath)
         {
-            IntroGet(response);
-
-            playerOne.BeginGetContext(new AsyncCallback(HandleRequest), playerOne);
+            case ("GET", "/intro"):
+                IntroGet(response);
+                break;
+            case ("GET", "/game"):
+                GameGet(response);
+                break;
+            default:
+                NotFound(response);
+                break;
         }
     }
-
-
-
-    void FirstPuzzleGet(HttpListenerResponse response)
-    {
-        string message = "";
-        byte[] buffer = Encoding.UTF8.GetBytes(message);
-        response.ContentType = "text/plain";
-        response.StatusCode = (int)HttpStatusCode.OK;
-
-        response.OutputStream.Write(buffer, 0, buffer.Length);
-        response.OutputStream.Close();
-    }
-
     void IntroGet(HttpListenerResponse response)
     {
         string message =
-            @"You've woken up in darkness with no past memories. It's cold and when you scream for help it echoes...
+            $@"You've woken up in darkness with no past memories. It's cold and when you scream for help it echoes...
 You hear a faint voice coming from a device on the ground. You pick it up and someone responds with 'Who is this? Where am I?'.
-After a while they realise no-one knows how they got there. All they know is they have to escape this place through working together...
-
-Press ENTER to continue"; // byt ut till vilken text som ska skickas tillbaka
+After a while they realise no-one knows how they got there. All they know is they have to escape this place through working together..."; // byt ut till vilken text som ska skickas tillbaka
         byte[] buffer = Encoding.UTF8.GetBytes(message);
         response.ContentType = "text/plain";
         response.StatusCode = (int)HttpStatusCode.OK;
@@ -77,4 +72,22 @@ Press ENTER to continue"; // byt ut till vilken text som ska skickas tillbaka
         response.OutputStream.Write(buffer, 0, buffer.Length);
         response.OutputStream.Close();
     }
+    
+    void GameGet(HttpListenerResponse response)
+    {
+        string message = "\n\ngame one";
+        byte[] buffer = Encoding.UTF8.GetBytes(message);
+        response.ContentType = "text/plain";
+        response.StatusCode = (int)HttpStatusCode.OK;
+
+        response.OutputStream.Write(buffer, 0, buffer.Length);
+        response.OutputStream.Close();
+    }
+    
+    void NotFound(HttpListenerResponse res)
+    {
+        res.StatusCode = (int)HttpStatusCode.NotFound;
+        res.Close();
+    }
+    
 }
