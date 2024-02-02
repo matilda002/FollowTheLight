@@ -1,6 +1,5 @@
 ﻿using System.Net;
 using System.Text;
-using System.Net.Sockets;
 
 bool listen = true;
 
@@ -12,18 +11,14 @@ Console.CancelKeyPress += delegate(object? sender, ConsoleCancelEventArgs e)
 };
 
 int port = 3000;
-listen = true;
-string? game = string.Empty;
-
 HttpListener playerOne = new();
 playerOne.Prefixes.Add($"http://localhost:{port}/"); // <host> kan t.ex. vara 127.0.0.1, 0.0.0.0, ...
 
 try
 {
     playerOne.Start();
-    playerOne.BeginGetContext(new AsyncCallback(HandleRequest), playerOne);
-    while (listen) { };
-
+    playerOne.BeginGetContext(HandleRequest, playerOne);
+    while (listen) { }
 }
 finally
 {
@@ -32,13 +27,13 @@ finally
 
 void HandleRequest(IAsyncResult result)
 {
-    if (result.AsyncState is HttpListener playerOne)
+    if (result.AsyncState is HttpListener listener)
     {
-        HttpListenerContext context = playerOne.EndGetContext(result);
+        HttpListenerContext context = listener.EndGetContext(result);
 
         Router(context);
         
-        playerOne.BeginGetContext(new AsyncCallback(HandleRequest), playerOne);
+        listener.BeginGetContext(HandleRequest, listener);
     }
 }
 
@@ -83,7 +78,7 @@ void IntroGet(HttpListenerResponse response)
 {
     string intro = @"You've woken up in darkness with no past memories. It's cold and when you scream for help it echoes...
 You hear a faint voice coming from a device on the ground. You pick it up and someone responds with 'Who is this? Where am I?'.
-After a while they realise no-one knows how they got there. All they know is they have to escape this place through working together..."; // byt ut till vilken text som ska skickas tillbaka
+After a while they realise no-one knows how they got there. All they know is they have to escape this place through working together...";
     byte[] buffer = Encoding.UTF8.GetBytes(intro);
     response.ContentType = "text/plain";
     response.StatusCode = (int)HttpStatusCode.OK;
@@ -112,8 +107,24 @@ void GamePost(HttpListenerRequest req, HttpListenerResponse res)
 {
     StreamReader reader = new(req.InputStream, req.ContentEncoding);
     string body = reader.ReadToEnd();
+    string answer = string.Empty;
 
-    // A. You find teeth looks like it's human. You turn back around, take the left tunnel and find a torch.
+    switch (body)
+    {
+        case ("A"): case ("a"):
+            answer +=
+                "You find teeth looks like it's human. You turn back around, take the left tunnel and find a torch.";
+            break;
+    }
+   
+    byte[] buffer = Encoding.UTF8.GetBytes(answer);
+    res.ContentType = "text/plain";
+    res.StatusCode = (int)HttpStatusCode.OK;
+
+    res.OutputStream.Write(buffer, 0, buffer.Length);
+    res.OutputStream.Close();
+    
+    
     // B. Your walk into a wall. Go to the left tunnel and find a torch -1hp
     // C. You find a torch, might be useful later
     // D. You step on a bear-trap. Go to the left tunnel and find a torch -1hp
