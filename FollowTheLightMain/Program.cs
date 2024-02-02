@@ -16,7 +16,7 @@ listen = true;
 string? game = string.Empty;
 
 HttpListener playerOne = new();
-playerOne.Prefixes.Add($"http://localhost:{port}/playerOne/"); // <host> kan t.ex. vara 127.0.0.1, 0.0.0.0, ...
+playerOne.Prefixes.Add($"http://localhost:{port}/"); // <host> kan t.ex. vara 127.0.0.1, 0.0.0.0, ...
 
 try
 {
@@ -52,10 +52,10 @@ void Router(HttpListenerContext context)
         case ("GET"):
             switch (request.Url?.AbsolutePath)
             {
-                case ("/playerOne/intro"):
+                case ("/intro"):
                     IntroGet(response);
                     break;
-                case ("/playerOne/game"):
+                case ("/game/player/1"):
                     GameGet(response);
                     break;
                 default:
@@ -65,6 +65,12 @@ void Router(HttpListenerContext context)
             break;
         
         case ("POST"):
+            switch (request.Url?.AbsolutePath)
+            {
+                case ("/game/player/1"):
+                    GamePost(request, response);
+                    break;
+            }
             break;
         
         default:
@@ -75,10 +81,10 @@ void Router(HttpListenerContext context)
 
 void IntroGet(HttpListenerResponse response)
 {
-    string message = @"You've woken up in darkness with no past memories. It's cold and when you scream for help it echoes...
+    string intro = @"You've woken up in darkness with no past memories. It's cold and when you scream for help it echoes...
 You hear a faint voice coming from a device on the ground. You pick it up and someone responds with 'Who is this? Where am I?'.
 After a while they realise no-one knows how they got there. All they know is they have to escape this place through working together..."; // byt ut till vilken text som ska skickas tillbaka
-    byte[] buffer = Encoding.UTF8.GetBytes(message);
+    byte[] buffer = Encoding.UTF8.GetBytes(intro);
     response.ContentType = "text/plain";
     response.StatusCode = (int)HttpStatusCode.OK;
 
@@ -88,12 +94,13 @@ After a while they realise no-one knows how they got there. All they know is the
     
 void GameGet(HttpListenerResponse response)
 {
-    string message = "You look around in the dark and find some matches.\nWhen you light up a match you find yourself in a cave surrounded by tunnels.\nDo you go to the:\n\n"+
+    string story = "You look around in the dark and find some matches.\nYou light up a match you find yourself in a cave. " +
+                     "Before the light disappears you think you see a tunnel to your right and to your left.\nDo you go to the:\n\n"+
                      "A. Right tunnel\n"+
-                     "B. Tunnel in front of you\n"+
+                     "B. Go forward into the darkness\n"+
                      "C. Left tunnel\n"+
                      "D. Tunnel behind you";
-    byte[] buffer = Encoding.UTF8.GetBytes(message);
+    byte[] buffer = Encoding.UTF8.GetBytes(story);
     response.ContentType = "text/plain";
     response.StatusCode = (int)HttpStatusCode.OK;
 
@@ -101,7 +108,65 @@ void GameGet(HttpListenerResponse response)
     response.OutputStream.Close();
 }
 
+void GamePost(HttpListenerRequest req, HttpListenerResponse res)
+{
+    StreamReader reader = new(req.InputStream, req.ContentEncoding);
+    string body = reader.ReadToEnd();
 
+    // A. You find teeth looks like it's human. You turn back around, take the left tunnel and find a torch.
+    // B. Your walk into a wall. Go to the left tunnel and find a torch -1hp
+    // C. You find a torch, might be useful later
+    // D. You step on a bear-trap. Go to the left tunnel and find a torch -1hp
+    
+    Console.WriteLine($"Created the following in db: {body}");
+
+    res.StatusCode = (int)HttpStatusCode.Created;
+    res.Close();
+}
+
+void GameTwoGet(HttpListenerResponse response)
+{
+    string story = "While you're walking through the tunnel you feel a piece paper under your feet, and pick it up." +
+                     "Do you:\n\n"+
+                     "A. Eat it\n"+
+                     "B. Throw it\n"+
+                     "C. Burn it\n"+
+                     "D. Read it";
+    byte[] buffer = Encoding.UTF8.GetBytes(story);
+    response.ContentType = "text/plain";
+    response.StatusCode = (int)HttpStatusCode.OK;
+
+    response.OutputStream.Write(buffer, 0, buffer.Length);
+    response.OutputStream.Close();
+}
+// A. You almost chocked to death, stupid -1hp
+// B. Nothing happens, might regret that later
+// C. You burn yourself trying to light it up
+// D. There's writing on the paper in blood "DO NOT TRUST THE FROG"
+
+void GameThreeGet(HttpListenerResponse response)
+{
+    string story = "You see a red frog sitting on a rock. It looks friendly even if there's bones around it..." +
+                     "Do you:\n\n"+
+                     "A. Burn it with the torch\n"+
+                     "B. Walk past the frog\n"+
+                     "C. Pick it up\n"+
+                     "D. Poke it with a bone from the ground";
+    byte[] buffer = Encoding.UTF8.GetBytes(story);
+    response.ContentType = "text/plain";
+    response.StatusCode = (int)HttpStatusCode.OK;
+
+    response.OutputStream.Write(buffer, 0, buffer.Length);
+    response.OutputStream.Close();
+}
+// A. It screams in agony while it burns to death
+// B. You walk past the frog and continue on your path
+// C. The frog is poisonous, but it jumps out of your hand before damaging you critically. -1hp
+// D. The frog makes a squeaking sound 
+
+
+
+// player two
 
 void NotFound(HttpListenerResponse res)
 {
