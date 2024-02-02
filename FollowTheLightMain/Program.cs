@@ -47,14 +47,26 @@ void Router(HttpListenerContext context)
     HttpListenerRequest request = context.Request;
     HttpListenerResponse response = context.Response;
 
-    switch (request.HttpMethod, request.Url?.AbsolutePath)
+    switch (request.HttpMethod)
     {
-        case ("GET", "/playerOne/intro"):
-            IntroGet(response);
+        case ("GET"):
+            switch (request.Url?.AbsolutePath)
+            {
+                case ("/playerOne/intro"):
+                    IntroGet(response);
+                    break;
+                case ("/playerOne/game"):
+                    GameGet(response);
+                    break;
+                default:
+                    NotFound(response);
+                    break; 
+            }
             break;
-        case ("GET", "/playerOne/game"):
-            GameGet(response);
+        
+        case ("POST"):
             break;
+        
         default:
             NotFound(response);
             break;
@@ -88,7 +100,9 @@ void GameGet(HttpListenerResponse response)
     response.OutputStream.Write(buffer, 0, buffer.Length);
     response.OutputStream.Close();
 }
-    
+
+
+
 void NotFound(HttpListenerResponse res)
 {
     res.StatusCode = (int)HttpStatusCode.NotFound;
