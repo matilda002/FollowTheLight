@@ -2,6 +2,7 @@
 using System.Text;
 using System.Threading;
 
+
 bool listen = true;
 
 Console.CancelKeyPress += delegate(object? sender, ConsoleCancelEventArgs e)
@@ -96,16 +97,20 @@ After a while they realise no-one knows how they got there. All they know is the
 void GameGet(HttpListenerResponse response)
 {
     string story = "You look around in the dark and find some matches.\nYou light up a match you find yourself in a cave. " +
-                     "Before the light disappears you think you see a tunnel to your right and to your left.\nDo you go to the:\n\n"+
-                     "A. Right tunnel\n"+
-                     "B. Go forward into the darkness\n"+
-                     "C. Left tunnel\n"+
-                     "D. Tunnel behind you";
+                   "Before the light disappears you think you see a tunnel to your right and to your left.\nDo you go to the:\n\n"+
+                   "A. Right tunnel\n"+
+                   "B. Go forward into the darkness\n"+
+                   "C. Left tunnel\n"+
+                   "D. Tunnel behind you";
     byte[] buffer = Encoding.UTF8.GetBytes(story);
     response.ContentType = "text/plain";
     response.StatusCode = (int)HttpStatusCode.OK;
-
-    response.OutputStream.Write(buffer, 0, buffer.Length);
+    
+    foreach (byte b in buffer)
+    {
+        response.OutputStream.WriteByte(b);
+        Thread.Sleep(50);
+    }
     response.OutputStream.Close();
 }
 
@@ -143,7 +148,11 @@ void GamePost(HttpListenerRequest req, HttpListenerResponse res)
     res.ContentType = "text/plain";
     res.StatusCode = (int)HttpStatusCode.OK;
 
-    res.OutputStream.Write(buffer, 0, buffer.Length);
+    foreach (byte b in buffer)
+    {
+        res.OutputStream.WriteByte(b);
+        Thread.Sleep(50);
+    }
     res.OutputStream.Close();
     
     Console.WriteLine($"Player answered the following to question one: {body}");
@@ -164,7 +173,11 @@ void GameTwoGet(HttpListenerResponse response)
     response.ContentType = "text/plain";
     response.StatusCode = (int)HttpStatusCode.OK;
 
-    response.OutputStream.Write(buffer, 0, buffer.Length);
+    foreach (byte b in buffer)
+    {
+        response.OutputStream.WriteByte(b);
+        Thread.Sleep(50);
+    }
     response.OutputStream.Close();
 }
 // A. You almost chocked to death, stupid -1hp
@@ -184,7 +197,11 @@ void GameThreeGet(HttpListenerResponse response)
     response.ContentType = "text/plain";
     response.StatusCode = (int)HttpStatusCode.OK;
 
-    response.OutputStream.Write(buffer, 0, buffer.Length);
+    foreach (byte b in buffer)
+    {
+        response.OutputStream.WriteByte(b);
+        Thread.Sleep(50);
+    }
     response.OutputStream.Close();
 }
 // A. It screams in agony while it burns to death
