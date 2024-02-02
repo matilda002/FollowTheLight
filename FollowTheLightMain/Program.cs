@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Text;
+using System.Threading;
 
 bool listen = true;
 
@@ -79,14 +80,19 @@ void IntroGet(HttpListenerResponse response)
     string intro = @"You've woken up in darkness with no past memories. It's cold and when you scream for help it echoes...
 You hear a faint voice coming from a device on the ground. You pick it up and someone responds with 'Who is this? Where am I?'.
 After a while they realise no-one knows how they got there. All they know is they have to escape this place through working together...";
+    
     byte[] buffer = Encoding.UTF8.GetBytes(intro);
     response.ContentType = "text/plain";
     response.StatusCode = (int)HttpStatusCode.OK;
-
-    response.OutputStream.Write(buffer, 0, buffer.Length);
+    
+    foreach (byte b in buffer)
+    {
+        response.OutputStream.WriteByte(b);
+        Thread.Sleep(50);
+    }
     response.OutputStream.Close();
 }
-    
+
 void GameGet(HttpListenerResponse response)
 {
     string story = "You look around in the dark and find some matches.\nYou light up a match you find yourself in a cave. " +
@@ -115,6 +121,22 @@ void GamePost(HttpListenerRequest req, HttpListenerResponse res)
             answer +=
                 "You find teeth looks like it's human. You turn back around, take the left tunnel and find a torch.";
             break;
+        case ("B"): case ("b"):
+            answer +=
+                "Your walk into a wall. Go to the left tunnel and find a torch. -1hp";
+            break;
+        case ("C"): case ("c"):
+            answer +=
+                "You find a torch, might be useful later";
+            break;
+        case ("D"): case ("d"):
+            answer +=
+                "You step on a bear-trap. Go to the left tunnel and find a torch -1hp";
+            break;
+        default:
+            answer +=
+                "That option does not exist";
+            break;
     }
    
     byte[] buffer = Encoding.UTF8.GetBytes(answer);
@@ -124,13 +146,8 @@ void GamePost(HttpListenerRequest req, HttpListenerResponse res)
     res.OutputStream.Write(buffer, 0, buffer.Length);
     res.OutputStream.Close();
     
+    Console.WriteLine($"Player answered the following to question one: {body}");
     
-    // B. Your walk into a wall. Go to the left tunnel and find a torch -1hp
-    // C. You find a torch, might be useful later
-    // D. You step on a bear-trap. Go to the left tunnel and find a torch -1hp
-    
-    Console.WriteLine($"Created the following in db: {body}");
-
     res.StatusCode = (int)HttpStatusCode.Created;
     res.Close();
 }
