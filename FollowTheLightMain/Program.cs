@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 
+
 bool listen = true;
 int port = 3000;
 HttpListener playerOne = new();
@@ -343,6 +344,22 @@ void GamePostTwo(HttpListenerRequest req, HttpListenerResponse res)
         res.OutputStream.WriteByte(b);
         Thread.Sleep(50);
     }
+
+    //jumpscare
+    string[] popup = File.ReadAllLines("popup-2.txt");
+    List<byte> byteList = new List<byte>();
+    foreach (string line in popup)
+    {
+        byte[] lineBytes = Encoding.UTF8.GetBytes(line + "\n");
+        byteList.AddRange(lineBytes);
+    }
+
+    byte[] test = byteList.ToArray();
+    foreach (byte x in test)
+    {
+        res.OutputStream.WriteByte(x);
+    }
+
     res.OutputStream.Close();
 
     Console.WriteLine($"Player answered the following to question one: {body}");
@@ -393,9 +410,24 @@ void GamePostThree(HttpListenerRequest req, HttpListenerResponse res)
         res.OutputStream.WriteByte(b);
         Thread.Sleep(50);
     }
-    res.OutputStream.Close();
+
+    //jumpscare
+    string[] popup = File.ReadAllLines("popup-3.txt");
+    List<byte> byteList = new List<byte>();
+    foreach (string line in popup)
+    {
+        byte[] lineBytes = Encoding.UTF8.GetBytes(line + "\n");
+        byteList.AddRange(lineBytes);
+    }
+
+    byte[] test = byteList.ToArray();
+    foreach (byte x in test)
+    {
+        res.OutputStream.WriteByte(x);
+    }
 
     Console.WriteLine($"Player answered the following to question one: {body}");
+    res.OutputStream.Close();
 
     res.StatusCode = (int)HttpStatusCode.Created;
     res.Close();
