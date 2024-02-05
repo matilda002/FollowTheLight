@@ -2,8 +2,10 @@
 using System.Text;
 using System.Threading;
 
-
 bool listen = true;
+int port = 3000;
+HttpListener playerOne = new();
+playerOne.Prefixes.Add($"http://localhost:{port}/"); // <host> kan t.ex. vara 127.0.0.1, 0.0.0.0, ...
 
 Console.CancelKeyPress += delegate(object? sender, ConsoleCancelEventArgs e)
 {
@@ -11,10 +13,6 @@ Console.CancelKeyPress += delegate(object? sender, ConsoleCancelEventArgs e)
     e.Cancel = true;
     listen = false;
 };
-
-int port = 3000;
-HttpListener playerOne = new();
-playerOne.Prefixes.Add($"http://localhost:{port}/"); // <host> kan t.ex. vara 127.0.0.1, 0.0.0.0, ...
 
 try
 {
@@ -106,7 +104,6 @@ void Router(HttpListenerContext context)
     }
 }
 
-//intro
 void IntroGet(HttpListenerResponse response)
 {
     string intro = @"You've woken up in darkness with no past memories. It's cold and when you scream for help it echoes...
@@ -125,7 +122,6 @@ After a while they realise no-one knows how they got there. All they know is the
     response.OutputStream.Close();
 }
 
-//gameone
 void GameGet(HttpListenerResponse response)
 {
     string story = "You look around in the dark and find some matches.\nYou light up a match you find yourself in a cave. " +
@@ -138,6 +134,100 @@ void GameGet(HttpListenerResponse response)
     response.ContentType = "text/plain";
     response.StatusCode = (int)HttpStatusCode.OK;
     
+    foreach (byte b in buffer)
+    {
+        response.OutputStream.WriteByte(b);
+        Thread.Sleep(50);
+    }
+    response.OutputStream.Close();
+}
+void GameTwoGet(HttpListenerResponse response)
+{
+    string story = "While you're walking through the tunnel you feel a piece paper under your feet, and pick it up." +
+                     "Do you:\n\n"+
+                     "A. Eat it\n"+
+                     "B. Throw it\n"+
+                     "C. Burn it\n"+
+                     "D. Read it";
+    byte[] buffer = Encoding.UTF8.GetBytes(story);
+    response.ContentType = "text/plain";
+    response.StatusCode = (int)HttpStatusCode.OK;
+
+    foreach (byte b in buffer)
+    {
+        response.OutputStream.WriteByte(b);
+        Thread.Sleep(50);
+    }
+    response.OutputStream.Close();
+}
+void GameThreeGet(HttpListenerResponse response)
+{
+    string story = "You see a red frog sitting on a rock. It looks friendly even if there's bones around it..." +
+                     "Do you:\n\n"+
+                     "A. Burn it with the torch\n"+
+                     "B. Walk past the frog\n"+
+                     "C. Pick it up\n"+
+                     "D. Poke it with a bone from the ground";
+    byte[] buffer = Encoding.UTF8.GetBytes(story);
+    response.ContentType = "text/plain";
+    response.StatusCode = (int)HttpStatusCode.OK;
+
+    foreach (byte b in buffer)
+    {
+        response.OutputStream.WriteByte(b);
+        Thread.Sleep(50);
+    }
+    response.OutputStream.Close();
+}
+void GameFourGet(HttpListenerResponse response)
+{
+    string story = "You hear a sinister noise behind you..." +
+                     "Do you:\n\n" +
+                     "A. Make a shushing noise\n" +
+                     "B. Hide behind something\n" +
+                     "C. Look back and investiagte the noise\n" +
+                     "D. Scream and run";
+    byte[] buffer = Encoding.UTF8.GetBytes(story);
+    response.ContentType = "text/plain";
+    response.StatusCode = (int)HttpStatusCode.OK;
+
+    foreach (byte b in buffer)
+    {
+        response.OutputStream.WriteByte(b);
+        Thread.Sleep(50);
+    }
+    response.OutputStream.Close();
+}
+void GameFiveGet(HttpListenerResponse response)
+{
+    string story = "You find a wall, you need to climb over it...." +
+                     "Do you:\n\n" +
+                     "A. Climb the slippery wall\n" +
+                     "B. Look around the area\n" +
+                     "C. Climb the rope\n" +
+                     "D. Take the ladder with missing steps";
+    byte[] buffer = Encoding.UTF8.GetBytes(story);
+    response.ContentType = "text/plain";
+    response.StatusCode = (int)HttpStatusCode.OK;
+
+    foreach (byte b in buffer)
+    {
+        response.OutputStream.WriteByte(b);
+        Thread.Sleep(50);
+    }
+    response.OutputStream.Close();
+}
+void GameTenGet(HttpListenerResponse response)
+{
+    string story = "You found the exit.... but you hear someone screaming in the cave...." +
+                     "Do you:\n\n" +
+                     "A. Leave\n" +
+                     "B. Go back\n";
+
+    byte[] buffer = Encoding.UTF8.GetBytes(story);
+    response.ContentType = "text/plain";
+    response.StatusCode = (int)HttpStatusCode.OK;
+
     foreach (byte b in buffer)
     {
         response.OutputStream.WriteByte(b);
@@ -192,28 +282,6 @@ void GamePostOne(HttpListenerRequest req, HttpListenerResponse res)
     res.StatusCode = (int)HttpStatusCode.Created;
     res.Close();
 }
-
-//gametwo
-void GameTwoGet(HttpListenerResponse response)
-{
-    string story = "While you're walking through the tunnel you feel a piece paper under your feet, and pick it up." +
-                     "Do you:\n\n"+
-                     "A. Eat it\n"+
-                     "B. Throw it\n"+
-                     "C. Burn it\n"+
-                     "D. Read it";
-    byte[] buffer = Encoding.UTF8.GetBytes(story);
-    response.ContentType = "text/plain";
-    response.StatusCode = (int)HttpStatusCode.OK;
-
-    foreach (byte b in buffer)
-    {
-        response.OutputStream.WriteByte(b);
-        Thread.Sleep(50);
-    }
-    response.OutputStream.Close();
-}
-
 void GamePostTwo(HttpListenerRequest req, HttpListenerResponse res)
 {
     StreamReader reader = new(req.InputStream, req.ContentEncoding);
@@ -264,28 +332,6 @@ void GamePostTwo(HttpListenerRequest req, HttpListenerResponse res)
     res.StatusCode = (int)HttpStatusCode.Created;
     res.Close();
 }
-
-//gamethree
-void GameThreeGet(HttpListenerResponse response)
-{
-    string story = "You see a red frog sitting on a rock. It looks friendly even if there's bones around it..." +
-                     "Do you:\n\n"+
-                     "A. Burn it with the torch\n"+
-                     "B. Walk past the frog\n"+
-                     "C. Pick it up\n"+
-                     "D. Poke it with a bone from the ground";
-    byte[] buffer = Encoding.UTF8.GetBytes(story);
-    response.ContentType = "text/plain";
-    response.StatusCode = (int)HttpStatusCode.OK;
-
-    foreach (byte b in buffer)
-    {
-        response.OutputStream.WriteByte(b);
-        Thread.Sleep(50);
-    }
-    response.OutputStream.Close();
-}
-
 void GamePostThree(HttpListenerRequest req, HttpListenerResponse res)
 {
     StreamReader reader = new(req.InputStream, req.ContentEncoding);
@@ -335,27 +381,6 @@ void GamePostThree(HttpListenerRequest req, HttpListenerResponse res)
 
     res.StatusCode = (int)HttpStatusCode.Created;
     res.Close();
-}
-
-//gamefour
-void GameFourGet(HttpListenerResponse response)
-{
-    string story = "You hear a sinister noise behind you..." +
-                     "Do you:\n\n" +
-                     "A. Make a shushing noise\n" +
-                     "B. Hide behind something\n" +
-                     "C. Look back and investiagte the noise\n" +
-                     "D. Scream and run";
-    byte[] buffer = Encoding.UTF8.GetBytes(story);
-    response.ContentType = "text/plain";
-    response.StatusCode = (int)HttpStatusCode.OK;
-
-    foreach (byte b in buffer)
-    {
-        response.OutputStream.WriteByte(b);
-        Thread.Sleep(50);
-    }
-    response.OutputStream.Close();
 }
 void GamePostFour(HttpListenerRequest req, HttpListenerResponse res)
 {
@@ -407,27 +432,6 @@ void GamePostFour(HttpListenerRequest req, HttpListenerResponse res)
     res.StatusCode = (int)HttpStatusCode.Created;
     res.Close();
 }
-
-//gamefive
-void GameFiveGet(HttpListenerResponse response)
-{
-    string story = "You find a wall, you need to climb over it...." +
-                     "Do you:\n\n" +
-                     "A. Climb the slippery wall\n" +
-                     "B. Look around the area\n" +
-                     "C. Climb the rope\n" +
-                     "D. Take the ladder with missing steps";
-    byte[] buffer = Encoding.UTF8.GetBytes(story);
-    response.ContentType = "text/plain";
-    response.StatusCode = (int)HttpStatusCode.OK;
-
-    foreach (byte b in buffer)
-    {
-        response.OutputStream.WriteByte(b);
-        Thread.Sleep(50);
-    }
-    response.OutputStream.Close();
-}
 void GamePostFive(HttpListenerRequest req, HttpListenerResponse res)
 {
     StreamReader reader = new(req.InputStream, req.ContentEncoding);
@@ -478,32 +482,6 @@ void GamePostFive(HttpListenerRequest req, HttpListenerResponse res)
     res.StatusCode = (int)HttpStatusCode.Created;
     res.Close();
 }
-
-
-
-
-
-
-
-//gameten
-void GameTenGet(HttpListenerResponse response)
-{
-    string story = "You found the exit.... but you hear someone screaming in the cave...." +
-                     "Do you:\n\n" +
-                     "A. Leave\n" +
-                     "B. Go back\n";
-
-    byte[] buffer = Encoding.UTF8.GetBytes(story);
-    response.ContentType = "text/plain";
-    response.StatusCode = (int)HttpStatusCode.OK;
-
-    foreach (byte b in buffer)
-    {
-        response.OutputStream.WriteByte(b);
-        Thread.Sleep(50);
-    }
-    response.OutputStream.Close();
-}
 void GamePostTen(HttpListenerRequest req, HttpListenerResponse res)
 {
     StreamReader reader = new(req.InputStream, req.ContentEncoding);
@@ -544,6 +522,7 @@ void GamePostTen(HttpListenerRequest req, HttpListenerResponse res)
     res.StatusCode = (int)HttpStatusCode.Created;
     res.Close();
 }
+
 void NotFound(HttpListenerResponse res)
 {
     res.StatusCode = (int)HttpStatusCode.NotFound;
