@@ -67,6 +67,9 @@ void Router(HttpListenerContext context)
                 case ("/game/player/5"):
                     GameFiveGet(response);
                     break;
+                case ("/game/player/10"):
+                    GameTenGet(response);
+                    break;
                 default:
                     NotFound(response);
                     break; 
@@ -90,6 +93,9 @@ void Router(HttpListenerContext context)
                     break;
                 case ("/game/player/5"):
                     GamePostFive(request, response);
+                    break;
+                case ("/game/player/10"):
+                    GamePostTen(request, response);
                     break;
             }
             break;
