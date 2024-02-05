@@ -5,7 +5,7 @@ using System.Threading;
 bool listen = true;
 int port = 3000;
 HttpListener playerOne = new();
-playerOne.Prefixes.Add($"http://localhost:{port}/"); // <host> kan t.ex. vara 127.0.0.1, 0.0.0.0, ...
+playerOne.Prefixes.Add($"http://localhost:{port}/");
 
 Console.CancelKeyPress += delegate(object? sender, ConsoleCancelEventArgs e)
 {
