@@ -64,6 +64,9 @@ void Router(HttpListenerContext context)
                 case ("/game/player/4"):
                     GameFourGet(response);
                     break;
+                case ("/game/player/5"):
+                    GameFiveGet(response);
+                    break;
                 default:
                     NotFound(response);
                     break; 
@@ -85,6 +88,9 @@ void Router(HttpListenerContext context)
                 case ("/game/player/4"):
                     GamePostFour(request, response);
                     break;
+                case ("/game/player/5"):
+                    GamePostFive(request, response);
+                    break;
             }
             break;
         
@@ -94,6 +100,7 @@ void Router(HttpListenerContext context)
     }
 }
 
+//intro
 void IntroGet(HttpListenerResponse response)
 {
     string intro = @"You've woken up in darkness with no past memories. It's cold and when you scream for help it echoes...
@@ -112,6 +119,7 @@ After a while they realise no-one knows how they got there. All they know is the
     response.OutputStream.Close();
 }
 
+//gameone
 void GameGet(HttpListenerResponse response)
 {
     string story = "You look around in the dark and find some matches.\nYou light up a match you find yourself in a cave. " +
@@ -179,6 +187,7 @@ void GamePostOne(HttpListenerRequest req, HttpListenerResponse res)
     res.Close();
 }
 
+//gametwo
 void GameTwoGet(HttpListenerResponse response)
 {
     string story = "While you're walking through the tunnel you feel a piece paper under your feet, and pick it up." +
@@ -249,6 +258,8 @@ void GamePostTwo(HttpListenerRequest req, HttpListenerResponse res)
     res.StatusCode = (int)HttpStatusCode.Created;
     res.Close();
 }
+
+//gamethree
 void GameThreeGet(HttpListenerResponse response)
 {
     string story = "You see a red frog sitting on a rock. It looks friendly even if there's bones around it..." +
@@ -269,9 +280,6 @@ void GameThreeGet(HttpListenerResponse response)
     response.OutputStream.Close();
 }
 
-
-// player two
-
 void GamePostThree(HttpListenerRequest req, HttpListenerResponse res)
 {
     StreamReader reader = new(req.InputStream, req.ContentEncoding);
@@ -283,12 +291,12 @@ void GamePostThree(HttpListenerRequest req, HttpListenerResponse res)
         case ("A"):
         case ("a"):
             answer +=
-                "It screams in agony while it burns to death";
+                "It screams in agony while it burns to death - JS";
             break;
         case ("B"):
         case ("b"):
             answer +=
-                "You walk past the frog and continue on your path";
+                "You walk past the frog and continue on your path -JS";
             break;
         case ("C"):
         case ("c"):
@@ -298,11 +306,11 @@ void GamePostThree(HttpListenerRequest req, HttpListenerResponse res)
         case ("D"):
         case ("d"):
             answer +=
-                "You step on a bear-trap. Go to the left tunnel and find a torch -1hp";
+                "You poke it with a stick, it makes a squeaking noise. -JS";
             break;
         default:
             answer +=
-                "The frog makes a squeaking sound";
+                "That option does not exist";
             break;
     }
 
@@ -322,6 +330,8 @@ void GamePostThree(HttpListenerRequest req, HttpListenerResponse res)
     res.StatusCode = (int)HttpStatusCode.Created;
     res.Close();
 }
+
+//gamefour
 void GameFourGet(HttpListenerResponse response)
 {
     string story = "You hear a sinister noise behind you..." +
@@ -341,7 +351,6 @@ void GameFourGet(HttpListenerResponse response)
     }
     response.OutputStream.Close();
 }
-
 void GamePostFour(HttpListenerRequest req, HttpListenerResponse res)
 {
     StreamReader reader = new(req.InputStream, req.ContentEncoding);
@@ -368,11 +377,148 @@ void GamePostFour(HttpListenerRequest req, HttpListenerResponse res)
         case ("D"):
         case ("d"):
             answer +=
-                "You step on a bear-trap. Go to the left tunnel and find a torch -1hp";
+                "Your screaming exposes your position and it attacks you, you couldn't outrun the monster. -1hp";
             break;
         default:
             answer +=
-                "Your screaming exposes your position and it attacks you, you couldn't outrun the monster. -1hp";
+                "That option does not exist";
+            break;
+    }
+
+    byte[] buffer = Encoding.UTF8.GetBytes(answer);
+    res.ContentType = "text/plain";
+    res.StatusCode = (int)HttpStatusCode.OK;
+
+    foreach (byte b in buffer)
+    {
+        res.OutputStream.WriteByte(b);
+        Thread.Sleep(50);
+    }
+    res.OutputStream.Close();
+
+    Console.WriteLine($"Player answered the following to question one: {body}");
+
+    res.StatusCode = (int)HttpStatusCode.Created;
+    res.Close();
+}
+
+//gamefive
+void GameFiveGet(HttpListenerResponse response)
+{
+    string story = "You find a wall, you need to climb over it...." +
+                     "Do you:\n\n" +
+                     "A. Climb the slippery wall\n" +
+                     "B. Look around the area\n" +
+                     "C. Climb the rope\n" +
+                     "D. Take the ladder with missing steps";
+    byte[] buffer = Encoding.UTF8.GetBytes(story);
+    response.ContentType = "text/plain";
+    response.StatusCode = (int)HttpStatusCode.OK;
+
+    foreach (byte b in buffer)
+    {
+        response.OutputStream.WriteByte(b);
+        Thread.Sleep(50);
+    }
+    response.OutputStream.Close();
+}
+void GamePostFive(HttpListenerRequest req, HttpListenerResponse res)
+{
+    StreamReader reader = new(req.InputStream, req.ContentEncoding);
+    string body = reader.ReadToEnd();
+    string answer = string.Empty;
+
+    switch (body)
+    {
+        case ("A"):
+        case ("a"):
+            answer +=
+                "You slipp and fall. -1hp";
+            break;
+        case ("B"):
+        case ("b"):
+            answer +=
+                "You find a secret passage, but you notice it was a dead end by walking into a wall. -1hp";
+            break;
+        case ("C"):
+        case ("c"):
+            answer +=
+                "The rope snaps in half and you fall. -1hp";
+            break;
+        case ("D"):
+        case ("d"):
+            answer +=
+                "You maanage to climb over the wall.";
+            break;
+        default:
+            answer +=
+                "That option does not exist";
+            break;
+    }
+
+    byte[] buffer = Encoding.UTF8.GetBytes(answer);
+    res.ContentType = "text/plain";
+    res.StatusCode = (int)HttpStatusCode.OK;
+
+    foreach (byte b in buffer)
+    {
+        res.OutputStream.WriteByte(b);
+        Thread.Sleep(50);
+    }
+    res.OutputStream.Close();
+
+    Console.WriteLine($"Player answered the following to question one: {body}");
+
+    res.StatusCode = (int)HttpStatusCode.Created;
+    res.Close();
+}
+
+
+
+
+
+
+
+//gameten
+void GameTenGet(HttpListenerResponse response)
+{
+    string story = "You found the exit.... but you hear someone screaming in the cave...." +
+                     "Do you:\n\n" +
+                     "A. Leave\n" +
+                     "B. Go back\n";
+
+    byte[] buffer = Encoding.UTF8.GetBytes(story);
+    response.ContentType = "text/plain";
+    response.StatusCode = (int)HttpStatusCode.OK;
+
+    foreach (byte b in buffer)
+    {
+        response.OutputStream.WriteByte(b);
+        Thread.Sleep(50);
+    }
+    response.OutputStream.Close();
+}
+void GamePostTen(HttpListenerRequest req, HttpListenerResponse res)
+{
+    StreamReader reader = new(req.InputStream, req.ContentEncoding);
+    string body = reader.ReadToEnd();
+    string answer = string.Empty;
+
+    switch (body)
+    {
+        case ("A"):
+        case ("a"):
+            answer +=
+                "You decided to leave - The End";
+            break;
+        case ("B"):
+        case ("b"):
+            answer +=
+                "You decided to go back deep into the dark cave and you notice that the screaming stopped... And turned into growling... - The End";
+            break;
+        default:
+            answer +=
+                "That option does not exist";
             break;
     }
 
