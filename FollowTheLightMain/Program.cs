@@ -79,8 +79,12 @@ void Router(HttpListenerContext context)
                 case ("/game/player/2"):
                     GamePostTwo(request, response);
                     break;
-
-                
+                case ("/game/player/3"):
+                    GamePostThree(request, response);
+                    break;
+                case ("/game/player/4"):
+                    GamePostFour(request, response);
+                    break;
             }
             break;
         
@@ -264,15 +268,60 @@ void GameThreeGet(HttpListenerResponse response)
     }
     response.OutputStream.Close();
 }
-// A. It screams in agony while it burns to death
-// B. You walk past the frog and continue on your path
-// C. The frog is poisonous, but it jumps out of your hand before damaging you critically. -1hp
-// D. The frog makes a squeaking sound 
-
 
 
 // player two
 
+void GamePostThree(HttpListenerRequest req, HttpListenerResponse res)
+{
+    StreamReader reader = new(req.InputStream, req.ContentEncoding);
+    string body = reader.ReadToEnd();
+    string answer = string.Empty;
+
+    switch (body)
+    {
+        case ("A"):
+        case ("a"):
+            answer +=
+                "It screams in agony while it burns to death";
+            break;
+        case ("B"):
+        case ("b"):
+            answer +=
+                "You walk past the frog and continue on your path";
+            break;
+        case ("C"):
+        case ("c"):
+            answer +=
+                "The frog is poisonous, but it jumps out of your hand before damaging you critically. -1hp";
+            break;
+        case ("D"):
+        case ("d"):
+            answer +=
+                "You step on a bear-trap. Go to the left tunnel and find a torch -1hp";
+            break;
+        default:
+            answer +=
+                "The frog makes a squeaking sound";
+            break;
+    }
+
+    byte[] buffer = Encoding.UTF8.GetBytes(answer);
+    res.ContentType = "text/plain";
+    res.StatusCode = (int)HttpStatusCode.OK;
+
+    foreach (byte b in buffer)
+    {
+        res.OutputStream.WriteByte(b);
+        Thread.Sleep(50);
+    }
+    res.OutputStream.Close();
+
+    Console.WriteLine($"Player answered the following to question one: {body}");
+
+    res.StatusCode = (int)HttpStatusCode.Created;
+    res.Close();
+}
 void GameFourGet(HttpListenerResponse response)
 {
     string story = "You hear a sinister noise behind you..." +
@@ -292,10 +341,57 @@ void GameFourGet(HttpListenerResponse response)
     }
     response.OutputStream.Close();
 }
-// A. You aggroad the monster and it attacks you. -1hp
-// B. You hide behind a rock, the monster passes you and walks away.
-// C. You bump into the monster and it scratches your face. -1hp
-// D. Your screaming exposes your position and it attacks you, you couldn't outrun the monster. -1hp
+
+void GamePostFour(HttpListenerRequest req, HttpListenerResponse res)
+{
+    StreamReader reader = new(req.InputStream, req.ContentEncoding);
+    string body = reader.ReadToEnd();
+    string answer = string.Empty;
+
+    switch (body)
+    {
+        case ("A"):
+        case ("a"):
+            answer +=
+                "You aggroad the monster and it attacks you. -1hp";
+            break;
+        case ("B"):
+        case ("b"):
+            answer +=
+                "You hide behind a rock, the monster passes you and walks away.";
+            break;
+        case ("C"):
+        case ("c"):
+            answer +=
+                "You bump into the monster and it scratches your face. -1hp";
+            break;
+        case ("D"):
+        case ("d"):
+            answer +=
+                "You step on a bear-trap. Go to the left tunnel and find a torch -1hp";
+            break;
+        default:
+            answer +=
+                "Your screaming exposes your position and it attacks you, you couldn't outrun the monster. -1hp";
+            break;
+    }
+
+    byte[] buffer = Encoding.UTF8.GetBytes(answer);
+    res.ContentType = "text/plain";
+    res.StatusCode = (int)HttpStatusCode.OK;
+
+    foreach (byte b in buffer)
+    {
+        res.OutputStream.WriteByte(b);
+        Thread.Sleep(50);
+    }
+    res.OutputStream.Close();
+
+    Console.WriteLine($"Player answered the following to question one: {body}");
+
+    res.StatusCode = (int)HttpStatusCode.Created;
+    res.Close();
+}
 void NotFound(HttpListenerResponse res)
 {
     res.StatusCode = (int)HttpStatusCode.NotFound;
