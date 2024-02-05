@@ -1,4 +1,6 @@
-﻿using System.Net;
+﻿using System.IO;
+using System.Net;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 
@@ -246,37 +248,53 @@ void GamePostOne(HttpListenerRequest req, HttpListenerResponse res)
     {
         case ("A"): case ("a"):
             answer +=
-                "You find teeth looks like it's human. You turn back around, take the left tunnel and find a torch.";
+                "You find teeth looks like it's human. You turn back around, take the left tunnel and find a torch.\n";
             break;
+
         case ("B"): case ("b"):
             answer +=
-                "Your walk into a wall. Go to the left tunnel and find a torch. -1hp";
+                "Your walk into a wall. Go to the left tunnel and find a torch. -1hp\n";
             break;
         case ("C"): case ("c"):
             answer +=
-                "You find a torch, might be useful later";
+                "You find a torch, might be useful later\n";
             break;
         case ("D"): case ("d"):
             answer +=
-                "You step on a bear-trap. Go to the left tunnel and find a torch -1hp";
+                "You step on a bear-trap. Go to the left tunnel and find a torch -1hp\n";
             break;
         default:
             answer +=
-                "That option does not exist";
+                "That option does not exist\n";
             break;
     }
-   
+
+    //user choice
     byte[] buffer = Encoding.UTF8.GetBytes(answer);
     res.ContentType = "text/plain";
     res.StatusCode = (int)HttpStatusCode.OK;
-
     foreach (byte b in buffer)
     {
         res.OutputStream.WriteByte(b);
         Thread.Sleep(50);
     }
-    res.OutputStream.Close();
+
+    //jumpscare
+    string[] popup = File.ReadAllLines("popup-1.txt");
+    List<byte> byteList = new List<byte>();
+    foreach (string line in popup)
+    {
+        byte[] lineBytes = Encoding.UTF8.GetBytes(line + "\n");
+        byteList.AddRange(lineBytes);
+    }
     
+    byte[] test = byteList.ToArray();
+    foreach (byte x in test)
+    {
+        res.OutputStream.WriteByte(x);
+    }
+
+    res.OutputStream.Close();
     Console.WriteLine($"Player answered the following to question one: {body}");
     
     res.StatusCode = (int)HttpStatusCode.Created;
@@ -293,26 +311,26 @@ void GamePostTwo(HttpListenerRequest req, HttpListenerResponse res)
         case ("A"):
         case ("a"):
             answer +=
-                "You almost chocked to death, stupid. -1hp";
+                "You almost chocked to death, stupid. -1hp\n";
             break;
         case ("B"):
         case ("b"):
             answer +=
-                "Nothing happens, might regret that later.";
+                "Nothing happens, might regret that later.\n";
             break;
         case ("C"):
         case ("c"):
             answer +=
-                "You burn yourself trying to light it up.-1hp";
+                "You burn yourself trying to light it up.-1hp\n";
             break;
         case ("D"):
         case ("d"):
             answer +=
-                "There's writing on the paper in blood \"DO NOT TRUST THE FROG\"";
+                "There's writing on the paper in blood \"DO NOT TRUST THE FROG\"\n";
             break;
         default:
             answer +=
-                "That option does not exist";
+                "That option does not exist\n";
             break;
     }
 
@@ -343,26 +361,26 @@ void GamePostThree(HttpListenerRequest req, HttpListenerResponse res)
         case ("A"):
         case ("a"):
             answer +=
-                "It screams in agony while it burns to death - JS";
+                "It screams in agony while it burns to death \n";
             break;
         case ("B"):
         case ("b"):
             answer +=
-                "You walk past the frog and continue on your path -JS";
+                "You walk past the frog and continue on your path \n";
             break;
         case ("C"):
         case ("c"):
             answer +=
-                "The frog is poisonous, but it jumps out of your hand before damaging you critically. -1hp";
+                "The frog is poisonous, but it jumps out of your hand before damaging you critically. -1hp\n";
             break;
         case ("D"):
         case ("d"):
             answer +=
-                "You poke it with a stick, it makes a squeaking noise. -JS";
+                "You poke it with a stick, it makes a squeaking noise.\n";
             break;
         default:
             answer +=
-                "That option does not exist";
+                "That option does not exist\n";
             break;
     }
 
@@ -393,26 +411,26 @@ void GamePostFour(HttpListenerRequest req, HttpListenerResponse res)
         case ("A"):
         case ("a"):
             answer +=
-                "You aggroad the monster and it attacks you. -1hp";
+                "You aggroad the monster and it attacks you. -1hp\n";
             break;
         case ("B"):
         case ("b"):
             answer +=
-                "You hide behind a rock, the monster passes you and walks away.";
+                "You hide behind a rock, the monster passes you and walks away.\n";
             break;
         case ("C"):
         case ("c"):
             answer +=
-                "You bump into the monster and it scratches your face. -1hp";
+                "You bump into the monster and it scratches your face. -1hp\n";
             break;
         case ("D"):
         case ("d"):
             answer +=
-                "Your screaming exposes your position and it attacks you, you couldn't outrun the monster. -1hp";
+                "Your screaming exposes your position and it attacks you, you couldn't outrun the monster. -1hp\n";
             break;
         default:
             answer +=
-                "That option does not exist";
+                "That option does not exist\n";
             break;
     }
 
@@ -443,26 +461,26 @@ void GamePostFive(HttpListenerRequest req, HttpListenerResponse res)
         case ("A"):
         case ("a"):
             answer +=
-                "You slipp and fall. -1hp";
+                "You slipp and fall. -1hp\n";
             break;
         case ("B"):
         case ("b"):
             answer +=
-                "You find a secret passage, but you notice it was a dead end by walking into a wall. -1hp";
+                "You find a secret passage, but you notice it was a dead end by walking into a wall. -1hp\n";
             break;
         case ("C"):
         case ("c"):
             answer +=
-                "The rope snaps in half and you fall. -1hp";
+                "The rope snaps in half and you fall. -1hp\n";
             break;
         case ("D"):
         case ("d"):
             answer +=
-                "You maanage to climb over the wall.";
+                "You maanage to climb over the wall.\n";
             break;
         default:
             answer +=
-                "That option does not exist";
+                "That option does not exist\n";
             break;
     }
 
@@ -493,16 +511,16 @@ void GamePostTen(HttpListenerRequest req, HttpListenerResponse res)
         case ("A"):
         case ("a"):
             answer +=
-                "You decided to leave - The End";
+                "You decided to leave - The End\n";
             break;
         case ("B"):
         case ("b"):
             answer +=
-                "You decided to go back deep into the dark cave and you notice that the screaming stopped... And turned into growling... - The End";
+                "You decided to go back deep into the dark cave and you notice that the screaming stopped... And turned into growling... - The End\n";
             break;
         default:
             answer +=
-                "That option does not exist";
+                "That option does not exist\n";
             break;
     }
 
