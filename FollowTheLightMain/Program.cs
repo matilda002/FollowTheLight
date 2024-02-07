@@ -1,10 +1,7 @@
 using Npgsql;
 using FollowTheLightMain;
-using System.Runtime.CompilerServices;
 using System.Net;
 using System.Text;
-using System.IO;
-using System.Threading;
 
 const string dbUri = "Host=localhost;Port=5455;Username=postgres;Password=postgres;Database=followthelightdb;";
 await using var db = NpgsqlDataSource.Create(dbUri);
@@ -12,8 +9,9 @@ await using var db = NpgsqlDataSource.Create(dbUri);
 var databaseCreator = new DatabaseCreator(db);
 var databasehelper = new DatabaseHelper(db);
 
-await databasehelper.ResetTables();
-await databaseCreator.CreateTables();
+//await databasehelper.ResetTables();
+//await databaseCreator.CreateTables();
+await databasehelper.PopulateStoryPointsTable();
 
 bool listen = true;
 int port = 3000;
