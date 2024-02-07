@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 using Npgsql;
 
-namespace FollowTheLightdb;
+namespace FollowTheLightMain;
 
 public class DatabaseCreator
 {
@@ -51,8 +51,5 @@ public class DatabaseCreator
             message text
         )";
         await _db.CreateCommand(radioTable).ExecuteNonQueryAsync();
-
-
-
     }
 }

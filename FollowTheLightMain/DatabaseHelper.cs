@@ -5,7 +5,7 @@ using System.Net;
 using System.Xml.Linq;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace FollowTheLightdb;
+namespace FollowTheLightMain;
 public class DatabaseHelper
 {
     private readonly NpgsqlDataSource _db;
