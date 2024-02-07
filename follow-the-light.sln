@@ -6,9 +6,6 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FollowTheLightMain", "FollowTheLightMain\FollowTheLightMain.csproj", "{7222554B-5592-431F-8683-44EC0EE3FA41}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E9E590F7-DA1A-44BD-BD3E-510531512C7E}"
-	ProjectSection(SolutionItems) = preProject
-		DatabaseCreator.cs = DatabaseCreator.cs
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

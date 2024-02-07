@@ -1,12 +1,23 @@
-﻿using System;
+﻿using Npgsql;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Diagnostics.Metrics;
+using System.Net;
+using System.Xml.Linq;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace FollowTheLightMain
+namespace FollowTheLightdb;
+public class DatabaseHelper
 {
-    internal class DatabaseHelper
+    private readonly NpgsqlDataSource _db;
+    public DatabaseHelper(NpgsqlDataSource db)
     {
+        _db = db;
     }
-}
+    public async Task ResetTables()
+    {
+        Console.WriteLine("Resetting tables...\n");
+        const string query = "drop schema public cascade; create schema public;";
+        await _db.CreateCommand(query).ExecuteNonQueryAsync();
+    }
+
+}   
