@@ -9,5 +9,5 @@ await using var db = NpgsqlDataSource.Create(dbUri);
 var databaseCreator = new DatabaseCreator(db);
 var databasehelper = new DatabaseHelper(db);
 
-//await databasehelper.ResetTables();
+await databasehelper.ResetTables();
 await databaseCreator.CreateTables();

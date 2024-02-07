@@ -17,33 +17,33 @@ public class DatabaseCreator
     {
         Console.WriteLine("Creating tables");
 
-        const string storypointTable = @"create table storypoint(
+        const string storypointTable = @"create table storypoints(
             storypoint_id serial primary key,
             title text,
-            content text,
-            effect smallint
+            content text
         )";
         await _db.CreateCommand(storypointTable).ExecuteNonQueryAsync();
 
         const string playersTable = @"create table players(
-        player_id serial primary key,
-        username text,
-        hp smallint,
-        current_storypoint int references storypoint(storypoint_id),
-        unique(username)
+            player_id serial primary key,
+            username text,
+            hp smallint,
+            current_storypoint int references storypoints(storypoint_id),
+            unique(username)
         )";
         await _db.CreateCommand(playersTable).ExecuteNonQueryAsync();
 
         const string storypathTable = @"create table storypaths(
             storypath_id serial primary key,
-            from_point int references storypoint(storypoint_id),
-            to_point int references storypoint(storypoint_id),
-            choice int,
+            from_point int references storypoints(storypoint_id),
+            to_point int references storypoints(storypoint_id),
+            choice varchar(5),
+            effect smallint,
             check(from_point <> to_point),
             unique(from_point, to_point)
         )";
         await _db.CreateCommand(storypathTable).ExecuteNonQueryAsync();
-        
+
         const string radioTable = @"create table radio(
             radio_id serial primary key,
             from_player int references players(player_id),
