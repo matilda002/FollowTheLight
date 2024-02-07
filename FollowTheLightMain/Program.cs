@@ -6,14 +6,14 @@ using System.Text;
 using System.IO;
 using System.Threading;
 
-//const string dbUri = "Host=localhost;Port=5455;Username=postgres;Password=postgres;Database=followthelightdb;";
-//await using var db = NpgsqlDataSource.Create(dbUri);
+const string dbUri = "Host=localhost;Port=5455;Username=postgres;Password=postgres;Database=followthelightdb;";
+await using var db = NpgsqlDataSource.Create(dbUri);
 
-//var databaseCreator = new DatabaseCreator(db);
-//var databasehelper = new DatabaseHelper(db);
+var databaseCreator = new DatabaseCreator(db);
+var databasehelper = new DatabaseHelper(db);
 
-//await databasehelper.ResetTables();
-//await databaseCreator.CreateTables();
+await databasehelper.ResetTables();
+await databaseCreator.CreateTables();
 
 bool listen = true;
 int port = 3000;
@@ -119,19 +119,17 @@ void Router(HttpListenerContext context)
 
 void IntroGet(HttpListenerResponse response)
 {
-    string intro = @"You've woken up in darkness with no past memories. It's cold and when you scream for help it echoes...
-You hear a faint voice coming from a device on the ground. You pick it up and someone responds with 'Who is this? Where am I?'.
-After a while they realise no-one knows how they got there. All they know is they have to escape this place through working together...";
+    string introGet = "SELECT content FROM storypoints WHERE storypoint_id = 1";
 
-    byte[] buffer = Encoding.UTF8.GetBytes(intro);
+    byte[] buffer = Encoding.UTF8.GetBytes(introGet);
     response.ContentType = "text/plain";
     response.StatusCode = (int)HttpStatusCode.OK;
 
-    foreach (byte b in buffer)
-    {
-        response.OutputStream.WriteByte(b);
-        Thread.Sleep(50);
-    }
+    //foreach (byte b in buffer)
+    //{
+    //    response.OutputStream.WriteByte(b);
+    //    Thread.Sleep(50);
+    //}
     response.OutputStream.Close();
 }
 

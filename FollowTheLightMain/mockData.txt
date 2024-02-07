@@ -2,21 +2,21 @@ INSERT INTO players(
 	username,
 	hp
 )
-VALUES ('test', 5);
+VALUES ('test', 5),('test2', 5);
 
-INSERT INTO storypoint(
+INSERT INTO storypoints(
 	title,
-	content,
+	content
 )
-VALUES('intro','test', 0);
+VALUES('intro','content'),('story1','content1');
 
-	INSERT INTO storypath(
+INSERT INTO storypath(
 	from_point,
 	to_point,
 	choice,
 	effect
 )
-VALUES('intro','test', 0);
+VALUES(1, 2, 'A', 0),(2, 3, 'B', -1);
 
 //player choice
 UPDATE players
