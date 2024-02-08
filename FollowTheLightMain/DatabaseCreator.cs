@@ -1,6 +1,4 @@
-﻿using System.Data.Common;
-using System.Runtime.CompilerServices;
-using Npgsql;
+﻿using Npgsql;
 
 namespace FollowTheLightMain;
 
@@ -15,16 +13,16 @@ public class DatabaseCreator
 
     public async Task CreateTables()
     {
-        Console.WriteLine("Creating tables");
+        Console.WriteLine("Creating tables...");
 
-        const string storypointTable = @"create table storypoints(
+        const string storypointTable = @"create table if not exists storypoints(
             storypoint_id serial primary key,
             title text,
             content text
         )";
         await _db.CreateCommand(storypointTable).ExecuteNonQueryAsync();
 
-        const string playersTable = @"create table players(
+        const string playersTable = @"create table if not exists players(
             player_id serial primary key,
             username text,
             hp smallint,
@@ -33,7 +31,7 @@ public class DatabaseCreator
         )";
         await _db.CreateCommand(playersTable).ExecuteNonQueryAsync();
 
-        const string storypathTable = @"create table storypaths(
+        const string storypathTable = @"create table if not exists storypaths(
             storypath_id serial primary key,
             from_point int references storypoints(storypoint_id),
             to_point int references storypoints(storypoint_id),
@@ -44,7 +42,7 @@ public class DatabaseCreator
         )";
         await _db.CreateCommand(storypathTable).ExecuteNonQueryAsync();
 
-        const string radioTable = @"create table radio(
+        const string radioTable = @"create table if not exists radio(
             radio_id serial primary key,
             from_player int references players(player_id),
             to_player int,
