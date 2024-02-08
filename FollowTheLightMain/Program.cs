@@ -145,20 +145,24 @@ async Task GameOneGet(HttpListenerResponse response)
 }
 async Task GameTwoGet(HttpListenerResponse response)
 {
-    string story = "While you're walking through the tunnel you feel a piece paper under your feet, and pick it up." +
-                     "Do you:\n\n" +
-                     "A. Eat it\n" +
-                     "B. Throw it\n" +
-                     "C. Burn it\n" +
-                     "D. Read it";
-    byte[] buffer = Encoding.UTF8.GetBytes(story);
+    string resultStoryTwo = string.Empty;
+    Console.WriteLine("Printing out 'Story Two' from storypoints to player...");
+
+    const string qStoryTwo = "select content from storypoints where storypoint_id = 3";
+    await using var reader = await db.CreateCommand(qStoryTwo).ExecuteReaderAsync();
+    while (await reader.ReadAsync())
+    {
+        resultStoryTwo = reader.GetString(0);
+    }
+    
+    byte[] buffer = Encoding.UTF8.GetBytes(resultStoryTwo);
     response.ContentType = "text/plain";
     response.StatusCode = (int)HttpStatusCode.OK;
 
     foreach (byte b in buffer)
     {
         response.OutputStream.WriteByte(b);
-        Thread.Sleep(50);
+        Thread.Sleep(35);
     }
     response.OutputStream.Close();
 }
