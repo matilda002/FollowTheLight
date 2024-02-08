@@ -13,7 +13,7 @@ public class DatabaseCreator
 
     public async Task CreateTables()
     {
-        Console.WriteLine("Creating tables...");
+        Console.WriteLine("Creating tables...\n");
 
         const string storypointTable = @"create table if not exists storypoints(
             storypoint_id serial primary key,
