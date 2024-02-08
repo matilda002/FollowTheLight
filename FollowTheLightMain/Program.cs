@@ -1,22 +1,23 @@
-using Npgsql;
 using FollowTheLightMain;
+using Npgsql;
 using System.Net;
 using System.Text;
 
 const string dbUri = "Host=localhost;Port=5455;Username=postgres;Password=postgres;Database=followthelightdb;";
 await using var db = NpgsqlDataSource.Create(dbUri);
 
-var databaseCreator = new DatabaseCreator(db);
-var databaseHelper = new DatabaseHelper(db);
+var dbCreator = new DatabaseCreator(db);
+var dbHelper = new DatabaseHelper(db);
 
-await databaseHelper.ResetTables();
-await databaseCreator.CreateTables();
-await databaseHelper.PopulateStoryPointsTable();
+await dbHelper.ResetTables();
+await dbCreator.CreateTables();
+await dbHelper.PopulateStoryPointsTable();
+await dbHelper.PopulateStoryPathsTable();
 
 bool listen = true;
 int port = 3000;
-HttpListener playerOne = new();
-playerOne.Prefixes.Add($"http://localhost:{port}/");
+HttpListener listener = new();
+listener.Prefixes.Add($"http://localhost:{port}/");
 
 Console.CancelKeyPress += delegate (object? sender, ConsoleCancelEventArgs e)
 {
@@ -27,28 +28,28 @@ Console.CancelKeyPress += delegate (object? sender, ConsoleCancelEventArgs e)
 
 try
 {
-    playerOne.Start();
-    playerOne.BeginGetContext(HandleRequest, playerOne);
+    listener.Start();
+    listener.BeginGetContext(HandleRequest, listener);
     while (listen) { }
 }
 finally
 {
-    playerOne.Stop();
+    listener.Stop();
 }
 
-void HandleRequest(IAsyncResult result)
+async void HandleRequest(IAsyncResult result)
 {
-    if (result.AsyncState is HttpListener listener)
+    if (result.AsyncState is HttpListener requestListener)
     {
-        HttpListenerContext context = listener.EndGetContext(result);
+        HttpListenerContext context = requestListener.EndGetContext(result);
 
-        Router(context);
+        await Router(context);
 
-        listener.BeginGetContext(HandleRequest, listener);
+        requestListener.BeginGetContext(HandleRequest, requestListener);
     }
 }
 
-async void Router(HttpListenerContext context)
+async Task Router(HttpListenerContext context)
 {
     HttpListenerRequest request = context.Request;
     HttpListenerResponse response = context.Response;
@@ -62,7 +63,7 @@ async void Router(HttpListenerContext context)
                     await IntroGet(response);
                     break;
                 case ("/game/player/1"):
-                    await GameGet(response);
+                    await GameOneGet(response);
                     break;
                 case ("/game/player/2"):
                     GameTwoGet(response);
@@ -80,7 +81,7 @@ async void Router(HttpListenerContext context)
                     GameTenGet(response);
                     break;
                 default:
-                    NotFound(response);
+                    await NotFound(response);
                     break;
             }
             break;
@@ -89,28 +90,28 @@ async void Router(HttpListenerContext context)
             switch (request.Url?.AbsolutePath)
             {
                 case ("/game/player/1"):
-                    GamePostOne(request, response);
+                    await GameOnePost(request, response);
                     break;
                 case ("/game/player/2"):
-                    GamePostTwo(request, response);
+                    GameTwoPost(request, response);
                     break;
                 case ("/game/player/3"):
-                    GamePostThree(request, response);
+                    GameThreePost(request, response);
                     break;
                 case ("/game/player/4"):
-                    GamePostFour(request, response);
+                    GameFourPost(request, response);
                     break;
                 case ("/game/player/5"):
-                    GamePostFive(request, response);
+                    GameFivePost(request, response);
                     break;
                 case ("/game/player/10"):
-                    GamePostTen(request, response);
+                    GameTenPost(request, response);
                     break;
             }
             break;
 
         default:
-            NotFound(response);
+            await NotFound(response);
             break;
     }
 }
@@ -141,7 +142,7 @@ async Task IntroGet(HttpListenerResponse response)
     response.OutputStream.Close();
 }
 
-async Task GameGet(HttpListenerResponse response)
+async Task GameOneGet(HttpListenerResponse response)
 {
     string resultStoryOne = string.Empty;
     Console.WriteLine("Printing out 'Story One' from storypoints to player...");
@@ -260,7 +261,7 @@ void GameTenGet(HttpListenerResponse response)
     response.OutputStream.Close();
 }
 
-void GamePostOne(HttpListenerRequest req, HttpListenerResponse res)
+async Task GameOnePost(HttpListenerRequest req, HttpListenerResponse res)
 {
     StreamReader reader = new(req.InputStream, req.ContentEncoding);
     string body = reader.ReadToEnd();
@@ -273,21 +274,10 @@ void GamePostOne(HttpListenerRequest req, HttpListenerResponse res)
             answer +=
                 "You find teeth looks like it's human. You turn back around, take the left tunnel and find a torch.\n";
             break;
-
         case ("B"):
         case ("b"):
             answer +=
-                "Your walk into a wall. Go to the left tunnel and find a torch. -1hp\n";
-            break;
-        case ("C"):
-        case ("c"):
-            answer +=
                 "You find a torch, might be useful later\n";
-            break;
-        case ("D"):
-        case ("d"):
-            answer +=
-                "You step on a bear-trap. Go to the left tunnel and find a torch -1hp\n";
             break;
         default:
             answer +=
@@ -302,31 +292,13 @@ void GamePostOne(HttpListenerRequest req, HttpListenerResponse res)
     foreach (byte b in buffer)
     {
         res.OutputStream.WriteByte(b);
-        Thread.Sleep(50);
+        Thread.Sleep(35);
     }
-
-    //jumpscare
-    string[] popup = File.ReadAllLines("popup-1.txt");
-    List<byte> byteList = new List<byte>();
-    foreach (string line in popup)
-    {
-        byte[] lineBytes = Encoding.UTF8.GetBytes(line + "\n");
-        byteList.AddRange(lineBytes);
-    }
-
-    byte[] test = byteList.ToArray();
-    foreach (byte x in test)
-    {
-        res.OutputStream.WriteByte(x);
-    }
-
-    res.OutputStream.Close();
-    Console.WriteLine($"Player answered the following to question one: {body}");
-
+    
     res.StatusCode = (int)HttpStatusCode.Created;
     res.Close();
 }
-void GamePostTwo(HttpListenerRequest req, HttpListenerResponse res)
+void GameTwoPost(HttpListenerRequest req, HttpListenerResponse res)
 {
     StreamReader reader = new(req.InputStream, req.ContentEncoding);
     string body = reader.ReadToEnd();
@@ -392,7 +364,7 @@ void GamePostTwo(HttpListenerRequest req, HttpListenerResponse res)
     res.StatusCode = (int)HttpStatusCode.Created;
     res.Close();
 }
-void GamePostThree(HttpListenerRequest req, HttpListenerResponse res)
+void GameThreePost(HttpListenerRequest req, HttpListenerResponse res)
 {
     StreamReader reader = new(req.InputStream, req.ContentEncoding);
     string body = reader.ReadToEnd();
@@ -457,7 +429,7 @@ void GamePostThree(HttpListenerRequest req, HttpListenerResponse res)
     res.StatusCode = (int)HttpStatusCode.Created;
     res.Close();
 }
-void GamePostFour(HttpListenerRequest req, HttpListenerResponse res)
+void GameFourPost(HttpListenerRequest req, HttpListenerResponse res)
 {
     StreamReader reader = new(req.InputStream, req.ContentEncoding);
     string body = reader.ReadToEnd();
@@ -507,7 +479,7 @@ void GamePostFour(HttpListenerRequest req, HttpListenerResponse res)
     res.StatusCode = (int)HttpStatusCode.Created;
     res.Close();
 }
-void GamePostFive(HttpListenerRequest req, HttpListenerResponse res)
+void GameFivePost(HttpListenerRequest req, HttpListenerResponse res)
 {
     StreamReader reader = new(req.InputStream, req.ContentEncoding);
     string body = reader.ReadToEnd();
@@ -557,7 +529,7 @@ void GamePostFive(HttpListenerRequest req, HttpListenerResponse res)
     res.StatusCode = (int)HttpStatusCode.Created;
     res.Close();
 }
-void GamePostTen(HttpListenerRequest req, HttpListenerResponse res)
+void GameTenPost(HttpListenerRequest req, HttpListenerResponse res)
 {
     StreamReader reader = new(req.InputStream, req.ContentEncoding);
     string body = reader.ReadToEnd();
@@ -598,8 +570,9 @@ void GamePostTen(HttpListenerRequest req, HttpListenerResponse res)
     res.Close();
 }
 
-void NotFound(HttpListenerResponse res)
+Task NotFound(HttpListenerResponse res)
 {
     res.StatusCode = (int)HttpStatusCode.NotFound;
     res.Close();
+    return Task.CompletedTask;
 }
