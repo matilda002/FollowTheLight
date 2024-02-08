@@ -7,11 +7,11 @@ const string dbUri = "Host=localhost;Port=5455;Username=postgres;Password=postgr
 await using var db = NpgsqlDataSource.Create(dbUri);
 
 var databaseCreator = new DatabaseCreator(db);
-var databasehelper = new DatabaseHelper(db);
+var databaseHelper = new DatabaseHelper(db);
 
-//await databasehelper.ResetTables();
-//await databaseCreator.CreateTables();
-await databasehelper.PopulateStoryPointsTable();
+await databaseHelper.ResetTables();
+await databaseCreator.CreateTables();
+await databaseHelper.PopulateStoryPointsTable();
 
 bool listen = true;
 int port = 3000;
@@ -48,7 +48,7 @@ void HandleRequest(IAsyncResult result)
     }
 }
 
-void Router(HttpListenerContext context)
+async void Router(HttpListenerContext context)
 {
     HttpListenerRequest request = context.Request;
     HttpListenerResponse response = context.Response;
@@ -59,10 +59,10 @@ void Router(HttpListenerContext context)
             switch (request.Url?.AbsolutePath)
             {
                 case ("/intro"):
-                    IntroGet(response);
+                    await IntroGet(response);
                     break;
                 case ("/game/player/1"):
-                    GameGet(response);
+                    await GameGet(response);
                     break;
                 case ("/game/player/2"):
                     GameTwoGet(response);
@@ -115,41 +115,56 @@ void Router(HttpListenerContext context)
     }
 }
 
-void IntroGet(HttpListenerResponse response)
-{
-    string introGet = "SELECT content FROM storypoints WHERE storypoint_id = 1";
 
-    byte[] buffer = Encoding.UTF8.GetBytes(introGet);
+
+async Task IntroGet(HttpListenerResponse response)
+{
+    string resultIntro = string.Empty;
+    Console.WriteLine("Printing out 'Intro' from storypoints to player...");
+
+    const string qIntroGet= "select content from storypoints where storypoint_id = 1";
+    await using var reader = await db.CreateCommand(qIntroGet).ExecuteReaderAsync();
+    while (await reader.ReadAsync())
+    {
+        resultIntro = reader.GetString(0);
+    }
+
+    byte[] buffer = Encoding.UTF8.GetBytes(resultIntro);
     response.ContentType = "text/plain";
     response.StatusCode = (int)HttpStatusCode.OK;
-
-    //foreach (byte b in buffer)
-    //{
-    //    response.OutputStream.WriteByte(b);
-    //    Thread.Sleep(50);
-    //}
+    
+    foreach (byte b in buffer)
+    {
+        response.OutputStream.WriteByte(b);
+        Thread.Sleep(35);
+    }
     response.OutputStream.Close();
 }
 
-void GameGet(HttpListenerResponse response)
+async Task GameGet(HttpListenerResponse response)
 {
-    string story = "You look around in the dark and find some matches.\nYou light up a match you find yourself in a cave. " +
-                   "Before the light disappears you think you see a tunnel to your right and to your left.\nDo you go to the:\n\n" +
-                   "A. Right tunnel\n" +
-                   "B. Go forward into the darkness\n" +
-                   "C. Left tunnel\n" +
-                   "D. Tunnel behind you";
-    byte[] buffer = Encoding.UTF8.GetBytes(story);
+    string resultStoryOne = string.Empty;
+    Console.WriteLine("Printing out 'Story One' from storypoints to player...");
+
+    const string qStoryOne = "select content from storypoints where storypoint_id = 2";
+    await using var reader = await db.CreateCommand(qStoryOne).ExecuteReaderAsync();
+    while (await reader.ReadAsync())
+    {
+        resultStoryOne = reader.GetString(0);
+    }
+    
+    byte[] buffer = Encoding.UTF8.GetBytes(resultStoryOne);
     response.ContentType = "text/plain";
     response.StatusCode = (int)HttpStatusCode.OK;
 
     foreach (byte b in buffer)
     {
         response.OutputStream.WriteByte(b);
-        Thread.Sleep(50);
+        Thread.Sleep(35);
     }
     response.OutputStream.Close();
 }
+
 void GameTwoGet(HttpListenerResponse response)
 {
     string story = "While you're walking through the tunnel you feel a piece paper under your feet, and pick it up." +
