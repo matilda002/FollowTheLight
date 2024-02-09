@@ -5,22 +5,25 @@ namespace FollowTheLightMain;
 public class DatabaseHelper
 {
     private readonly NpgsqlDataSource _db;
+
     public DatabaseHelper(NpgsqlDataSource db)
     {
         _db = db;
     }
+
     public async Task ResetTables()
     {
         Console.WriteLine("Resetting tables...");
         const string query = "drop schema public cascade; create schema public;";
         await _db.CreateCommand(query).ExecuteNonQueryAsync();
     }
+
     public async Task PopulateStoryPointsTable()
     {
         Console.WriteLine("Populating the storypoints table...");
-        
+
         await using var cmd = _db.CreateCommand("insert into storypoints(title, content)" +
-                                                              "values ($1, $2), ($3, $4), ($5,$6), ($7, $8), ($9, $10), ($11, $12), ($13, $14), ($15, $16), ($17, $18),($19, $20), ($21, $22);");
+                                                "values ($1, $2), ($3, $4), ($5,$6), ($7, $8), ($9, $10), ($11, $12), ($13, $14), ($15, $16), ($17, $18),($19, $20), ($21, $22);");
 
         cmd.Parameters.AddWithValue("Intro");
         cmd.Parameters.AddWithValue("""
@@ -77,7 +80,7 @@ public class DatabaseHelper
                                     A. Eat the candle
                                     B. Light yourself on fire, the skulls were the last straw
                                     C. Use one of the matches to light up the candle
-                                    D. Throw a skull at the alter 
+                                    D. Throw a skull at the alter
                                     """);
         cmd.Parameters.AddWithValue("Story Seven");
         cmd.Parameters.AddWithValue("""
@@ -85,16 +88,16 @@ public class DatabaseHelper
 
                                     A. Take the left tunnel
                                     B. Access both tunnels before making a decision
-                                    C. Take the right tunnel for a different path 
-                                    D. Turn back and explore the cave again 
+                                    C. Take the right tunnel for a different path
+                                    D. Turn back and explore the cave again
                                     """);
         cmd.Parameters.AddWithValue("Story Eight");
         cmd.Parameters.AddWithValue("""
                                     You see a tall figure in the dark approaching you...
 
-                                    A. Hide and close your eyes 
-                                    B. Run away 
-                                    C. Stand still 
+                                    A. Hide and close your eyes
+                                    B. Run away
+                                    C. Stand still
                                     D. Light up the darkness with one of your matches
                                     """);
         cmd.Parameters.AddWithValue("Story Nine");
@@ -110,17 +113,10 @@ public class DatabaseHelper
         cmd.Parameters.AddWithValue("""
                                     You've found the exit, but desperate screams plead for rescue within the cave. What's your choice now? Leave or venture back into the darkness to investigate?
 
-                                    A. Leave the cave 
+                                    A. Leave the cave
                                     B. Go back into the darkness
-                                    """); 
-        
-        await cmd.ExecuteNonQueryAsync();
-    }
+                                    """);
 
-    public async Task PopulateStoryPathsTable()
-    {
-        // await using var cmd = _db.CreateCommand(@"insert into storypaths() values ()");
-        // cmd.Parameters.AddWithValue();
-        // await cmd.ExecuteNonQueryAsync();
+        await cmd.ExecuteNonQueryAsync();
     }
 }

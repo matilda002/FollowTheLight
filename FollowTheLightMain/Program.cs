@@ -12,7 +12,6 @@ var dbHelper = new DatabaseHelper(db);
 await dbHelper.ResetTables();
 await dbCreator.CreateTables();
 await dbHelper.PopulateStoryPointsTable();
-await dbHelper.PopulateStoryPathsTable();
 
 bool listen = true;
 int port = 3000;
@@ -78,10 +77,10 @@ async Task Router(HttpListenerContext context)
             switch (request.Url?.AbsolutePath)
             {
                 case ("/game/player/1"):
-                    await GameOnePost(request, response);
+                    GameOnePost(request, response);
                     break;
                 case ("/game/player/2"):
-                    await GameTwoPost(request, response);
+                    GameTwoPost(request, response);
                     break;
                 default:
                     await NotFound(response);
@@ -167,7 +166,7 @@ async Task GameTwoGet(HttpListenerResponse response)
     response.OutputStream.Close();
 }
 
-async Task GameOnePost(HttpListenerRequest req, HttpListenerResponse res)
+void GameOnePost(HttpListenerRequest req, HttpListenerResponse res)
 {
     StreamReader reader = new(req.InputStream, req.ContentEncoding);
     string body = reader.ReadToEnd();
@@ -204,7 +203,8 @@ async Task GameOnePost(HttpListenerRequest req, HttpListenerResponse res)
     res.StatusCode = (int)HttpStatusCode.Created;
     res.Close();
 }
-async Task GameTwoPost(HttpListenerRequest req, HttpListenerResponse res)
+
+void GameTwoPost(HttpListenerRequest req, HttpListenerResponse res)
 {
     StreamReader reader = new(req.InputStream, req.ContentEncoding);
     string body = reader.ReadToEnd();
