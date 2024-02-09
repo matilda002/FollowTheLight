@@ -12,6 +12,7 @@ var dbHelper = new DatabaseHelper(db);
 await dbHelper.ResetTables();
 await dbCreator.CreateTables();
 await dbHelper.PopulateStoryPointsTable();
+await dbHelper.PopulateImagesTable();
 
 bool listen = true;
 int port = 3000;
@@ -66,6 +67,9 @@ async Task Router(HttpListenerContext context)
                     break;
                 case ("/game/player/2"):
                     await GameTwoGet(response);
+                    break;
+                case ("/image"):
+                    await ImageGet(response);
                     break;
                 default:
                     await NotFound(response);
@@ -162,6 +166,29 @@ async Task GameTwoGet(HttpListenerResponse response)
     {
         response.OutputStream.WriteByte(b);
         Thread.Sleep(35);
+    }
+    response.OutputStream.Close();
+}
+
+async Task ImageGet(HttpListenerResponse response)
+{
+    string resultImage = string.Empty;
+    Console.WriteLine("Printing out 'Image' from images to player...");
+
+    const string qImageGet= "select image from images where image_id = 7";
+    await using var reader = await db.CreateCommand(qImageGet).ExecuteReaderAsync();
+    while (await reader.ReadAsync())
+    {
+        resultImage = reader.GetString(0);
+    }
+
+    byte[] buffer = Encoding.UTF8.GetBytes(resultImage);
+    response.ContentType = "text/plain";
+    response.StatusCode = (int)HttpStatusCode.OK;
+    
+    foreach (byte b in buffer)
+    {
+        response.OutputStream.WriteByte(b);
     }
     response.OutputStream.Close();
 }
