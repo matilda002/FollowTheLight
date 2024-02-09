@@ -15,6 +15,12 @@ public class DatabaseCreator
     {
         Console.WriteLine("Creating tables...\n");
 
+        const string jumpscaresTable = @"create table if not exists jumpscares(
+            jumpscare_id serial primary key,
+            image text
+        )";
+        await _db.CreateCommand(jumpscaresTable).ExecuteNonQueryAsync();
+        
         const string storypointTable = @"create table if not exists storypoints(
             storypoint_id serial primary key,
             title text,
@@ -37,6 +43,7 @@ public class DatabaseCreator
             to_point int references storypoints(storypoint_id),
             choice varchar(5),
             effect smallint,
+            jumpscare_id smallint references jumpscares(jumpscare_id),
             check(from_point <> to_point),
             unique(from_point, to_point)
         )";
