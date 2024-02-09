@@ -5,18 +5,18 @@ namespace FollowTheLightMain;
 public class DatabaseHelper
 {
     private readonly NpgsqlDataSource _db;
-
-    public DatabaseHelper(NpgsqlDataSource db)
+    private readonly PlayerState _ps;
+    public DatabaseHelper(NpgsqlDataSource db, PlayerState playerState)
     {
         _db = db;
+        _ps = playerState;
     }
 
-    public async Task ResetTables()
-    {
-        Console.WriteLine("Resetting tables...");
-        const string query = "drop schema public cascade; create schema public;";
-        await _db.CreateCommand(query).ExecuteNonQueryAsync();
-    }
+    //public async Task ResetTables()
+    // Console.WriteLine("Resetting tables...");
+    // const string query = "drop schema public cascade; create schema public;";
+    //await _db.CreateCommand(query).ExecuteNonQueryAsync();
+    //}
 
     public async Task PopulateStoryPointsTable()
     {

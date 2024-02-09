@@ -1,14 +1,17 @@
-﻿using Npgsql;
+﻿using FollowTheLightMain;
+using Npgsql;
 using System.Net;
 using System.Text;
 
 public class Server
 {
     private readonly NpgsqlDataSource _db;
+    private readonly PlayerState _ps;
 
-    public Server(NpgsqlDataSource db)
+    public Server(NpgsqlDataSource db, PlayerState playerState)
     {
         _db = db;
+        _ps = playerState;
     }
 
     public void HandleRequest(IAsyncResult result)
@@ -42,6 +45,9 @@ public class Server
                     case ("/game/player/2"):
                         GameTwoGet(response);
                         break;
+                    case ("/online"):
+                        OnlineStatus(response);
+                        break;
                     default:
                         NotFound(response);
                         break;
@@ -67,6 +73,17 @@ public class Server
                 NotFound(response);
                 break;
         }
+    }
+
+    void OnlineStatus(HttpListenerResponse response)
+    {
+        string onlineStatus = "Players are currently online.";
+        byte[] buffer = Encoding.UTF8.GetBytes(onlineStatus);
+        response.ContentType = "text/plain";
+        response.StatusCode = (int)HttpStatusCode.OK;
+
+        response.OutputStream.Write(buffer, 0, buffer.Length);
+        response.OutputStream.Close();
     }
 
     void IntroGet(HttpListenerResponse response)

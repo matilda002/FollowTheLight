@@ -5,10 +5,11 @@ namespace FollowTheLightMain;
 public class DatabaseCreator
 {
     private readonly NpgsqlDataSource _db;
-    public DatabaseCreator(NpgsqlDataSource db)
+    private readonly PlayerState _ps;
+    public DatabaseCreator(NpgsqlDataSource db, PlayerState playerState)
     {
         _db = db;
-
+        _ps = playerState;
     }
 
     public async Task CreateTables()

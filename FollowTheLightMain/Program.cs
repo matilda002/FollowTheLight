@@ -8,8 +8,9 @@ await using var db = NpgsqlDataSource.Create(dbUri);
 
 var dbCreator = new DatabaseCreator(db);
 var dbHelper = new DatabaseHelper(db);
+var playerState = new PlayerState(db);
 
-await dbHelper.ResetTables();
+//await dbHelper.ResetTables();
 await dbCreator.CreateTables();
 await dbHelper.PopulateStoryPointsTable();
 await dbHelper.PopulateImagesTable();
@@ -27,7 +28,7 @@ Console.CancelKeyPress += delegate (object? sender, ConsoleCancelEventArgs e)
     listen = false;
 };
 
-Server server = new(db);
+Server server = new(db, playerState);
 try
 {
     listener.Start();
