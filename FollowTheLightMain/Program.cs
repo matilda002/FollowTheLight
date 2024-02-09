@@ -26,11 +26,11 @@ Console.CancelKeyPress += delegate (object? sender, ConsoleCancelEventArgs e)
     listen = false;
 };
 
-Server handleReq = new();
+Server server = new(db);
 try
 {
     listener.Start();
-    listener.BeginGetContext(handleReq.HandleRequest, listener);
+    listener.BeginGetContext(server.HandleRequest, listener);
     while (listen) { }
 }
 finally

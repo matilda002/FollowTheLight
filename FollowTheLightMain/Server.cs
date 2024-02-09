@@ -1,22 +1,29 @@
-﻿using System.Net;
+﻿using Npgsql;
+using System.Net;
 using System.Text;
 
 public class Server
 {
+    private readonly NpgsqlDataSource _db;
 
-    public async void HandleRequest(IAsyncResult result)
+    public Server(NpgsqlDataSource db)
+    {
+        _db = db;
+    }
+
+    async Task HandleRequest(IAsyncResult result, NpgsqlDataSource db)
     {
         if (result.AsyncState is HttpListener requestListener)
         {
             HttpListenerContext context = requestListener.EndGetContext(result);
 
-            await Router(context);
+            await Router(context, db);
 
-            requestListener.BeginGetContext(HandleRequest, requestListener);
+            requestListener.BeginGetContext(HandleRequest, db, requestListener);
         }
     }
 
-    async Task Router(HttpListenerContext context)
+    async Task Router(HttpListenerContext context, NpgsqlDataSource db)
     {
         HttpListenerRequest request = context.Request;
         HttpListenerResponse response = context.Response;
@@ -27,13 +34,13 @@ public class Server
                 switch (request.Url?.AbsolutePath)
                 {
                     case ("/intro"):
-                        await IntroGet(response);
+                        await IntroGet(response, db);
                         break;
                     case ("/game/player/1"):
-                        await GameOneGet(response);
+                        await GameOneGet(response, db);
                         break;
                     case ("/game/player/2"):
-                        await GameTwoGet(response);
+                        await GameTwoGet(response, db);
                         break;
                     default:
                         await NotFound(response);
@@ -63,7 +70,7 @@ public class Server
     }
 
 
-    async Task IntroGet(HttpListenerResponse response)
+    async Task IntroGet(HttpListenerResponse response, NpgsqlDataSource db)
     {
         string resultIntro = string.Empty;
         Console.WriteLine("Printing out 'Intro' from storypoints to player...");
@@ -87,7 +94,7 @@ public class Server
         response.OutputStream.Close();
     }
 
-    async Task GameOneGet(HttpListenerResponse response)
+    async Task GameOneGet(HttpListenerResponse response, NpgsqlDataSource db)
     {
         string resultStoryOne = string.Empty;
         Console.WriteLine("Printing out 'Story One' from storypoints to player...");
@@ -110,7 +117,7 @@ public class Server
         }
         response.OutputStream.Close();
     }
-    async Task GameTwoGet(HttpListenerResponse response)
+    async Task GameTwoGet(HttpListenerResponse response, NpgsqlDataSource db)
     {
         string resultStoryTwo = string.Empty;
         Console.WriteLine("Printing out 'Story Two' from storypoints to player...");
