@@ -11,19 +11,19 @@ public class Server
         _db = db;
     }
 
-    async Task HandleRequest(IAsyncResult result, NpgsqlDataSource db)
+    public void HandleRequest(IAsyncResult result)
     {
         if (result.AsyncState is HttpListener requestListener)
         {
             HttpListenerContext context = requestListener.EndGetContext(result);
 
-            await Router(context, db);
+            Router(context);
 
-            requestListener.BeginGetContext(HandleRequest, db, requestListener);
+            requestListener.BeginGetContext(new AsyncCallback(HandleRequest), requestListener);
         }
     }
 
-    async Task Router(HttpListenerContext context, NpgsqlDataSource db)
+    void Router(HttpListenerContext context)
     {
         HttpListenerRequest request = context.Request;
         HttpListenerResponse response = context.Response;
@@ -34,16 +34,16 @@ public class Server
                 switch (request.Url?.AbsolutePath)
                 {
                     case ("/intro"):
-                        await IntroGet(response, db);
+                        IntroGet(response);
                         break;
                     case ("/game/player/1"):
-                        await GameOneGet(response, db);
+                        GameOneGet(response);
                         break;
                     case ("/game/player/2"):
-                        await GameTwoGet(response, db);
+                        GameTwoGet(response);
                         break;
                     default:
-                        await NotFound(response);
+                        NotFound(response);
                         break;
                 }
                 break;
@@ -58,26 +58,25 @@ public class Server
                         GameTwoPost(request, response);
                         break;
                     default:
-                        await NotFound(response);
+                        NotFound(response);
                         break;
                 }
                 break;
 
             default:
-                await NotFound(response);
+                NotFound(response);
                 break;
         }
     }
 
-
-    async Task IntroGet(HttpListenerResponse response, NpgsqlDataSource db)
+    void IntroGet(HttpListenerResponse response)
     {
         string resultIntro = string.Empty;
         Console.WriteLine("Printing out 'Intro' from storypoints to player...");
 
         const string qIntroGet = "select content from storypoints where storypoint_id = 1";
-        await using var reader = await db.CreateCommand(qIntroGet).ExecuteReaderAsync();
-        while (await reader.ReadAsync())
+        var reader = _db.CreateCommand(qIntroGet).ExecuteReader();
+        while (reader.Read())
         {
             resultIntro = reader.GetString(0);
         }
@@ -94,14 +93,14 @@ public class Server
         response.OutputStream.Close();
     }
 
-    async Task GameOneGet(HttpListenerResponse response, NpgsqlDataSource db)
+    void GameOneGet(HttpListenerResponse response)
     {
         string resultStoryOne = string.Empty;
         Console.WriteLine("Printing out 'Story One' from storypoints to player...");
 
         const string qStoryOne = "select content from storypoints where storypoint_id = 2";
-        await using var reader = await db.CreateCommand(qStoryOne).ExecuteReaderAsync();
-        while (await reader.ReadAsync())
+        var reader = _db.CreateCommand(qStoryOne).ExecuteReader();
+        while (reader.Read())
         {
             resultStoryOne = reader.GetString(0);
         }
@@ -117,14 +116,14 @@ public class Server
         }
         response.OutputStream.Close();
     }
-    async Task GameTwoGet(HttpListenerResponse response, NpgsqlDataSource db)
+    void GameTwoGet(HttpListenerResponse response)
     {
         string resultStoryTwo = string.Empty;
         Console.WriteLine("Printing out 'Story Two' from storypoints to player...");
 
         const string qStoryTwo = "select content from storypoints where storypoint_id = 3";
-        await using var reader = await db.CreateCommand(qStoryTwo).ExecuteReaderAsync();
-        while (await reader.ReadAsync())
+        var reader = _db.CreateCommand(qStoryTwo).ExecuteReader();
+        while (reader.Read())
         {
             resultStoryTwo = reader.GetString(0);
         }
@@ -217,11 +216,9 @@ public class Server
         res.Close();
     }
 
-    Task NotFound(HttpListenerResponse res)
+    void NotFound(HttpListenerResponse res)
     {
         res.StatusCode = (int)HttpStatusCode.NotFound;
         res.Close();
-        return Task.CompletedTask;
     }
-
 }
