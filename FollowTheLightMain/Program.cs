@@ -12,6 +12,7 @@ var dbHelper = new DatabaseHelper(db);
 await dbHelper.ResetTables();
 await dbCreator.CreateTables();
 await dbHelper.PopulateStoryPointsTable();
+await dbHelper.PopulateImagesTable();
 
 bool listen = true;
 int port = 3000;
