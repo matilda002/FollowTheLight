@@ -119,4 +119,31 @@ public class DatabaseHelper
 
         await cmd.ExecuteNonQueryAsync();
     }
+
+    public async Task PopulateImagesTable()
+    {
+        Console.WriteLine("Populating the images table...");
+
+        string js1 = File.ReadAllText($"FollowTheLightMain/images/jumpscares/js-1.txt");
+        string js2 = File.ReadAllText($"FollowTheLightMain/images/jumpscares/js-2.txt");
+        string js3 = File.ReadAllText($"FollowTheLightMain/images/jumpscares/js-3.txt");
+        string js4 = File.ReadAllText($"FollowTheLightMain/images/Jumpscares/js-4.txt");
+        string js5 = File.ReadAllText($"FollowTheLightMain/images/jumpscares/js-5.txt");
+        string js6 = File.ReadAllText($"FollowTheLightMain/images/jumpscares/js-6.txt");
+        string imgFrog = File.ReadAllText($"FollowTheLightMain/images/frog.txt");
+        
+
+        await using var cmd = _db.CreateCommand("insert into images(image)" +
+                                                "values ($1), ($2), ($3), ($4), ($5), ($6), ($7)");
+        
+        cmd.Parameters.AddWithValue($"{js1}");
+        cmd.Parameters.AddWithValue($"{js2}");
+        cmd.Parameters.AddWithValue($"{js3}");
+        cmd.Parameters.AddWithValue($"{js4}");
+        cmd.Parameters.AddWithValue($"{js5}");
+        cmd.Parameters.AddWithValue($"{js6}");
+        cmd.Parameters.AddWithValue($"{imgFrog}"); 
+
+        await cmd.ExecuteNonQueryAsync();
+    }
 }
