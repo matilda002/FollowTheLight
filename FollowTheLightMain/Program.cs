@@ -12,7 +12,7 @@ var dbHelper = new DatabaseHelper(db);
 await dbHelper.ResetTables();
 await dbCreator.CreateTables();
 await dbHelper.PopulateStoryPointsTable();
-await dbHelper.PopulateJumpscaresTable();
+await dbHelper.PopulateImagesTable();
 
 bool listen = true;
 int port = 3000;
@@ -68,8 +68,8 @@ async Task Router(HttpListenerContext context)
                 case ("/game/player/2"):
                     await GameTwoGet(response);
                     break;
-                case ("/jumpscare"):
-                    await JumpscareGet(response);
+                case ("/image"):
+                    await ImageGet(response);
                     break;
                 default:
                     await NotFound(response);
@@ -170,19 +170,19 @@ async Task GameTwoGet(HttpListenerResponse response)
     response.OutputStream.Close();
 }
 
-async Task JumpscareGet(HttpListenerResponse response)
+async Task ImageGet(HttpListenerResponse response)
 {
-    string resultJumpscare = string.Empty;
-    Console.WriteLine("Printing out 'Image' from jumpscares to player...");
+    string resultImage = string.Empty;
+    Console.WriteLine("Printing out 'Image' from images to player...");
 
-    const string qJumpscareGet= "select image from jumpscares where jumpscare_id = 1";
-    await using var reader = await db.CreateCommand(qJumpscareGet).ExecuteReaderAsync();
+    const string qImageGet= "select image from images where image_id = 7";
+    await using var reader = await db.CreateCommand(qImageGet).ExecuteReaderAsync();
     while (await reader.ReadAsync())
     {
-        resultJumpscare = reader.GetString(0);
+        resultImage = reader.GetString(0);
     }
 
-    byte[] buffer = Encoding.UTF8.GetBytes(resultJumpscare);
+    byte[] buffer = Encoding.UTF8.GetBytes(resultImage);
     response.ContentType = "text/plain";
     response.StatusCode = (int)HttpStatusCode.OK;
     
