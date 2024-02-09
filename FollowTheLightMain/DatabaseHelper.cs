@@ -119,4 +119,18 @@ public class DatabaseHelper
 
         await cmd.ExecuteNonQueryAsync();
     }
+
+    public async Task PopulateJumpscaresTable()
+    {
+        Console.WriteLine("Populating the jumpscares table...");
+
+        string js1 = File.ReadAllText($"FollowTheLightMain/Jumpscares/js-1.txt");
+
+        await using var cmd = _db.CreateCommand("insert into jumpscares(image)" +
+                                                "values ($1)");
+        
+        cmd.Parameters.AddWithValue($"{js1}");
+
+        await cmd.ExecuteNonQueryAsync();
+    }
 }
