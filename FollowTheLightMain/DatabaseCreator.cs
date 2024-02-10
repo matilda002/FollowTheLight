@@ -11,7 +11,7 @@ public class DatabaseCreator
 
     }
 
-    public async Task CreateTables()
+    public void CreateTables()
     {
         Console.WriteLine("Creating tables...\n");
 
@@ -20,7 +20,7 @@ public class DatabaseCreator
             title text,
             content text
         )";
-        await _db.CreateCommand(storypointTable).ExecuteNonQueryAsync();
+        _db.CreateCommand(storypointTable).ExecuteNonQueryAsync();
 
         const string playersTable = @"create table if not exists players(
             player_id serial primary key,
@@ -29,7 +29,7 @@ public class DatabaseCreator
             current_storypoint int references storypoints(storypoint_id),
             unique(username)
         )";
-        await _db.CreateCommand(playersTable).ExecuteNonQueryAsync();
+        _db.CreateCommand(playersTable).ExecuteNonQueryAsync();
 
         const string storypathTable = @"create table if not exists storypaths(
             storypath_id serial primary key,
@@ -40,7 +40,7 @@ public class DatabaseCreator
             check(from_point <> to_point),
             unique(from_point, to_point)
         )";
-        await _db.CreateCommand(storypathTable).ExecuteNonQueryAsync();
+        _db.CreateCommand(storypathTable).ExecuteNonQueryAsync();
 
         const string radioTable = @"create table if not exists radio(
             radio_id serial primary key,
@@ -48,6 +48,6 @@ public class DatabaseCreator
             to_player int,
             message text
         )";
-        await _db.CreateCommand(radioTable).ExecuteNonQueryAsync();
+        _db.CreateCommand(radioTable).ExecuteNonQueryAsync();
     }
 }

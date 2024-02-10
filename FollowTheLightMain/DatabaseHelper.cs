@@ -11,18 +11,18 @@ public class DatabaseHelper
         _db = db;
     }
 
-    public async Task ResetTables()
+    public void ResetTables()
     {
         Console.WriteLine("Resetting tables...");
         const string query = "drop schema public cascade; create schema public;";
-        await _db.CreateCommand(query).ExecuteNonQueryAsync();
+        _db.CreateCommand(query).ExecuteNonQueryAsync();
     }
 
-    public async Task PopulateStoryPointsTable()
+    public void PopulateStoryPointsTable()
     {
         Console.WriteLine("Populating the storypoints table...");
 
-        await using var cmd = _db.CreateCommand("insert into storypoints(title, content)" +
+        var cmd = _db.CreateCommand("insert into storypoints(title, content)" +
                                                 "values ($1, $2), ($3, $4), ($5,$6), ($7, $8), ($9, $10), ($11, $12), ($13, $14), ($15, $16), ($17, $18),($19, $20), ($21, $22);");
 
         cmd.Parameters.AddWithValue("Intro");
@@ -117,6 +117,6 @@ public class DatabaseHelper
                                     B. Go back into the darkness
                                     """);
 
-        await cmd.ExecuteNonQueryAsync();
+        cmd.ExecuteNonQueryAsync();
     }
 }
