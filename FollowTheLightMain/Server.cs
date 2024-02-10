@@ -60,8 +60,12 @@ public class Server
                         GameTwoPost(request, response);
                         break;
                     case ("/player/register"):
-                        Player player = new Player();
-                        player.RegisterPost(request, response);
+                        Player registerPlayer = new Player();
+                        registerPlayer.RegisterPost(request, response);
+                        break;
+                    case ("/player/login"):
+                        Player playerLogin = new Player();
+                        playerLogin.LoginPost(request, response);
                         break;
                     default:
                         NotFound(response);
