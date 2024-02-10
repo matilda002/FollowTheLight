@@ -15,6 +15,12 @@ public class DatabaseCreator
     {
         Console.WriteLine("Creating tables...\n");
 
+        const string imagesTable = @"create table if not exists images(
+            image_id serial primary key,
+            image text
+        )";
+        _db.CreateCommand(imagesTable).ExecuteNonQueryAsync();
+        
         const string storypointTable = @"create table if not exists storypoints(
             storypoint_id serial primary key,
             title text,
@@ -37,6 +43,7 @@ public class DatabaseCreator
             to_point int references storypoints(storypoint_id),
             choice varchar(5),
             effect smallint,
+            image_id smallint references images(image_id),
             check(from_point <> to_point),
             unique(from_point, to_point)
         )";
