@@ -1,6 +1,7 @@
 ﻿using Npgsql;
 using System.Net;
 using System.Text;
+namespace FollowTheLightMain;
 
 public class Server
 {
@@ -42,6 +43,7 @@ public class Server
                     case ("/game/player/2"):
                         GameTwoGet(response);
                         break;
+                    
                     default:
                         NotFound(response);
                         break;
@@ -56,6 +58,10 @@ public class Server
                         break;
                     case ("/game/player/2"):
                         GameTwoPost(request, response);
+                        break;
+                    case ("/player/register"):
+                        Player player = new Player();
+                        player.RegisterPost(request, response);
                         break;
                     default:
                         NotFound(response);
