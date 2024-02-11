@@ -1,9 +1,12 @@
--- Start the server
+
+(BE IN repos/FollowTheLight)
+-- Start the server --
 dotnet run --project FollowTheLightMain
 
--- GET
+(CASE SENSITIVE)
+-- GET --
 curl -X GET localhost:3000/game/player/1
 curl -X GET localhost:3000/intro
 
--- POST
+-- POST --
 curl localhost:3000/game/player/1 -d <choice>
