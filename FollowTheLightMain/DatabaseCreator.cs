@@ -31,7 +31,7 @@ public class DatabaseCreator
         const string playersTable = @"create table if not exists players(
             player_id serial primary key,
             username text,
-            hp smallint,
+            hp smallint default (5),
             current_storypoint int references storypoints(storypoint_id),
             unique(username)
         )";
