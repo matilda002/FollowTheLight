@@ -20,7 +20,7 @@ public class DatabaseHelper
 
     public void PopulateStoryPointsTable()
     {
-        Console.WriteLine("Populating the storypoints table...");
+        Console.WriteLine("Populating the storypoints table for player one...");
 
         var cmd = _db.CreateCommand("insert into storypoints(title, content)" +
                                                 "values ($1, $2), ($3, $4), ($5,$6), ($7, $8), ($9, $10), ($11, $12), ($13, $14), ($15, $16), ($17, $18),($19, $20), ($21, $22);");
@@ -114,22 +114,38 @@ public class DatabaseHelper
         cmd.ExecuteNonQueryAsync();
     }
 
+    public void PopulateStoryPointsTableTwo()
+    {
+        Console.WriteLine("Populating the storypoints table for player two...");
+
+        var cmd = _db.CreateCommand("insert into storypoints(title, content)" +
+                                    "values ($1, $2)");
+        
+        cmd.Parameters.AddWithValue("Challange One - P2");
+        cmd.Parameters.AddWithValue("""
+                                    You step inside an open space, with no direction but to go forward. In the distance you see a light and when you arrive you see a candle on a table. 
+                                    On closer inspection there are three different symbols repeated in a line...The symbols are only on the table, no use for you but maybe the other person?
+                                    """);
+        cmd.ExecuteNonQueryAsync();
+    }
+
     public void PopulateImagesTable()
     {
         Console.WriteLine("Populating the images table...");
 
-        string js1 = File.ReadAllText($"images/jumpscares/js-1.txt");
-        string js2 = File.ReadAllText($"images/jumpscares/js-2.txt");
-        string js3 = File.ReadAllText($"images/jumpscares/js-3.txt");
-        string js4 = File.ReadAllText($"images/Jumpscares/js-4.txt");
-        string js5 = File.ReadAllText($"images/jumpscares/js-5.txt");
-        string js6 = File.ReadAllText($"images/jumpscares/js-6.txt");
-        string imgFrog = File.ReadAllText($"images/frog.txt");
-        string imgPath = File.ReadAllText($"images/pathpuzzle.txt");
+        string js1 = File.ReadAllText($"FollowTheLightMain/images/jumpscares/js-1.txt");
+        string js2 = File.ReadAllText($"FollowTheLightMain/images/jumpscares/js-2.txt");
+        string js3 = File.ReadAllText($"FollowTheLightMain/images/jumpscares/js-3.txt");
+        string js4 = File.ReadAllText($"FollowTheLightMain/images/Jumpscares/js-4.txt");
+        string js5 = File.ReadAllText($"FollowTheLightMain/images/jumpscares/js-5.txt");
+        string js6 = File.ReadAllText($"FollowTheLightMain/images/jumpscares/js-6.txt");
+        string imgFrog = File.ReadAllText($"FollowTheLightMain/images/frog.txt");
+        string imgStepStone = File.ReadAllText($"FollowTheLightMain/images/steppingstones.txt");
+        string imgStepStoneTable = File.ReadAllText($"FollowTheLightMain/images/steppingstonestable.txt");
         
 
         var cmd = _db.CreateCommand("insert into images(image)" +
-                                                "values ($1), ($2), ($3), ($4), ($5), ($6), ($7), ($8)");
+                                                "values ($1), ($2), ($3), ($4), ($5), ($6), ($7), ($8), ($9)");
         
         cmd.Parameters.AddWithValue($"{js1}");
         cmd.Parameters.AddWithValue($"{js2}");
@@ -138,7 +154,8 @@ public class DatabaseHelper
         cmd.Parameters.AddWithValue($"{js5}");
         cmd.Parameters.AddWithValue($"{js6}");
         cmd.Parameters.AddWithValue($"{imgFrog}");
-        cmd.Parameters.AddWithValue($"{imgPath}");
+        cmd.Parameters.AddWithValue($"{imgStepStone}");
+        cmd.Parameters.AddWithValue($"{imgStepStoneTable}");
         
         cmd.ExecuteNonQueryAsync();
     }

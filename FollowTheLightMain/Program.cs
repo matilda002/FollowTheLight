@@ -7,11 +7,12 @@ const string dbUri = "Host=localhost;Port=5455;Username=postgres;Password=postgr
 var db = NpgsqlDataSource.Create(dbUri);
 
 var dbCreator = new DatabaseCreator(db);
-var dbHelper = new DatabaseHelper(db);
+var dbHelper = new DatabaseHelper(db); 
 
 // dbHelper.ResetTables();
 dbCreator.CreateTables();
 dbHelper.PopulateStoryPointsTable();
+dbHelper.PopulateStoryPointsTableTwo();
 dbHelper.PopulateImagesTable();
 
 bool listen = true;
