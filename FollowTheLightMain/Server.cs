@@ -1,6 +1,7 @@
 ﻿using Npgsql;
 using System.Net;
 using System.Text;
+namespace FollowTheLightMain;
 
 public class Server
 {
@@ -42,6 +43,7 @@ public class Server
                     case ("/game/player/2"):
                         GameTwoGet(response);
                         break;
+                    
                     default:
                         NotFound(response);
                         break;
@@ -56,6 +58,14 @@ public class Server
                         break;
                     case ("/game/player/2"):
                         GameTwoPost(request, response);
+                        break;
+                    case ("/player/register"):
+                        Player registerPlayer = new Player();
+                        registerPlayer.RegisterPost(request, response);
+                        break;
+                    case ("/player/login"):
+                        Player playerLogin = new Player();
+                        playerLogin.LoginPost(request, response);
                         break;
                     default:
                         NotFound(response);
@@ -80,6 +90,9 @@ public class Server
         {
             resultIntro = reader.GetString(0);
         }
+        
+        const string updateQuery = "UPDATE players SET current_storypoint = 1";
+        _db.CreateCommand(updateQuery).ExecuteNonQuery(); 
 
         byte[] buffer = Encoding.UTF8.GetBytes(resultIntro);
         response.ContentType = "text/plain";
