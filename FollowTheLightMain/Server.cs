@@ -2,6 +2,8 @@
 using System.Net;
 using System.Text;
 
+namespace FollowTheLightMain;
+
 public class Server
 {
     private readonly NpgsqlDataSource _db;
@@ -41,6 +43,9 @@ public class Server
                         break;
                     case ("/game/player/2"):
                         GameTwoGet(response);
+                        break;
+                    case ("/challenge"):
+                        ChallengeGet(response);
                         break;
                     default:
                         NotFound(response);
@@ -90,6 +95,47 @@ public class Server
             response.OutputStream.WriteByte(b);
             Thread.Sleep(35);
         }
+        response.OutputStream.Close();
+    }
+    
+    void ChallengeGet(HttpListenerResponse response)
+    {
+        string resultText = string.Empty;
+        string resultImg = string.Empty;
+        Console.WriteLine("Printing out 'Challange One' from storypoints to player...");
+
+        const string qChallangeText = "select content from storypoints where storypoint_id = 9";
+        const string qChallangeImg = "select image from images where image_id = 8";
+        var reader = _db.CreateCommand(qChallangeText).ExecuteReader();
+        var readerTwo = _db.CreateCommand(qChallangeImg).ExecuteReader();
+        
+        while (reader.Read())
+        {
+            resultImg = reader.GetString(0);
+        }
+        while (readerTwo.Read())
+        {
+            resultImg = readerTwo.GetString(0);
+        }
+        
+        byte[] bufferText = Encoding.UTF8.GetBytes(resultText);
+        response.ContentType = "text/plain";
+        response.StatusCode = (int)HttpStatusCode.OK;
+        
+        byte[] bufferImg = Encoding.UTF8.GetBytes(resultImg);
+        response.ContentType = "text/plain";
+        response.StatusCode = (int)HttpStatusCode.OK;
+        
+        foreach (byte b in bufferText)
+        {
+            response.OutputStream.WriteByte(b);
+            Thread.Sleep(35);
+        }
+        foreach (byte b in bufferImg)
+        {
+            response.OutputStream.WriteByte(b); 
+        }
+        
         response.OutputStream.Close();
     }
 
