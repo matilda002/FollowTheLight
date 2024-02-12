@@ -43,7 +43,9 @@ public class Server
                     case ("/game/player/2"):
                         GameTwoGet(response);
                         break;
-                    
+                    case ("/game/player/message"):
+                        GameMessage(response);
+                        break;
                     default:
                         NotFound(response);
                         break;
@@ -66,6 +68,9 @@ public class Server
                     case ("/player/login"):
                         Player playerLogin = new Player();
                         playerLogin.LoginPost(request, response);
+                        break;
+                    case ("/game/player/chat"):
+                        StoreChat(request, response);
                         break;
                     default:
                         NotFound(response);
@@ -150,6 +155,30 @@ public class Server
         response.OutputStream.Close();
     }
 
+    void GameMessage(HttpListenerResponse response)
+    {
+        Console.WriteLine("Recieving message");
+        string message = string.Empty;
+
+        
+        const string qStoryOne = "SELECT message FROM radio WHERE from_player = 1";
+        var reader = _db.CreateCommand(qStoryOne).ExecuteReader();
+        while (reader.Read())
+        {
+            message = reader.GetString(0);
+        }
+
+        byte[] buffer = Encoding.UTF8.GetBytes(message);
+        response.ContentType = "text/plain";
+        response.StatusCode = (int)HttpStatusCode.OK;
+
+        foreach (byte b in buffer)
+        {
+            response.OutputStream.WriteByte(b);
+            Thread.Sleep(35);
+        }
+        response.OutputStream.Close();
+    }
     void GameOnePost(HttpListenerRequest req, HttpListenerResponse res)
     {
         StreamReader reader = new(req.InputStream, req.ContentEncoding);
