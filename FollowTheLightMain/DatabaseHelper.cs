@@ -11,17 +11,18 @@ public class DatabaseHelper
         _db = db;
     }
 
-    //public async Task ResetTables()
-    // Console.WriteLine("Resetting tables...");
-    // const string query = "drop schema public cascade; create schema public;";
-    //await _db.CreateCommand(query).ExecuteNonQueryAsync();
-    //}
+    public void ResetTables()
+    {
+        Console.WriteLine("Resetting tables...");
+        const string query = "drop schema public cascade; create schema public;";
+        _db.CreateCommand(query).ExecuteNonQuery();
+    }
 
-    public async Task PopulateStoryPointsTable()
+    public void PopulateStoryPointsTable()
     {
         Console.WriteLine("Populating the storypoints table...");
 
-        await using var cmd = _db.CreateCommand("insert into storypoints(title, content)" +
+        var cmd = _db.CreateCommand("insert into storypoints(title, content)" +
                                                 "values ($1, $2), ($3, $4), ($5,$6), ($7, $8), ($9, $10), ($11, $12), ($13, $14), ($15, $16), ($17, $18),($19, $20), ($21, $22);");
 
         cmd.Parameters.AddWithValue("Intro");
@@ -116,10 +117,10 @@ public class DatabaseHelper
                                     B. Go back into the darkness
                                     """);
 
-        await cmd.ExecuteNonQueryAsync();
+        cmd.ExecuteNonQuery();
     }
 
-    public async Task PopulateImagesTable()
+    public void PopulateImagesTable()
     {
         Console.WriteLine("Populating the images table...");
 
@@ -132,7 +133,7 @@ public class DatabaseHelper
         string imgFrog = File.ReadAllText($"FollowTheLightMain/images/frog.txt");
         
 
-        await using var cmd = _db.CreateCommand("insert into images(image)" +
+        var cmd = _db.CreateCommand("insert into images(image)" +
                                                 "values ($1), ($2), ($3), ($4), ($5), ($6), ($7)");
         
         cmd.Parameters.AddWithValue($"{js1}");
@@ -143,6 +144,6 @@ public class DatabaseHelper
         cmd.Parameters.AddWithValue($"{js6}");
         cmd.Parameters.AddWithValue($"{imgFrog}"); 
 
-        await cmd.ExecuteNonQueryAsync();
+        cmd.ExecuteNonQuery();
     }
 }
