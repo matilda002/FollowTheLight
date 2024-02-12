@@ -1,6 +1,7 @@
 ﻿using Npgsql;
 using System.Net;
 using System.Text;
+namespace FollowTheLightMain;
 
 public class Server
 {
@@ -42,7 +43,7 @@ public class Server
                     case ("/game/player/2"):
                         GameTwoGet(response);
                         break;
-
+                    
                     default:
                         NotFound(response);
                         break;
@@ -58,8 +59,13 @@ public class Server
                     case ("/game/player/2"):
                         GameTwoPost(request, response);
                         break;
-                    case ("/game/player/chat"):
-                        StoreChat(request, response);
+                    case ("/player/register"):
+                        Player registerPlayer = new Player();
+                        registerPlayer.RegisterPost(request, response);
+                        break;
+                    case ("/player/login"):
+                        Player playerLogin = new Player();
+                        playerLogin.LoginPost(request, response);
                         break;
                     default:
                         NotFound(response);
@@ -84,7 +90,7 @@ public class Server
         {
             resultIntro = reader.GetString(0);
         }
-
+       
         byte[] buffer = Encoding.UTF8.GetBytes(resultIntro);
         response.ContentType = "text/plain";
         response.StatusCode = (int)HttpStatusCode.OK;
