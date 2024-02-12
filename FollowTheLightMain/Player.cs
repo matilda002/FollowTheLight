@@ -15,7 +15,7 @@ public class Player
             string body = reader.ReadToEnd();
             
             string queryToDb = "insert into players (username) values (@1)";
-            using var cmd = db.CreateCommand(queryToDb);
+            var cmd = db.CreateCommand(queryToDb);
             cmd.Parameters.AddWithValue("@1", body);
             cmd.ExecuteNonQuery();
 
