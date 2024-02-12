@@ -12,9 +12,9 @@ public class DatabaseHelper
     }
 
     public void ResetTables()
-    {
-        Console.WriteLine("Resetting tables...");
-        const string query = "drop schema public cascade; create schema public;";
+    { 
+        Console.WriteLine("Resetting tables..."); 
+        const string query = "drop schema public cascade; create schema public;"; 
         _db.CreateCommand(query).ExecuteNonQueryAsync();
     }
 
@@ -84,23 +84,17 @@ public class DatabaseHelper
                                     """);
         cmd.Parameters.AddWithValue("Story Seven");
         cmd.Parameters.AddWithValue("""
-                                    You spot two tunnels diverging. Each seems to lead deeper into the unknown. What's your choice?
-
-                                    A. Take the left tunnel
-                                    B. Access both tunnels before making a decision
-                                    C. Take the right tunnel for a different path
-                                    D. Turn back and explore the cave again
+                                    You've found the exit, but desperate screams plead for rescue within the cave. What's your choice now? Leave or venture back into the darkness to investigate?
+                                    
+                                    A. Leave the cave
+                                    B. Go back into the darkness
                                     """);
-        cmd.Parameters.AddWithValue("Story Eight");
+        cmd.Parameters.AddWithValue("Challenge One");
         cmd.Parameters.AddWithValue("""
-                                    You see a tall figure in the dark approaching you...
-
-                                    A. Hide and close your eyes
-                                    B. Run away
-                                    C. Stand still
-                                    D. Light up the darkness with one of your matches
+                                    You step into an open space with a pool of water and some sort stepping stones with symbols on them. It looks like different paths leading to the other side. While trying to look around for clues on where to step, you have no luck...
+                                    Maybe ask the other person how it looks for them or risk your life...You never know what's lurking in the water
                                     """);
-        cmd.Parameters.AddWithValue("Story Nine");
+        cmd.Parameters.AddWithValue("Challenge Two");
         cmd.Parameters.AddWithValue("""
                                     You come across a creaky half-open door, what's your next move?
 
@@ -109,7 +103,7 @@ public class DatabaseHelper
                                     C. Knock on the door to check for a response
                                     D. <choice>
                                     """);
-        cmd.Parameters.AddWithValue("Story Ten");
+        cmd.Parameters.AddWithValue("Challenge Three");
         cmd.Parameters.AddWithValue("""
                                     You've found the exit, but desperate screams plead for rescue within the cave. What's your choice now? Leave or venture back into the darkness to investigate?
 
@@ -124,17 +118,18 @@ public class DatabaseHelper
     {
         Console.WriteLine("Populating the images table...");
 
-        string js1 = File.ReadAllText($"FollowTheLightMain/images/jumpscares/js-1.txt");
-        string js2 = File.ReadAllText($"FollowTheLightMain/images/jumpscares/js-2.txt");
-        string js3 = File.ReadAllText($"FollowTheLightMain/images/jumpscares/js-3.txt");
-        string js4 = File.ReadAllText($"FollowTheLightMain/images/Jumpscares/js-4.txt");
-        string js5 = File.ReadAllText($"FollowTheLightMain/images/jumpscares/js-5.txt");
-        string js6 = File.ReadAllText($"FollowTheLightMain/images/jumpscares/js-6.txt");
-        string imgFrog = File.ReadAllText($"FollowTheLightMain/images/frog.txt");
+        string js1 = File.ReadAllText($"images/jumpscares/js-1.txt");
+        string js2 = File.ReadAllText($"images/jumpscares/js-2.txt");
+        string js3 = File.ReadAllText($"images/jumpscares/js-3.txt");
+        string js4 = File.ReadAllText($"images/Jumpscares/js-4.txt");
+        string js5 = File.ReadAllText($"images/jumpscares/js-5.txt");
+        string js6 = File.ReadAllText($"images/jumpscares/js-6.txt");
+        string imgFrog = File.ReadAllText($"images/frog.txt");
+        string imgPath = File.ReadAllText($"images/pathpuzzle.txt");
         
 
         var cmd = _db.CreateCommand("insert into images(image)" +
-                                                "values ($1), ($2), ($3), ($4), ($5), ($6), ($7)");
+                                                "values ($1), ($2), ($3), ($4), ($5), ($6), ($7), ($8)");
         
         cmd.Parameters.AddWithValue($"{js1}");
         cmd.Parameters.AddWithValue($"{js2}");
@@ -142,8 +137,9 @@ public class DatabaseHelper
         cmd.Parameters.AddWithValue($"{js4}");
         cmd.Parameters.AddWithValue($"{js5}");
         cmd.Parameters.AddWithValue($"{js6}");
-        cmd.Parameters.AddWithValue($"{imgFrog}"); 
-
+        cmd.Parameters.AddWithValue($"{imgFrog}");
+        cmd.Parameters.AddWithValue($"{imgPath}");
+        
         cmd.ExecuteNonQueryAsync();
     }
 }
