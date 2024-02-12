@@ -9,9 +9,10 @@ var db = NpgsqlDataSource.Create(dbUri);
 var dbCreator = new DatabaseCreator(db);
 var dbHelper = new DatabaseHelper(db);
 
-dbHelper.ResetTables();
+// dbHelper.ResetTables();
 dbCreator.CreateTables();
 dbHelper.PopulateStoryPointsTable();
+dbHelper.PopulateImagesTable();
 
 bool listen = true;
 int port = 3000;
