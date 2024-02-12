@@ -44,7 +44,8 @@ public class Server
                         GameTwoGet(response);
                         break;
                     case ("/game/player/message"):
-                        GameMessage(response);
+                        Radio message = new Radio(_db);
+                        message.GameMessage(response);
                         break;
                     default:
                         NotFound(response);
@@ -70,7 +71,8 @@ public class Server
                         playerLogin.LoginPost(request, response);
                         break;
                     case ("/game/player/chat"):
-                        StoreChat(request, response);
+                        Radio chat = new Radio(_db);
+                        chat.StoreChat(request, response);
                         break;
                     default:
                         NotFound(response);
@@ -95,7 +97,7 @@ public class Server
         {
             resultIntro = reader.GetString(0);
         }
-       
+
         byte[] buffer = Encoding.UTF8.GetBytes(resultIntro);
         response.ContentType = "text/plain";
         response.StatusCode = (int)HttpStatusCode.OK;
@@ -155,39 +157,7 @@ public class Server
         response.OutputStream.Close();
     }
 
-    void GameMessage(HttpListenerResponse response)
-    {
-        Console.WriteLine("Recieving message");
 
-        const string qStoryOne = "SELECT message FROM radio WHERE from_player = 1";
-        var command = _db.CreateCommand(qStoryOne);
-        command.CommandText = qStoryOne;
-        string message = string.Empty;
-
-
-        using (var reader = command.ExecuteReader())
-        {
-            StringBuilder messages = new StringBuilder();
-
-            while (reader.Read())
-            {
-                message = reader.GetString(0);
-                messages.AppendLine(message);
-            }
-
-            string AllMessages = messages.ToString();
-
-            byte[] buffer = Encoding.UTF8.GetBytes(AllMessages);
-            response.ContentType = "text/plain";
-            response.StatusCode = (int)HttpStatusCode.OK;
-
-            response.OutputStream.Write(buffer, 0, buffer.Length);
-
-        }
-        response.OutputStream.Close();
-
-
-    }
     void GameOnePost(HttpListenerRequest req, HttpListenerResponse res)
     {
         StreamReader reader = new(req.InputStream, req.ContentEncoding);
