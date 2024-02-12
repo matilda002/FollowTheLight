@@ -227,27 +227,15 @@ public class Server
 
             StreamReader reader = new(req.InputStream, req.ContentEncoding);
             string chat = reader.ReadToEnd();
-            string message = Console.ReadLine();
-            string answer = string.Empty;
 
-            switch (chat)
-            {
-                case (""):
-                    answer +=
-                    "your message has been sent";
-                    break;
-                default:
-                    break;
-            }
+            string answer = "Your message has been sent";
 
             byte[] buffer = Encoding.UTF8.GetBytes(answer);
             res.ContentType = "text/plain";
             res.StatusCode = (int)HttpStatusCode.OK;
-            foreach (byte b in buffer)
-            {
-                res.OutputStream.WriteByte(b);
-                Thread.Sleep(35);
-            }
+            res.OutputStream.Write(buffer, 0, buffer.Length);
+            res.Close();
+
 
             using (var cmd = _db.CreateCommand())
             {
@@ -257,24 +245,23 @@ public class Server
 
             using (var cmd = _db.CreateCommand())
             {
-                cmd.CommandText = "INSERT INTO radio ( from_player, to_player, message) VALUES (1, 2, 3)";
-                cmd.Parameters.AddWithValue(2243);
-                cmd.Parameters.AddWithValue(2345);
-                cmd.Parameters.AddWithValue(message);
+                cmd.CommandText = "INSERT INTO radio (from_player, to_player, message) VALUES (@fromPlayer, @toPlayer, @message)";
+                cmd.Parameters.AddWithValue("@fromPlayer", 1);
+                cmd.Parameters.AddWithValue("toPlayer", 2);
+                cmd.Parameters.AddWithValue("@message", chat);
                 cmd.ExecuteNonQuery();
             }
-
-            res.StatusCode = (int)HttpStatusCode.Created;
-            res.Close();
         }
 
-        catch
+        catch (Exception ex)
         {
+            Console.WriteLine("Error " + ex.Message);
             string answer = "Error";
 
             byte[] buffer = Encoding.UTF8.GetBytes(answer);
             res.ContentType = "text/plain";
-            res.StatusCode = (int)HttpStatusCode.NotFound;
+            res.StatusCode = (int)HttpStatusCode.InternalServerError;
+            res.OutputStream.Write(buffer, 0, buffer.Length);
             res.Close();
         }
 
