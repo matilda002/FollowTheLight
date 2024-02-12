@@ -158,26 +158,35 @@ public class Server
     void GameMessage(HttpListenerResponse response)
     {
         Console.WriteLine("Recieving message");
+
+        const string qStoryOne = "SELECT message FROM radio WHERE from_player = 1";
+        var command = _db.CreateCommand(qStoryOne);
+        command.CommandText = qStoryOne;
         string message = string.Empty;
 
-        
-        const string qStoryOne = "SELECT message FROM radio WHERE from_player = 1";
-        var reader = _db.CreateCommand(qStoryOne).ExecuteReader();
-        while (reader.Read())
-        {
-            message = reader.GetString(0);
-        }
 
-        byte[] buffer = Encoding.UTF8.GetBytes(message);
-        response.ContentType = "text/plain";
-        response.StatusCode = (int)HttpStatusCode.OK;
-
-        foreach (byte b in buffer)
+        using (var reader = command.ExecuteReader())
         {
-            response.OutputStream.WriteByte(b);
-            Thread.Sleep(35);
+            StringBuilder messages = new StringBuilder();
+
+            while (reader.Read())
+            {
+                message = reader.GetString(0);
+                messages.AppendLine(message);
+            }
+
+            string AllMessages = messages.ToString();
+
+            byte[] buffer = Encoding.UTF8.GetBytes(AllMessages);
+            response.ContentType = "text/plain";
+            response.StatusCode = (int)HttpStatusCode.OK;
+
+            response.OutputStream.Write(buffer, 0, buffer.Length);
+
         }
         response.OutputStream.Close();
+
+
     }
     void GameOnePost(HttpListenerRequest req, HttpListenerResponse res)
     {
