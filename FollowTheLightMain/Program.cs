@@ -9,7 +9,7 @@ var db = NpgsqlDataSource.Create(dbUri);
 var dbCreator = new DatabaseCreator(db);
 var dbHelper = new DatabaseHelper(db);
 
-dbHelper.ResetTables();
+//dbHelper.ResetTables();
 dbCreator.CreateTables();
 dbHelper.PopulateStoryPointsTable();
 

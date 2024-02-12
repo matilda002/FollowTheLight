@@ -11,13 +11,14 @@ public class DatabaseHelper
         _db = db;
     }
 
+    /*
     public void ResetTables()
     {
         Console.WriteLine("Resetting tables...");
         const string query = "drop schema public cascade; create schema public;";
         _db.CreateCommand(query).ExecuteNonQueryAsync();
     }
-
+    */
     public void PopulateStoryPointsTable()
     {
         Console.WriteLine("Populating the storypoints table...");

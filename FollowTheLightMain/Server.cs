@@ -42,6 +42,7 @@ public class Server
                     case ("/game/player/2"):
                         GameTwoGet(response);
                         break;
+
                     default:
                         NotFound(response);
                         break;
@@ -56,6 +57,9 @@ public class Server
                         break;
                     case ("/game/player/2"):
                         GameTwoPost(request, response);
+                        break;
+                    case ("/game/player/chat"):
+                        StoreChat(request, response);
                         break;
                     default:
                         NotFound(response);
@@ -214,6 +218,66 @@ public class Server
 
         res.StatusCode = (int)HttpStatusCode.Created;
         res.Close();
+    }
+
+    public void StoreChat(HttpListenerRequest req, HttpListenerResponse res)
+    {
+        try
+        {
+
+            StreamReader reader = new(req.InputStream, req.ContentEncoding);
+            string chat = reader.ReadToEnd();
+            string message = Console.ReadLine();
+            string answer = string.Empty;
+
+            switch (chat)
+            {
+                case (""):
+                    answer +=
+                    "your message has been sent";
+                    break;
+                default:
+                    break;
+            }
+
+            byte[] buffer = Encoding.UTF8.GetBytes(answer);
+            res.ContentType = "text/plain";
+            res.StatusCode = (int)HttpStatusCode.OK;
+            foreach (byte b in buffer)
+            {
+                res.OutputStream.WriteByte(b);
+                Thread.Sleep(35);
+            }
+
+            using (var cmd = _db.CreateCommand())
+            {
+                cmd.CommandText = "CREATE TABLE IF NOT EXISTS radio(value TEXT)";
+                cmd.ExecuteNonQuery();
+            }
+
+            using (var cmd = _db.CreateCommand())
+            {
+                cmd.CommandText = "INSERT INTO radio ( from_player, to_player, message) VALUES (1, 2, 3)";
+                cmd.Parameters.AddWithValue(2243);
+                cmd.Parameters.AddWithValue(2345);
+                cmd.Parameters.AddWithValue(message);
+                cmd.ExecuteNonQuery();
+            }
+
+            res.StatusCode = (int)HttpStatusCode.Created;
+            res.Close();
+        }
+
+        catch
+        {
+            string answer = "Error";
+
+            byte[] buffer = Encoding.UTF8.GetBytes(answer);
+            res.ContentType = "text/plain";
+            res.StatusCode = (int)HttpStatusCode.NotFound;
+            res.Close();
+        }
+
     }
 
     void NotFound(HttpListenerResponse res)
