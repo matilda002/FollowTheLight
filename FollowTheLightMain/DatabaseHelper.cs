@@ -146,4 +146,9 @@ public class DatabaseHelper
 
         cmd.ExecuteNonQueryAsync();
     }
+
+    public void PopulateStorypathTable()
+    {
+
+    }
 }
