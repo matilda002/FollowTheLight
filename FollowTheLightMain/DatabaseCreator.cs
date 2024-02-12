@@ -47,6 +47,7 @@ public class DatabaseCreator
             check(from_point <> to_point),
             unique(from_point, to_point)
         )";
+        /*
         _db.CreateCommand(storypathTable).ExecuteNonQueryAsync();
 
         const string radioTable = @"create table if not exists radio(
@@ -56,5 +57,6 @@ public class DatabaseCreator
             message text
         )";
         _db.CreateCommand(radioTable).ExecuteNonQueryAsync();
+        */
     }
 }

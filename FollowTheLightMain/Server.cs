@@ -27,7 +27,8 @@ public class Server
     void Router(HttpListenerContext context)
     {
         HttpListenerRequest request = context.Request;
-        HttpListenerResponse response = context.Response;
+        HttpListenerResponse response = context.Response; 
+        Player activePlayer = new Player("");
 
         switch (request.HttpMethod)
         {
@@ -35,7 +36,7 @@ public class Server
                 switch (request.Url?.AbsolutePath)
                 {
                     case ("/intro"):
-                        IntroGet(response);
+                        IntroGet(response, activePlayer);
                         break;
                     case ("/game/player/1"):
                         GameOneGet(response);
