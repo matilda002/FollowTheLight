@@ -5,11 +5,10 @@ namespace FollowTheLightMain;
 public class DatabaseHelper
 {
     private readonly NpgsqlDataSource _db;
-    private readonly PlayerState _ps;
-    public DatabaseHelper(NpgsqlDataSource db, PlayerState playerState)
+
+    public DatabaseHelper(NpgsqlDataSource db)
     {
         _db = db;
-        _ps = playerState;
     }
 
     //public async Task ResetTables()
