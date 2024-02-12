@@ -149,6 +149,28 @@ public class DatabaseHelper
 
     public void PopulateStorypathTable()
     {
+        Console.WriteLine("Populating storypath-table...");
 
+        const string query = @"INSERT INTO storypath(
+        from_point,
+        to_point,
+        choice,
+        effect
+        )
+        VALUES ($1, $2, $3, $4);";
+
+        string[] storypath = File.ReadAllLines($"../../../DATA/storypaths.csv");
+        for (int i = 1; i <  storypath.Length; i++)
+        {
+            string[] data = storypath[i].Split(',');
+            using (var cmd = _db.CreateCommand(query))
+            {
+                cmd.Parameters.AddWithValue(data[1]);
+                cmd.Parameters.AddWithValue(data[2]);
+                cmd.Parameters.AddWithValue(data[3]);
+                cmd.Parameters.AddWithValue(data[4]);
+                cmd.ExecuteNonQuery();
+            }
+        }
     }
 }
