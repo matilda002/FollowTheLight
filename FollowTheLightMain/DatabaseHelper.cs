@@ -15,7 +15,7 @@ public class DatabaseHelper
     {
         Console.WriteLine("Resetting tables...");
         const string query = "drop schema public cascade; create schema public;";
-        _db.CreateCommand(query).ExecuteNonQueryAsync();
+        _db.CreateCommand(query).ExecuteNonQuery();
     }
 
     public void PopulateStoryPointsTable()
@@ -117,7 +117,7 @@ public class DatabaseHelper
                                     B. Go back into the darkness
                                     """);
 
-        cmd.ExecuteNonQueryAsync();
+        cmd.ExecuteNonQuery();
     }
 
     public void PopulateImagesTable()
@@ -144,14 +144,14 @@ public class DatabaseHelper
         cmd.Parameters.AddWithValue($"{js6}");
         cmd.Parameters.AddWithValue($"{imgFrog}"); 
 
-        cmd.ExecuteNonQueryAsync();
+        cmd.ExecuteNonQuery();
     }
 
-    public void PopulateStorypathTable()
+    public void PopulateTableStorypaths()
     {
-        Console.WriteLine("Populating storypath-table...");
+        Console.WriteLine("Populating storypaths-table...");
 
-        const string query = @"INSERT INTO storypath(
+        const string query = @"INSERT INTO storypaths(
         from_point,
         to_point,
         choice,
@@ -165,10 +165,10 @@ public class DatabaseHelper
             string[] data = storypath[i].Split(',');
             using (var cmd = _db.CreateCommand(query))
             {
-                cmd.Parameters.AddWithValue(data[1]);
+                cmd.Parameters.AddWithValue(int.Parse(data[0]));
+                cmd.Parameters.AddWithValue(int.Parse(data[1]));
                 cmd.Parameters.AddWithValue(data[2]);
-                cmd.Parameters.AddWithValue(data[3]);
-                cmd.Parameters.AddWithValue(data[4]);
+                cmd.Parameters.AddWithValue(int.Parse(data[3]));
                 cmd.ExecuteNonQuery();
             }
         }
