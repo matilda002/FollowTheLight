@@ -5,6 +5,12 @@ namespace FollowTheLightMain;
 
 public class Player
 {
+    public string Username { get; private set; }
+
+    public Player(string username)
+    {
+        Username = username;
+    }
     public void RegisterPost(HttpListenerRequest req, HttpListenerResponse res)
     {
         try
@@ -12,14 +18,16 @@ public class Player
             const string dbUri = "Host=localhost;Port=5455;Username=postgres;Password=postgres;Database=followthelightdb;";
             var db = NpgsqlDataSource.Create(dbUri);
             StreamReader reader = new(req.InputStream, req.ContentEncoding);
-            string body = reader.ReadToEnd();
+            string username = reader.ReadToEnd();
+
+            Player activePlayer = new Player(username);
             
             string queryToDb = "insert into players (username) values (@1)";
             var cmd = db.CreateCommand(queryToDb);
-            cmd.Parameters.AddWithValue("@1", body);
+            cmd.Parameters.AddWithValue("@1", username);
             cmd.ExecuteNonQuery();
 
-            string answer = $"Hello, {body}! Welcome to the game.";
+            string answer = $"Hello, {username}! Welcome to the game.";
             byte[] buffer = Encoding.UTF8.GetBytes(answer);
             res.ContentType = "text/plain";
             res.StatusCode = (int)HttpStatusCode.Created;

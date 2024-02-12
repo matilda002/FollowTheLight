@@ -43,7 +43,6 @@ public class Server
                     case ("/game/player/2"):
                         GameTwoGet(response);
                         break;
-                    
                     default:
                         NotFound(response);
                         break;
@@ -60,11 +59,15 @@ public class Server
                         GameTwoPost(request, response);
                         break;
                     case ("/player/register"):
-                        Player registerPlayer = new Player();
+                        StreamReader registerReader = new StreamReader(request.InputStream, request.ContentEncoding);
+                        string registerUsername = registerReader.ReadToEnd();
+                        Player registerPlayer = new Player(registerUsername);
                         registerPlayer.RegisterPost(request, response);
                         break;
                     case ("/player/login"):
-                        Player playerLogin = new Player();
+                        StreamReader loginReader = new StreamReader(request.InputStream, request.ContentEncoding);
+                        string loginUsername = loginReader.ReadToEnd();
+                        Player playerLogin = new Player(loginUsername);
                         playerLogin.LoginPost(request, response);
                         break;
                     default:
@@ -79,7 +82,7 @@ public class Server
         }
     }
 
-    void IntroGet(HttpListenerResponse response)
+    void IntroGet(HttpListenerResponse response, Player activePlayer)
     {
         string resultIntro = string.Empty;
         Console.WriteLine("Printing out 'Intro' from storypoints to player...");
@@ -90,6 +93,11 @@ public class Server
         {
             resultIntro = reader.GetString(0);
         }
+
+        const string qUpdateSP = "update players set current_storypoint = 1 where username = @1";
+        var updatecmd = _db.CreateCommand(qUpdateSP);
+        updatecmd.Parameters.AddWithValue("@1", activePlayer.Username);
+        updatecmd.ExecuteNonQuery();
        
         byte[] buffer = Encoding.UTF8.GetBytes(resultIntro);
         response.ContentType = "text/plain";
