@@ -90,10 +90,7 @@ public class Server
         {
             resultIntro = reader.GetString(0);
         }
-        
-        const string updateQuery = "UPDATE players SET current_storypoint = 1";
-        _db.CreateCommand(updateQuery).ExecuteNonQuery(); 
-
+       
         byte[] buffer = Encoding.UTF8.GetBytes(resultIntro);
         response.ContentType = "text/plain";
         response.StatusCode = (int)HttpStatusCode.OK;
