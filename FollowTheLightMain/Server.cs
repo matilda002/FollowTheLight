@@ -64,11 +64,11 @@ public class Server
                         break;
                     case ("/player/register"):
                         Player registerPlayer = new Player();
-                        registerPlayer.RegisterPost(request, response);
+                        registerPlayer.Register(request, response);
                         break;
-                    case ("/player/login"):
-                        Player playerLogin = new Player();
-                        playerLogin.LoginPost(request, response);
+                    case ("/player/status"):
+                        Player playerStatus = new Player();
+                        playerStatus.ViewStatus(request, response);
                         break;
                     case ("/game/player/chat"):
                         Radio chat = new Radio(_db);
