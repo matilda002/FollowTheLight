@@ -20,14 +20,14 @@ public class Server
 
             Router(context);
 
-            requestListener.BeginGetContext(new AsyncCallback(HandleRequest), requestListener);
+            requestListener.BeginGetContext(HandleRequest, requestListener);
         }
     }
 
     void Router(HttpListenerContext context)
     {
         HttpListenerRequest request = context.Request;
-        HttpListenerResponse response = context.Response;
+        HttpListenerResponse response = context.Response; 
 
         switch (request.HttpMethod)
         {
@@ -38,7 +38,7 @@ public class Server
                         IntroGet(response);
                         break;
                     case ("/game/player/1"):
-                        GameOneGet(response);
+                        GameOneGet(response, request);
                         break;
                     case ("/game/player/2"):
                         GameTwoGet(response);
@@ -88,6 +88,8 @@ public class Server
 
     void IntroGet(HttpListenerResponse response)
     {
+        
+        
         string resultIntro = string.Empty;
         Console.WriteLine("Printing out 'Intro' from storypoints to player...");
 
@@ -110,8 +112,17 @@ public class Server
         response.OutputStream.Close();
     }
 
-    void GameOneGet(HttpListenerResponse response)
+    void GameOneGet(HttpListenerResponse response, HttpListenerRequest request)
     {
+        StreamReader reader1 = new(request.InputStream, request.ContentEncoding);
+        string username = reader1.ReadToEnd();
+        
+        string queryToDb = "update players set current_storypoint = @current_storypoint where username = @username";
+        var cmd = _db.CreateCommand(queryToDb);
+        cmd.Parameters.AddWithValue("@current_storypoint", 2);
+        cmd.Parameters.AddWithValue("@username", username);
+        cmd.ExecuteNonQuery(); 
+        
         string resultStoryOne = string.Empty;
         Console.WriteLine("Printing out 'Story One' from storypoints to player...");
 
