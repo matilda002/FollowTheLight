@@ -98,19 +98,11 @@ public class DatabaseHelper
                                     """);
         cmd.Parameters.AddWithValue("Challenge Two");
         cmd.Parameters.AddWithValue("""
-                                    You come across a creaky half-open door, what's your next move?
-
-                                    A. Push the door and enter cautiously
-                                    B. Ignore the door and change your direction
-                                    C. Knock on the door to check for a response
-                                    D. <choice>
+                                    <challenge two>
                                     """);
         cmd.Parameters.AddWithValue("Challenge Three");
         cmd.Parameters.AddWithValue("""
-                                    You've found the exit, but desperate screams plead for rescue within the cave. What's your choice now? Leave or venture back into the darkness to investigate?
-
-                                    A. Leave the cave
-                                    B. Go back into the darkness
+                                    <challenge three>
                                     """);
 
         cmd.ExecuteNonQueryAsync();
@@ -123,7 +115,7 @@ public class DatabaseHelper
         var cmd = _db.CreateCommand("insert into storypoints(title, content)" +
                                     "values ($1, $2)");
         
-        cmd.Parameters.AddWithValue("Challange One - P2");
+        cmd.Parameters.AddWithValue("Challenge One - P2");
         cmd.Parameters.AddWithValue("""
                                     You step inside an open space, with no direction but to go forward. In the distance you see a light and when you arrive you see a candle on a table. 
                                     On closer inspection there are three different symbols repeated in a line...The symbols are only on the table, no use for you but maybe the other person?
