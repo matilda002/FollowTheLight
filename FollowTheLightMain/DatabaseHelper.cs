@@ -11,14 +11,14 @@ public class DatabaseHelper
         _db = db;
     }
 
-    /*
+    
     public void ResetTables()
     {
         Console.WriteLine("Resetting tables...");
         const string query = "drop schema public cascade; create schema public;";
         _db.CreateCommand(query).ExecuteNonQuery();
     }
-    */
+    
     public void PopulateStoryPointsTable()
     {
         Console.WriteLine("Populating the storypoints table...");
@@ -159,11 +159,7 @@ public class DatabaseHelper
         effect
         )
         VALUES ($1, $2, $3, $4)
-        ON CONFLICT(storypoint_id) DO UPDATE SET 
-        from_point = EXCLUDED.from_point,
-        to_point = EXCLUDED.to_point,
-        choice = EXCLUDED.choice,
-        effect = EXCLUDED.effect
+       
         ;";
 
         string[] storypath = File.ReadAllLines($"../../../DATA/storypaths.csv");
@@ -172,10 +168,10 @@ public class DatabaseHelper
             string[] data = storypath[i].Split(',');
             using (var cmd = _db.CreateCommand(query))
             {
-                cmd.Parameters.AddWithValue("$1", int.Parse(data[0]));
-                cmd.Parameters.AddWithValue("$2", int.Parse(data[1]));
-                cmd.Parameters.AddWithValue("$3", data[2]);
-                cmd.Parameters.AddWithValue("$4", int.Parse(data[3]));
+                cmd.Parameters.AddWithValue( int.Parse(data[0]));
+                cmd.Parameters.AddWithValue(int.Parse(data[1]));
+                cmd.Parameters.AddWithValue( data[2]);
+                cmd.Parameters.AddWithValue( int.Parse(data[3]));
                 cmd.ExecuteNonQuery();
             }
         }
