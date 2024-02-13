@@ -104,8 +104,8 @@ public class Server
         string resultImg = string.Empty;
         Console.WriteLine("Printing out 'Challange One' from storypoints to player...");
 
-        const string qChallangeText = "select content from storypoints where storypoint_id = 2";
-        const string qChallangeImg = "select image from images where image_id = 9";
+        const string qChallangeText = "select content from storypoints where storypoint_id = 9";
+        const string qChallangeImg = "select image from images where image_id = 8";
         var reader = _db.CreateCommand(qChallangeText).ExecuteReader();
         var readerTwo = _db.CreateCommand(qChallangeImg).ExecuteReader();
         
@@ -129,7 +129,7 @@ public class Server
         foreach (byte b in bufferText)
         {
             response.OutputStream.WriteByte(b);
-            Thread.Sleep(35);
+            Thread.Sleep(20);
         }
         foreach (byte b in bufferImg)
         {
