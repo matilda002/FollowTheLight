@@ -52,11 +52,12 @@ public class DatabaseHelper
         };
 
         var cmd = _db.CreateCommand("insert into storypoints(title, content) values ($1, $2)");
-
+            //sl = storyline, s = storypoint
         for (int sl = 0; sl < filePaths.Length; sl++)
         {
             // Load storypoints for each storyline
-            for (int s = 0; s < titles.Length; s++)
+            int minCount = Math.Min(titles.Length, filePaths[sl].Length);
+            for (int s = 0; s < minCount; s++)
             {
                 string content = File.ReadAllText(filePaths[sl][s]);
                 cmd.Parameters.AddWithValue(titles[s]);

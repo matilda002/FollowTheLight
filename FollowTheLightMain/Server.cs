@@ -143,26 +143,26 @@ namespace FollowTheLightMain
                     break;
                 case "B":
                     case "b":
-                        answer += "You chose option B in Game One.\n"; // Add scenario-specific logic here
+                        answer += "You chose option B in Game One.\n"; 
                         break;
                     default:
-                        answer += "Invalid choice in Game One.\n"; // Add scenario-specific logic here
+                        answer += "Invalid choice in Game One.\n"; 
                         break;
                 }
 
-                // Send user choice as response
+                
                 SendResponse(res, answer);
             }
 
 
         private void GameTwoPost(HttpListenerRequest req, HttpListenerResponse res)
         {
-            // Handle POST request for GameTwo
+            
         }
 
         private void GameThreePost(HttpListenerRequest req, HttpListenerResponse res)
         {
-            // Handle POST request for GameThree
+            
         }
 
         private void SendResponse(HttpListenerResponse response, string content)
