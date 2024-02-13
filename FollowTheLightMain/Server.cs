@@ -1,236 +1,188 @@
-﻿using FollowTheLightMain;
-using Npgsql;
+﻿using System;
+using System.IO;
 using System.Net;
 using System.Text;
-namespace FollowTheLightMain;
+using System.Threading;
+using Npgsql;
 
-public class Server
+namespace FollowTheLightMain
 {
-    private readonly NpgsqlDataSource _db;
-
-
-    public Server(NpgsqlDataSource db)
+    public class Server
     {
-        _db = db;
-    }
+        private readonly HttpListener _listener;
+        private readonly DatabaseHelper _db;
 
-    public void HandleRequest(IAsyncResult result)
-    {
-        if (result.AsyncState is HttpListener requestListener)
+        public Server(DatabaseHelper db)
         {
-            HttpListenerContext context = requestListener.EndGetContext(result);
-
-            Router(context);
-
-            requestListener.BeginGetContext(new AsyncCallback(HandleRequest), requestListener);
+            _listener = new HttpListener();
+            _db = db;
+            _listener.Prefixes.Add("http://localhost:3000/");
         }
-    }
 
-    void Router(HttpListenerContext context)
-    {
-        HttpListenerRequest request = context.Request;
-        HttpListenerResponse response = context.Response;
-
-        switch (request.HttpMethod)
+        public void Start()
         {
-            case ("GET"):
-                switch (request.Url?.AbsolutePath)
+            _listener.Start();
+            Console.WriteLine("Server started. Listening for requests...");
+
+            ThreadPool.QueueUserWorkItem((o) =>
+            {
+                try
                 {
-                    case ("/intro"):
-                        IntroGet(response);
+                    while (_listener.IsListening)
+                    {
+                        HttpListenerContext context = _listener.GetContext();
+                        ThreadPool.QueueUserWorkItem((c) => HandleRequest(context));
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"Exception: {e.Message}");
+                }
+            });
+        }
+
+        public void Stop()
+        {
+            _listener.Stop();
+            _listener.Close();
+        }
+
+        public void HandleRequest(object state)
+        {
+            HttpListenerContext context = (HttpListenerContext)state;
+            HttpListenerRequest request = context.Request;
+            HttpListenerResponse response = context.Response;
+
+            switch (request.HttpMethod)
+            {
+                case "GET":
+                    switch (request.Url?.AbsolutePath)
+                    {
+                        case "/intro":
+                            IntroGet(response);
+                            break;
+                        case "/game/player/1":
+                            GameOneGet(response);
+                            break;
+                        case "/game/player/2":
+                            GameTwoGet(response);
+                            break;
+                        case "/game/player/3":
+                            GameThreeGet(response);
+                            break;
+                        default:
+                            NotFound(response);
+                            break;
+                    }
+                    break;
+                case "POST":
+                    switch (request.Url?.AbsolutePath)
+                    {
+                        case "/game/player/1":
+                            GameOnePost(request, response);
+                            break;
+                        case "/game/player/2":
+                            GameTwoPost(request, response);
+                            break;
+                        case "/game/player/3":
+                            GameThreePost(request, response);
+                            break;
+                        case "/player/register":
+                            Player registerPlayer = new Player();
+                            registerPlayer.RegisterPost(request, response);
+                            break;
+                        case "/player/login":
+                            Player playerLogin = new Player();
+                            playerLogin.LoginPost(request, response);
+                            break;
+                        default:
+                            NotFound(response);
+                            break;
+                    }
+                    break;
+                default:
+                    NotFound(response);
+                    break;
+            }
+        }
+
+        private void IntroGet(HttpListenerResponse response)
+        {
+            string resultIntro = _db.GetStoryPointContent(1); 
+            SendResponse(response, resultIntro);
+        }
+
+        private void GameOneGet(HttpListenerResponse response)
+        {
+            string resultStoryOne = _db.GetStoryPointContent(2);
+            SendResponse(response, resultStoryOne);
+        }
+
+        private void GameTwoGet(HttpListenerResponse response)
+        {
+            string resultStoryTwo = _db.GetStoryPointContent(3); 
+        }
+
+        private void GameThreeGet(HttpListenerResponse response)
+        {
+            string resultStoryThree = _db.GetStoryPointContent(4); 
+            SendResponse(response, resultStoryThree);
+        }
+
+        private void GameOnePost(HttpListenerRequest req, HttpListenerResponse res)
+        {
+                StreamReader reader = new StreamReader(req.InputStream, req.ContentEncoding);
+                string body = reader.ReadToEnd();
+                string answer = string.Empty;
+
+                switch (body)
+                {
+                    case "A":
+                    case "a": 
+                    answer += "You chose option A in Game One.\n";
+                    break;
+                case "B":
+                    case "b":
+                        answer += "You chose option B in Game One.\n"; // Add scenario-specific logic here
                         break;
-                    case ("/game/player/1"):
-                        GameOneGet(response);
-                        break;
-                    case ("/game/player/2"):
-                        GameTwoGet(response);
-                        break;
-                    
                     default:
-                        NotFound(response);
+                        answer += "Invalid choice in Game One.\n"; // Add scenario-specific logic here
                         break;
                 }
-                break;
 
-            case ("POST"):
-                switch (request.Url?.AbsolutePath)
-                {
-                    case ("/game/player/1"):
-                        GameOnePost(request, response);
-                        break;
-                    case ("/game/player/2"):
-                        GameTwoPost(request, response);
-                        break;
-                    case ("/player/register"):
-                        Player registerPlayer = new Player();
-                        registerPlayer.RegisterPost(request, response);
-                        break;
-                    case ("/player/login"):
-                        Player playerLogin = new Player();
-                        playerLogin.LoginPost(request, response);
-                        break;
-                    default:
-                        NotFound(response);
-                        break;
-                }
-                break;
+                // Send user choice as response
+                SendResponse(res, answer);
+            }
 
-            default:
-                NotFound(response);
-                break;
-        }
-    }
 
-    void IntroGet(HttpListenerResponse response)
-    {
-        string resultIntro = string.Empty;
-        Console.WriteLine("Printing out 'Intro' from storypoints to player...");
-
-        const string qIntroGet = "select content from storypoints where storypoint_id = 1";
-        var reader = _db.CreateCommand(qIntroGet).ExecuteReader();
-        while (reader.Read())
+        private void GameTwoPost(HttpListenerRequest req, HttpListenerResponse res)
         {
-            resultIntro = reader.GetString(0);
+            // Handle POST request for GameTwo
         }
-       
-        byte[] buffer = Encoding.UTF8.GetBytes(resultIntro);
-        response.ContentType = "text/plain";
-        response.StatusCode = (int)HttpStatusCode.OK;
 
-        foreach (byte b in buffer)
+        private void GameThreePost(HttpListenerRequest req, HttpListenerResponse res)
         {
-            response.OutputStream.WriteByte(b);
-            Thread.Sleep(35);
+            // Handle POST request for GameThree
         }
-        response.OutputStream.Close();
-    }
 
-    void GameOneGet(HttpListenerResponse response)
-    {
-        string resultStoryOne = string.Empty;
-        Console.WriteLine("Printing out 'Story One' from storypoints to player...");
-
-        const string qStoryOne = "select content from storypoints where storypoint_id = 2";
-        var reader = _db.CreateCommand(qStoryOne).ExecuteReader();
-        while (reader.Read())
+        private void SendResponse(HttpListenerResponse response, string content)
         {
-            resultStoryOne = reader.GetString(0);
+            byte[] buffer = Encoding.UTF8.GetBytes(content);
+            response.ContentType = "text/plain";
+            response.StatusCode = (int)HttpStatusCode.OK;
+
+            foreach (byte b in buffer)
+            {
+                response.OutputStream.WriteByte(b);
+                Thread.Sleep(35);
+            }
+            response.OutputStream.Close();
         }
 
-        byte[] buffer = Encoding.UTF8.GetBytes(resultStoryOne);
-        response.ContentType = "text/plain";
-        response.StatusCode = (int)HttpStatusCode.OK;
-
-        foreach (byte b in buffer)
+        private void NotFound(HttpListenerResponse res)
         {
-            response.OutputStream.WriteByte(b);
-            Thread.Sleep(35);
+            res.StatusCode = (int)HttpStatusCode.NotFound;
+            res.Close();
         }
-        response.OutputStream.Close();
-    }
-    void GameTwoGet(HttpListenerResponse response)
-    {
-        string resultStoryTwo = string.Empty;
-        Console.WriteLine("Printing out 'Story Two' from storypoints to player...");
-
-        const string qStoryTwo = "select content from storypoints where storypoint_id = 3";
-        var reader = _db.CreateCommand(qStoryTwo).ExecuteReader();
-        while (reader.Read())
-        {
-            resultStoryTwo = reader.GetString(0);
-        }
-
-        byte[] buffer = Encoding.UTF8.GetBytes(resultStoryTwo);
-        response.ContentType = "text/plain";
-        response.StatusCode = (int)HttpStatusCode.OK;
-
-        foreach (byte b in buffer)
-        {
-            response.OutputStream.WriteByte(b);
-            Thread.Sleep(35);
-        }
-        response.OutputStream.Close();
-    }
-
-    void GameOnePost(HttpListenerRequest req, HttpListenerResponse res)
-    {
-        StreamReader reader = new(req.InputStream, req.ContentEncoding);
-        string body = reader.ReadToEnd();
-        string answer = string.Empty;
-
-        switch (body)
-        {
-            case ("A"):
-            case ("a"):
-                answer +=
-                    "You find teeth looks like it's human. You turn back around, take the left tunnel and find a torch.\n";
-                break;
-            case ("B"):
-            case ("b"):
-                answer +=
-                    "You find a torch, might be useful later\n";
-                break;
-            default:
-                answer +=
-                    "That option does not exist\n";
-                break;
-        }
-
-        //user choice
-        byte[] buffer = Encoding.UTF8.GetBytes(answer);
-        res.ContentType = "text/plain";
-        res.StatusCode = (int)HttpStatusCode.OK;
-        foreach (byte b in buffer)
-        {
-            res.OutputStream.WriteByte(b);
-            Thread.Sleep(35);
-        }
-
-        res.StatusCode = (int)HttpStatusCode.Created;
-        res.Close();
-    }
-
-    void GameTwoPost(HttpListenerRequest req, HttpListenerResponse res)
-    {
-        StreamReader reader = new(req.InputStream, req.ContentEncoding);
-        string body = reader.ReadToEnd();
-        string answer = string.Empty;
-
-        switch (body)
-        {
-            case ("A"):
-            case ("a"):
-                answer +=
-                    "You find teeth looks like it's human. You turn back around, take the left tunnel and find a torch.\n";
-                break;
-            case ("B"):
-            case ("b"):
-                answer +=
-                    "You find a torch, might be useful later\n";
-                break;
-            default:
-                answer +=
-                    "That option does not exist\n";
-                break;
-        }
-
-        //user choice
-        byte[] buffer = Encoding.UTF8.GetBytes(answer);
-        res.ContentType = "text/plain";
-        res.StatusCode = (int)HttpStatusCode.OK;
-        foreach (byte b in buffer)
-        {
-            res.OutputStream.WriteByte(b);
-            Thread.Sleep(35);
-        }
-
-        res.StatusCode = (int)HttpStatusCode.Created;
-        res.Close();
-    }
-
-    void NotFound(HttpListenerResponse res)
-    {
-        res.StatusCode = (int)HttpStatusCode.NotFound;
-        res.Close();
     }
 }

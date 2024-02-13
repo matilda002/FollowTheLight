@@ -8,7 +8,8 @@ var db = NpgsqlDataSource.Create(dbUri);
 var dbCreator = new DatabaseCreator(db);
 var dbHelper = new DatabaseHelper(db);
 
-dbHelper.ResetTables();
+
+//dbHelper.ResetTables();
 dbCreator.CreateTables();
 dbHelper.PopulateStoryPointsTable();
 
@@ -25,9 +26,10 @@ Console.CancelKeyPress += delegate (object? sender, ConsoleCancelEventArgs e)
     listen = false;
 };
 
-Server server = new(db);
+Server server = new Server(dbHelper);
 try
 {
+    server.Start();
     listener.Start();
     listener.BeginGetContext(new AsyncCallback(server.HandleRequest), listener);
     while (listen) { }
