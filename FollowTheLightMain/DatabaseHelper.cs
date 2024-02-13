@@ -27,67 +27,69 @@ public class DatabaseHelper
 
         cmd.Parameters.AddWithValue("Intro");
         cmd.Parameters.AddWithValue("""
-                                    Awakening in dark oblivion, memories lost to the void, a bone-chilling cold grips the air. Your screams only echoes, swallowed by the oppressive cave. A faint device flickers on the ground, its voice pleading: Who is there? Where am I?
-                                    An unsettling truth lingers-strangers, bound by this abyss, must collaborate to escape. No past, no exit, just an uneasy pact in this nightmare. Can you unravel the shadows together, or be consumed by the echoes of your own fear? The game begins, and only unity can conquer the lurking horrors.
+                                    Awakening in pitch-black oblivion, memories lost to the void, a bone-chilling cold grips the air. Screams reverberate, swallowed by the oppressive dark. A faint device flickers, its voice pleading, “Who’s there? Where am I?” An unsettling truth lingers—strangers, bound by this abyss, must collaborate to escape.
+                                    No past, no exit, just an uneasy pact in this nightmarish hell. Can you unravel the shadows together, or be devoured by the creatures of your own fear? The game begins, and only unity can survive the lurking horrors.
                                     """);
         cmd.Parameters.AddWithValue("Story One");
         cmd.Parameters.AddWithValue("""
-                                    In the dark, you find matches. Lighting one reveals more of the cave with paths on your right and left. Where do you choose to go? Your story starts with a spark in the shadows.
-
-                                    A. To your right
-                                    B. To your left
+                                    In the dark, you find matches. Lighting one reveals a cave with paths on your right and left. Where to? Right or left? Your story starts with a spark in the shadows. You feel fear creeping up.
+                                   
+                                    A) You go right. Maybe there’s something interesting there.
+                                    B) You go left. Maybe there’s a way out there.
+                                    C) You stay where you are. Maybe someone will find you there. 
+                                    D) You light the whole box of matches. Maybe you’ll see better.
                                     """);
         cmd.Parameters.AddWithValue("Story Two");
         cmd.Parameters.AddWithValue("""
-                                    As you walk through the tunnel, you feel something underfoot. It's a piece of paper. What now? Your choices unfold as you decide what to do with it.
-
-                                    A. Eat it
-                                    B. Throw it behind you
-                                    C. Burn it with a match
-                                    D. Read it
+                                    As you walk through the tunnel, you feel something underfoot. It’s a piece of paper. What now? Your choices unfold as you decide what to do next.
+                                    
+                                    A) You pick up the paper. Maybe there’s something useful on it.
+                                    B) You leave the paper. Maybe it’s a trap or a distraction.
+                                    C) You burn the paper. Maybe it can be used to fuel your torch. 
+                                    D) You eat the paper. Maybe you’re hungry or curious. 
                                     """);
         cmd.Parameters.AddWithValue("Story Three");
         cmd.Parameters.AddWithValue("""
-                                    You spot a red frog sitting on a rock, it looks friendly despite the bones scattered around it. What's your move? Decide carefully to face the consequences.
-
-                                    A. Burn it with your torch
-                                    B. Walk past the frog
-                                    C. Pick it up with your hands
-                                    D. Poke it with a bone from the ground
+                                    You spot a red frog sitting on a rock, it looks friendly despite the bones scattered around it. What’s your move? Choose wisely as the story continues.
+                                    
+                                    A) You pet the frog. Maybe it will be your friend.
+                                    B) You kiss the frog. Maybe it will turn into something/someone helpful.
+                                    C) You ignore the frog. Maybe it’s not important.
+                                    D) You poke it with a bone from the ground. Maybe it will move. 
                                     """);
         cmd.Parameters.AddWithValue("Story Four");
         cmd.Parameters.AddWithValue("""
-                                    A sinister noise echoes from behind. Quick, what's your next move? Choose wisely as the story continues.
-
-                                    A. Make a shushing noise
-                                    B. Hide behind something
-                                    C. Look back and investigate the noise
-                                    D. Scream and run
+                                    A sinister noise echoes from behind. Quick, what’s your next move? Decide carefully to face the unfolding story.
+                                    
+                                    A) Quietly run away from the noise. Maybe it’s something dangerous.
+                                    B) You hide behind something. Maybe it won’t see or hear you.
+                                    C) You make a shushing noise back. Maybe it will be scared of you.
+                                    D) You investigate the noise. Maybe it’s something interesting.
                                     """);
         cmd.Parameters.AddWithValue("Story Five");
         cmd.Parameters.AddWithValue("""
-                                    Facing a towering wall, your only option is to climb it. What's your choice?
-
-                                    A. Climb the slippery wall
-                                    B. Look around the area
-                                    C. Climb the rope
-                                    D. Take the ladder with missing steps
+                                    A sudden collapse blocks your way with narrow light streaming in from the other side of the stones. Quick, what’s your next move? Decide carefully to face the unfolding story.
+                                    
+                                    A) You remove some stones. Maybe there’s a hidden passage.
+                                    B) You climb over the stones. Maybe there’s a way out.
+                                    C) You push the stones. Maybe they will move. 
+                                    D) You ignore the stones and sit down and rest, maybe an idea will unfold.
                                     """);
-        cmd.Parameters.AddWithValue("Story Six"); // story six -> nine are only drafts, not the finished product.
+        cmd.Parameters.AddWithValue("Story Six");
         cmd.Parameters.AddWithValue("""
-                                    Reaching the new surface you see withered skulls around you. There is a creepy altar with a candle in the middle of it.
-
-                                    A. Eat the candle
-                                    B. Light yourself on fire, the skulls were the last straw
-                                    C. Use one of the matches to light up the candle
-                                    D. Throw a skull at the alter
+                                    In the passage you notice a tall figure’s shadow in the dark approaching you.
+                                    
+                                    A) You stand still. Maybe it won’t notice you.
+                                    B) You run past it. Maybe you can escape it.
+                                    C) You fight back. Maybe you can defeat it. 
+                                    D) You chicken out and go back to where the stones collapsed.
                                     """);
         cmd.Parameters.AddWithValue("Story Seven");
         cmd.Parameters.AddWithValue("""
-                                    You've found the exit, but desperate screams plead for rescue within the cave. What's your choice now? Leave or venture back into the darkness to investigate?
+                                    You’ve found the exit, but desperate screams plead for rescue within the cave. What’s your choice now? Leave or venture back into the darkness to investigate?
                                     
-                                    A. Leave the cave
-                                    B. Go back into the darkness
+                                    A) Leave the cave
+                                    B) Go back into the darkness
                                     """);
         cmd.Parameters.AddWithValue("Challenge One");
         cmd.Parameters.AddWithValue("""
