@@ -5,7 +5,7 @@ namespace FollowTheLightMain;
 
 public class Player
 {
-    public string Username { get; private set; }
+    public string Username; 
 
     public Player(string username)
     {
@@ -20,7 +20,7 @@ public class Player
             StreamReader reader = new(req.InputStream, req.ContentEncoding);
             string username = reader.ReadToEnd();
 
-            Player activePlayer = new Player(username);
+            Player activeUsername = new Player(username);
             
             string queryToDb = "insert into players (username) values (@1)";
             var cmd = db.CreateCommand(queryToDb);

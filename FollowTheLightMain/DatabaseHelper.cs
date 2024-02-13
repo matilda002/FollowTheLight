@@ -15,7 +15,7 @@ public class DatabaseHelper
     {
         Console.WriteLine("Resetting tables...");
         const string query = "drop schema public cascade; create schema public;";
-        _db.CreateCommand(query).ExecuteNonQueryAsync();
+        _db.CreateCommand(query).ExecuteNonQuery();
     }
 
     public void PopulateStoryPointsTable()
@@ -117,7 +117,7 @@ public class DatabaseHelper
                                     B. Go back into the darkness
                                     """);
 
-        cmd.ExecuteNonQueryAsync();
+        cmd.ExecuteNonQuery();
     }
 
     public void PopulateImagesTable()
@@ -144,6 +144,6 @@ public class DatabaseHelper
         cmd.Parameters.AddWithValue($"{js6}");
         cmd.Parameters.AddWithValue($"{imgFrog}"); 
 
-        cmd.ExecuteNonQueryAsync();
+        cmd.ExecuteNonQuery();
     }
 }

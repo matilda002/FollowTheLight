@@ -28,7 +28,7 @@ public class Server
     {
         HttpListenerRequest request = context.Request;
         HttpListenerResponse response = context.Response; 
-        Player activePlayer = new Player("");
+       
 
         switch (request.HttpMethod)
         {
@@ -36,7 +36,7 @@ public class Server
                 switch (request.Url?.AbsolutePath)
                 {
                     case ("/intro"):
-                        IntroGet(response, activePlayer);
+                        IntroGet(response);
                         break;
                     case ("/game/player/1"):
                         GameOneGet(response);
@@ -83,7 +83,7 @@ public class Server
         }
     }
 
-    void IntroGet(HttpListenerResponse response, Player activePlayer)
+    void IntroGet(HttpListenerResponse response)
     {
         string resultIntro = string.Empty;
         Console.WriteLine("Printing out 'Intro' from storypoints to player...");
@@ -94,10 +94,10 @@ public class Server
         {
             resultIntro = reader.GetString(0);
         }
-
-        const string qUpdateSP = "update players set current_storypoint = 1 where username = @1";
+        
+        const string qUpdateSP = "update players set current_storypoint = 1 where username = @activeUsername";
         var updatecmd = _db.CreateCommand(qUpdateSP);
-        updatecmd.Parameters.AddWithValue("@1", activePlayer.Username);
+        updatecmd.Parameters.AddWithValue("@activeUsername", activePlayer.Username);
         updatecmd.ExecuteNonQuery();
        
         byte[] buffer = Encoding.UTF8.GetBytes(resultIntro);
