@@ -32,7 +32,7 @@ public class DatabaseCreator
             player_id serial primary key,
             username text,
             hp smallint default (5),
-            current_storypoint int references storypoints(storypoint_id),
+            current_storypoint int default (1) references storypoints(storypoint_id),
             unique(username)
         )";
         _db.CreateCommand(playersTable).ExecuteNonQuery();

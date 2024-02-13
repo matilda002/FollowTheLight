@@ -28,7 +28,6 @@ public class Server
     {
         HttpListenerRequest request = context.Request;
         HttpListenerResponse response = context.Response; 
-       
 
         switch (request.HttpMethod)
         {
@@ -60,15 +59,11 @@ public class Server
                         GameTwoPost(request, response);
                         break;
                     case ("/player/register"):
-                        StreamReader registerReader = new StreamReader(request.InputStream, request.ContentEncoding);
-                        string registerUsername = registerReader.ReadToEnd();
-                        Player registerPlayer = new Player(registerUsername);
+                        Player registerPlayer = new Player();
                         registerPlayer.RegisterPost(request, response);
                         break;
                     case ("/player/login"):
-                        StreamReader loginReader = new StreamReader(request.InputStream, request.ContentEncoding);
-                        string loginUsername = loginReader.ReadToEnd();
-                        Player playerLogin = new Player(loginUsername);
+                        Player playerLogin = new Player();
                         playerLogin.LoginPost(request, response);
                         break;
                     default:
@@ -85,6 +80,8 @@ public class Server
 
     void IntroGet(HttpListenerResponse response)
     {
+        
+        
         string resultIntro = string.Empty;
         Console.WriteLine("Printing out 'Intro' from storypoints to player...");
 
@@ -94,12 +91,7 @@ public class Server
         {
             resultIntro = reader.GetString(0);
         }
-        
-        const string qUpdateSP = "update players set current_storypoint = 1 where username = @activeUsername";
-        var updatecmd = _db.CreateCommand(qUpdateSP);
-        updatecmd.Parameters.AddWithValue("@activeUsername", activePlayer.Username);
-        updatecmd.ExecuteNonQuery();
-       
+
         byte[] buffer = Encoding.UTF8.GetBytes(resultIntro);
         response.ContentType = "text/plain";
         response.StatusCode = (int)HttpStatusCode.OK;
@@ -114,6 +106,15 @@ public class Server
 
     void GameOneGet(HttpListenerResponse response)
     {
+        StreamReader reader1 = new(response.InputStream, response.ContentEncoding);
+        string username = reader1.ReadToEnd(); 
+            
+        string queryToDb = "update players set current_storypoint = @current_storypoint where username = @username";
+        var cmd = _db.CreateCommand(queryToDb);
+        cmd.Parameters.AddWithValue("@current_storypoint", 2);
+        cmd.Parameters.AddWithValue("@username", username);
+        cmd.ExecuteNonQuery(); 
+        
         string resultStoryOne = string.Empty;
         Console.WriteLine("Printing out 'Story One' from storypoints to player...");
 
