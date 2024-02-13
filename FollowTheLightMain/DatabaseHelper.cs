@@ -11,16 +11,17 @@ public class DatabaseHelper
         _db = db;
     }
 
+    
     public void ResetTables()
-    { 
-        Console.WriteLine("Resetting tables..."); 
-        const string query = "drop schema public cascade; create schema public;"; 
+    {
+        Console.WriteLine("Resetting tables...");
+        const string query = "drop schema public cascade; create schema public;";
         _db.CreateCommand(query).ExecuteNonQuery();
     }
-
+    
     public void PopulateStoryPointsTable()
     {
-        Console.WriteLine("Populating the storypoints table for player one + intro for all players...");
+        Console.WriteLine("Populating the storypoints table...");
 
         var cmd = _db.CreateCommand("insert into storypoints(title, content)" +
                                                 "values ($1,$2), ($3,$4), ($5,$6), ($7,$8), ($9,$10), ($11,$12), ($13,$14), ($15,$16), ($17,$18), ($19,$20)");
@@ -219,7 +220,6 @@ public class DatabaseHelper
         cmd.Parameters.AddWithValue($"{imgStepStoneTable}");
         cmd.Parameters.AddWithValue($"{imgLock}");
         cmd.Parameters.AddWithValue($"{imgGlowingWall}");
-        
         
         cmd.ExecuteNonQuery();
     }

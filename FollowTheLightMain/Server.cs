@@ -1,7 +1,6 @@
 ﻿using Npgsql;
 using System.Net;
 using System.Text;
-
 namespace FollowTheLightMain;
 
 public class Server
@@ -21,14 +20,14 @@ public class Server
 
             Router(context);
 
-            requestListener.BeginGetContext(new AsyncCallback(HandleRequest), requestListener);
+            requestListener.BeginGetContext(HandleRequest, requestListener);
         }
     }
 
     void Router(HttpListenerContext context)
     {
         HttpListenerRequest request = context.Request;
-        HttpListenerResponse response = context.Response;
+        HttpListenerResponse response = context.Response; 
 
         switch (request.HttpMethod)
         {
@@ -39,10 +38,14 @@ public class Server
                         IntroGet(response);
                         break;
                     case ("/game/player/1"):
-                        GameOneGet(response);
+                        GameOneGet(response, request);
                         break;
                     case ("/game/player/2"):
                         GameTwoGet(response);
+                        break;
+                    case ("/game/player/message"):
+                        Radio message = new Radio(_db);
+                        message.GameMessage(response);
                         break;
                     case ("/challenge"):
                         ChallengeGet(response);
@@ -62,6 +65,18 @@ public class Server
                     case ("/game/player/2"):
                         GameTwoPost(request, response);
                         break;
+                    case ("/player/register"):
+                        Player registerPlayer = new Player();
+                        registerPlayer.RegisterPost(request, response);
+                        break;
+                    case ("/player/login"):
+                        Player playerLogin = new Player();
+                        playerLogin.LoginPost(request, response);
+                        break;
+                    case ("/game/player/chat"):
+                        Radio chat = new Radio(_db);
+                        chat.StoreChat(request, response);
+                        break;
                     default:
                         NotFound(response);
                         break;
@@ -76,6 +91,8 @@ public class Server
 
     void IntroGet(HttpListenerResponse response)
     {
+        
+        
         string resultIntro = string.Empty;
         Console.WriteLine("Printing out 'Intro' from storypoints to player...");
 
@@ -97,50 +114,18 @@ public class Server
         }
         response.OutputStream.Close();
     }
-    
-    void ChallengeGet(HttpListenerResponse response)
-    {
-        string resultText = string.Empty;
-        string resultImg = string.Empty;
-        Console.WriteLine("Printing out 'Challange One' from storypoints to player...");
 
-        const string qChallangeText = "select content from storypoints where storypoint_id = 9";
-        const string qChallangeImg = "select image from images where image_id = 8";
-        var reader = _db.CreateCommand(qChallangeText).ExecuteReader();
-        var readerTwo = _db.CreateCommand(qChallangeImg).ExecuteReader();
-        
-        while (reader.Read())
-        {
-            resultText = reader.GetString(0);
-        }
-        while (readerTwo.Read())
-        {
-            resultImg = readerTwo.GetString(0);
-        }
-        
-        byte[] bufferText = Encoding.UTF8.GetBytes(resultText);
-        response.ContentType = "text/plain";
-        response.StatusCode = (int)HttpStatusCode.OK;
-        
-        byte[] bufferImg = Encoding.UTF8.GetBytes(resultImg);
-        response.ContentType = "text/plain";
-        response.StatusCode = (int)HttpStatusCode.OK;
-        
-        foreach (byte b in bufferText)
-        {
-            response.OutputStream.WriteByte(b);
-            Thread.Sleep(20);
-        }
-        foreach (byte b in bufferImg)
-        {
-            response.OutputStream.WriteByte(b); 
-        }
-        
-        response.OutputStream.Close();
-    }
-
-    void GameOneGet(HttpListenerResponse response)
+    void GameOneGet(HttpListenerResponse response, HttpListenerRequest request)
     {
+        StreamReader reader1 = new(request.InputStream, request.ContentEncoding);
+        string username = reader1.ReadToEnd();
+        
+        string queryToDb = "update players set current_storypoint = @current_storypoint where username = @username";
+        var cmd = _db.CreateCommand(queryToDb);
+        cmd.Parameters.AddWithValue("@current_storypoint", 2);
+        cmd.Parameters.AddWithValue("@username", username);
+        cmd.ExecuteNonQuery(); 
+        
         string resultStoryOne = string.Empty;
         Console.WriteLine("Printing out 'Story One' from storypoints to player...");
 
@@ -185,6 +170,7 @@ public class Server
         }
         response.OutputStream.Close();
     }
+
 
     void GameOnePost(HttpListenerRequest req, HttpListenerResponse res)
     {
@@ -260,6 +246,94 @@ public class Server
 
         res.StatusCode = (int)HttpStatusCode.Created;
         res.Close();
+    }
+    void ChallengeGet(HttpListenerResponse response)
+    {
+        string resultText = string.Empty;
+        string resultImg = string.Empty;
+        Console.WriteLine("Printing out 'Challange One' from storypoints to player...");
+
+        const string qChallangeText = "select content from storypoints where storypoint_id = 9";
+        const string qChallangeImg = "select image from images where image_id = 8";
+        var reader = _db.CreateCommand(qChallangeText).ExecuteReader();
+        var readerTwo = _db.CreateCommand(qChallangeImg).ExecuteReader();
+        
+        while (reader.Read())
+        {
+            resultText = reader.GetString(0);
+        }
+        while (readerTwo.Read())
+        {
+            resultImg = readerTwo.GetString(0);
+        }
+        
+        byte[] bufferText = Encoding.UTF8.GetBytes(resultText);
+        response.ContentType = "text/plain";
+        response.StatusCode = (int)HttpStatusCode.OK;
+        
+        byte[] bufferImg = Encoding.UTF8.GetBytes(resultImg);
+        response.ContentType = "text/plain";
+        response.StatusCode = (int)HttpStatusCode.OK;
+        
+        foreach (byte b in bufferText)
+        {
+            response.OutputStream.WriteByte(b);
+            Thread.Sleep(20);
+        }
+        foreach (byte b in bufferImg)
+        {
+            response.OutputStream.WriteByte(b); 
+        }
+        
+        response.OutputStream.Close();
+    }
+
+
+    public void StoreChat(HttpListenerRequest req, HttpListenerResponse res)
+    {
+        try
+        {
+
+            StreamReader reader = new(req.InputStream, req.ContentEncoding);
+            string chat = reader.ReadToEnd();
+
+            string answer = "Your message has been sent";
+
+            byte[] buffer = Encoding.UTF8.GetBytes(answer);
+            res.ContentType = "text/plain";
+            res.StatusCode = (int)HttpStatusCode.OK;
+            res.OutputStream.Write(buffer, 0, buffer.Length);
+            res.Close();
+
+
+            using (var cmd = _db.CreateCommand())
+            {
+                cmd.CommandText = "CREATE TABLE IF NOT EXISTS radio(value TEXT)";
+                cmd.ExecuteNonQuery();
+            }
+
+            using (var cmd = _db.CreateCommand())
+            {
+                cmd.CommandText = "INSERT INTO radio (from_player, to_player, message) VALUES (@fromPlayer, @toPlayer, @message)";
+                cmd.Parameters.AddWithValue("@fromPlayer", 1);
+                cmd.Parameters.AddWithValue("toPlayer", 2);
+                cmd.Parameters.AddWithValue("@message", chat);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error " + ex.Message);
+            string answer = "Error";
+
+            byte[] buffer = Encoding.UTF8.GetBytes(answer);
+            res.ContentType = "text/plain";
+            res.StatusCode = (int)HttpStatusCode.InternalServerError;
+            res.OutputStream.Write(buffer, 0, buffer.Length);
+            res.Close();
+        }
+
     }
 
     void NotFound(HttpListenerResponse res)

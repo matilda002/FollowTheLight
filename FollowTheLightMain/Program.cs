@@ -1,15 +1,14 @@
 using FollowTheLightMain;
 using Npgsql;
 using System.Net;
-using System.Text;
 
 const string dbUri = "Host=localhost;Port=5455;Username=postgres;Password=postgres;Database=followthelightdb;";
 var db = NpgsqlDataSource.Create(dbUri);
 
 var dbCreator = new DatabaseCreator(db);
-var dbHelper = new DatabaseHelper(db); 
+var dbHelper = new DatabaseHelper(db);
 
-// dbHelper.ResetTables();
+//dbHelper.ResetTables();
 dbCreator.CreateTables();
 dbHelper.PopulateStoryPointsTable();
 dbHelper.PopulateStoryPointsTableTwo();
