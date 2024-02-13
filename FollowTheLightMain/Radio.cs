@@ -15,9 +15,9 @@ public class Radio
     public void GameMessage(HttpListenerResponse response)
     {
         Console.WriteLine("Recieving message");
-        const string qStoryOne = "SELECT message FROM radio WHERE from_player = 1";
-        var command = _db.CreateCommand(qStoryOne);
-        command.CommandText = qStoryOne;
+        const string select = "SELECT message FROM radio WHERE from_player = 1";
+        var command = _db.CreateCommand(select);
+        command.CommandText = select;
         string message = string.Empty;
 
 
@@ -35,6 +35,8 @@ public class Radio
             response.ContentType = "text/plain";
             response.StatusCode = (int)HttpStatusCode.OK;
             response.OutputStream.Write(buffer, 0, buffer.Length);
+
+   
 
         }
         response.OutputStream.Close();
@@ -67,7 +69,7 @@ public class Radio
             {
                 cmd.CommandText = "INSERT INTO radio (from_player, to_player, message) VALUES (@fromPlayer, @toPlayer, @message)";
                 cmd.Parameters.AddWithValue("@fromPlayer", 1);
-                cmd.Parameters.AddWithValue("toPlayer", 2);
+                cmd.Parameters.AddWithValue("@toPlayer", 2);
                 cmd.Parameters.AddWithValue("@message", chat);
                 cmd.ExecuteNonQuery();
             }
