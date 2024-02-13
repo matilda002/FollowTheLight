@@ -91,11 +91,13 @@ public class DatabaseHelper
                                     """);
         cmd.Parameters.AddWithValue("Challenge Two");
         cmd.Parameters.AddWithValue("""
-                                    <challenge two>
+                                    You're met by a door with a lock on it, and next to door there's the key in a safe. To unlock it you need a combination of three numbers. You search around with no luck finding clues more than a letter saying:
+                                    
+                                    "Contact the other side for the answer"
                                     """);
         cmd.Parameters.AddWithValue("Challenge Three");
         cmd.Parameters.AddWithValue("""
-                                    <challenge three>
+                                    <Svar på symboler på väggen>
                                     """);
 
         cmd.ExecuteNonQuery();
@@ -169,11 +171,13 @@ public class DatabaseHelper
                                     """);
         cmd.Parameters.AddWithValue("Challenge Two - P2");
         cmd.Parameters.AddWithValue("""
-                                     <content>
+                                    You see a note on the door with a mathematical problem:
+                                    
+                                    3 + 15/3 + 2*2 
                                     """);
         cmd.Parameters.AddWithValue("Challenge Three - P2");
         cmd.Parameters.AddWithValue("""
-                                     <content>
+                                     <Pao symboler på väggen?>
                                     """);
         cmd.Parameters.AddWithValue("The End");
         cmd.Parameters.AddWithValue("""
@@ -198,10 +202,11 @@ public class DatabaseHelper
         string imgFrog = File.ReadAllText($"FollowTheLightMain/images/frog.txt");
         string imgStepStone = File.ReadAllText($"FollowTheLightMain/images/steppingstones.txt");
         string imgStepStoneTable = File.ReadAllText($"FollowTheLightMain/images/steppingstonestable.txt");
-        
+        string imgLock = File.ReadAllText($"FollowTheLightMain/images/lock.txt"); 
+        string imgGlowingWall = File.ReadAllText($"FollowTheLightMain/images/glowingwall.txt"); 
 
         var cmd = _db.CreateCommand("insert into images(image)" +
-                                                "values ($1), ($2), ($3), ($4), ($5), ($6), ($7), ($8), ($9)");
+                                                "values ($1), ($2), ($3), ($4), ($5), ($6), ($7), ($8), ($9), ($10), ($11)");
         
         cmd.Parameters.AddWithValue($"{js1}");
         cmd.Parameters.AddWithValue($"{js2}");
@@ -212,6 +217,9 @@ public class DatabaseHelper
         cmd.Parameters.AddWithValue($"{imgFrog}");
         cmd.Parameters.AddWithValue($"{imgStepStone}");
         cmd.Parameters.AddWithValue($"{imgStepStoneTable}");
+        cmd.Parameters.AddWithValue($"{imgLock}");
+        cmd.Parameters.AddWithValue($"{imgGlowingWall}");
+        
         
         cmd.ExecuteNonQuery();
     }
