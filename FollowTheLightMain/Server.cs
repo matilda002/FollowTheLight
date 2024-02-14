@@ -12,44 +12,34 @@ namespace FollowTheLightMain
         private readonly HttpListener _listener;
         private readonly DatabaseHelper _db;
 
-        public Server(DatabaseHelper db)
+        public Server(NpgsqlDataSource db)
         {
             _listener = new HttpListener();
-            _db = db;
+            _db = new DatabaseHelper(db);
             _listener.Prefixes.Add("http://localhost:3000/");
-        }
 
-        public void Start()
-        {
+         
             _listener.Start();
             Console.WriteLine("Server started. Listening for requests...");
+            _listener.BeginGetContext(HandleRequest, _listener);
+        }
 
-            ThreadPool.QueueUserWorkItem((o) =>
+ 
+        public void HandleRequest(IAsyncResult result)
+        {
+            try
             {
-                try
-                {
-                    while (_listener.IsListening)
-                    {
-                        HttpListenerContext context = _listener.GetContext();
-                        ThreadPool.QueueUserWorkItem((c) => HandleRequest(context));
-                    }
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine($"Exception: {e.Message}");
-                }
-            });
+                HttpListenerContext context = _listener.EndGetContext(result);       
+                Router(context);
+                _listener.BeginGetContext(HandleRequest, _listener);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Exception: {e.Message}");
+            }
         }
-
-        public void Stop()
+        void Router(HttpListenerContext context)
         {
-            _listener.Stop();
-            _listener.Close();
-        }
-
-        public void HandleRequest(object state)
-        {
-            HttpListenerContext context = (HttpListenerContext)state;
             HttpListenerRequest request = context.Request;
             HttpListenerResponse response = context.Response;
 
@@ -69,6 +59,10 @@ namespace FollowTheLightMain
                             break;
                         case "/game/player/3":
                             GameThreeGet(response);
+                            break;
+                        case "/game/player/message":
+                            Radio message = new Radio(_db);
+                            message.GameMessage(response);
                             break;
                         default:
                             NotFound(response);
@@ -106,83 +100,93 @@ namespace FollowTheLightMain
             }
         }
 
-        private void IntroGet(HttpListenerResponse response)
+        void IntroGet(HttpListenerResponse response)
         {
-            string resultIntro = _db.GetStoryPointContent(1); 
+            string resultIntro = _db.GetStoryPointContent(1);
             SendResponse(response, resultIntro);
         }
 
-        private void GameOneGet(HttpListenerResponse response)
+        void GameOneGet(HttpListenerResponse response)
         {
             string resultStoryOne = _db.GetStoryPointContent(2);
             SendResponse(response, resultStoryOne);
         }
 
-        private void GameTwoGet(HttpListenerResponse response)
+        void GameTwoGet(HttpListenerResponse response)
         {
-            string resultStoryTwo = _db.GetStoryPointContent(3); 
+            string resultStoryTwo = _db.GetStoryPointContent(3);
+            SendResponse(response, resultStoryTwo);
         }
 
-        private void GameThreeGet(HttpListenerResponse response)
+        void GameThreeGet(HttpListenerResponse response)
         {
-            string resultStoryThree = _db.GetStoryPointContent(4); 
+            string resultStoryThree = _db.GetStoryPointContent(4);
             SendResponse(response, resultStoryThree);
         }
 
-        private void GameOnePost(HttpListenerRequest req, HttpListenerResponse res)
+        void GameOnePost(HttpListenerRequest req, HttpListenerResponse res)
         {
-                StreamReader reader = new StreamReader(req.InputStream, req.ContentEncoding);
-                string body = reader.ReadToEnd();
-                string answer = string.Empty;
+            StreamReader reader = new StreamReader(req.InputStream, req.ContentEncoding);
+            string body = reader.ReadToEnd();
+            string answer = string.Empty;
 
-                switch (body)
-                {
-                    case "A":
-                    case "a": 
+            switch (body)
+            {
+                case "A":
+                case "a":
                     answer += "You chose option A in Game One.\n";
                     break;
                 case "B":
-                    case "b":
-                        answer += "You chose option B in Game One.\n"; 
-                        break;
-                    default:
-                        answer += "Invalid choice in Game One.\n"; 
-                        break;
-                }
-
-                
-                SendResponse(res, answer);
+                case "b":
+                    answer += "You chose option B in Game One.\n";
+                    break;
+                case "/game/player/chat":
+                    Radio chat = new Radio(_db);
+                    chat.StoreChat(req, res); // Corrected parameter names
+                    break;
+                default:
+                    answer += "Invalid choice in Game One.\n";
+                    break;
             }
 
-
-        private void GameTwoPost(HttpListenerRequest req, HttpListenerResponse res)
+            SendResponse(res, answer);
+        }
+        void GameTwoPost(HttpListenerRequest req, HttpListenerResponse res)
+        {
+           
+        }
+      
+        void GameThreePost(HttpListenerRequest req, HttpListenerResponse res)
         {
             
         }
 
-        private void GameThreePost(HttpListenerRequest req, HttpListenerResponse res)
-        {
-            
-        }
-
-        private void SendResponse(HttpListenerResponse response, string content)
+ 
+        void SendResponse(HttpListenerResponse response, string content)
         {
             byte[] buffer = Encoding.UTF8.GetBytes(content);
             response.ContentType = "text/plain";
             response.StatusCode = (int)HttpStatusCode.OK;
 
-            foreach (byte b in buffer)
+            using (Stream output = response.OutputStream)
             {
-                response.OutputStream.WriteByte(b);
-                Thread.Sleep(35);
+                output.Write(buffer, 0, buffer.Length);
             }
-            response.OutputStream.Close();
+            response.Close();
         }
 
-        private void NotFound(HttpListenerResponse res)
+       
+        void NotFound(HttpListenerResponse res)
         {
             res.StatusCode = (int)HttpStatusCode.NotFound;
             res.Close();
+        }
+
+ 
+        public void Stop()
+        {
+            _listener.Stop();
+            _listener.Close();
         }
     }
 }
