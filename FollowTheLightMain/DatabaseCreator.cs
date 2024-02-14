@@ -49,7 +49,6 @@ public class DatabaseCreator
         )";
         
         _db.CreateCommand(storypathTable).ExecuteNonQuery();
-        _db.CreateCommand(storypathTable).ExecuteNonQuery();
 
         const string radioTable = @"create table if not exists radio(
             radio_id serial primary key,
@@ -57,8 +56,6 @@ public class DatabaseCreator
             to_player int,
             message text
         )";
-        _db.CreateCommand(radioTable).ExecuteNonQueryAsync();
-        
         _db.CreateCommand(radioTable).ExecuteNonQuery();
     }
 }
