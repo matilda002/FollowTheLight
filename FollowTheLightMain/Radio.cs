@@ -14,30 +14,38 @@ public class Radio
     }
     public void GameMessage(HttpListenerResponse response)
     {
-        Console.WriteLine("Recieving message");
-        const string select = "SELECT message FROM radio WHERE from_player = 1";
-        var command = _db.CreateCommand(select);
-        command.CommandText = select;
-        string message = string.Empty;
-
-
-        using (var reader = command.ExecuteReader())
+        const string dbUri = "Host=localhost;Port=5455;Username=postgres;Password=postgres;Database=followthelightdb;";
+        using (var connection = new NpgsqlConnection(dbUri))
         {
-            StringBuilder messages = new StringBuilder();
-            while (reader.Read())
+
+            Console.WriteLine("Recieving message");
+            const string select = "SELECT a.message, b.username FROM radio a INNER JOIN players b ON a.from_player = b.player_id WHERE a.from_player = @playerId"; 
+
+            using (var command = new NpgsqlCommand(select, connection))
             {
-                message = reader.GetString(0);
-                messages.AppendLine(message);
+                command.Parameters.AddWithValue("@playerId", 1);
+
+                connection.Open();
+
+
+                using (var reader = command.ExecuteReader())
+                {
+                    StringBuilder messages = new StringBuilder();
+                    while (reader.Read())
+                    {
+                        string message = reader.GetString(0);
+                        string username = reader.GetString(1);
+
+                        messages.AppendLine($"{username}: {message}");
+                    }
+
+                    string allMessages = messages.ToString();
+                    byte[] buffer = Encoding.UTF8.GetBytes(allMessages);
+                    response.ContentType = "text/plain";
+                    response.StatusCode = (int)HttpStatusCode.OK;
+                    response.OutputStream.Write(buffer, 0, buffer.Length);
+                }
             }
-
-            string AllMessages = messages.ToString();
-            byte[] buffer = Encoding.UTF8.GetBytes(AllMessages);
-            response.ContentType = "text/plain";
-            response.StatusCode = (int)HttpStatusCode.OK;
-            response.OutputStream.Write(buffer, 0, buffer.Length);
-
-   
-
         }
         response.OutputStream.Close();
     }
