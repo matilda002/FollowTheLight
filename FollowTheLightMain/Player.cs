@@ -85,8 +85,10 @@ public class Player
         res.Close();
     }
 
-    public void PlayerHpUpdate()
+    public void PlayerHpUpdate() //alt. ny tabell: håller i all historik för players-val å använt sum()
     {
-
+        //HÄMTA UT DATA med query JOIN = effect + hp
+        //GÖR en metod på beräkning i kod
+        //UPPDATERA db med summeringen av NY hp
     }
 }
