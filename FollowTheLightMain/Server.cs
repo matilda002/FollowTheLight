@@ -18,10 +18,93 @@ namespace FollowTheLightMain
             _db = new DatabaseHelper(db);
             _listener.Prefixes.Add("http://localhost:3000/");
 
+<<<<<<< HEAD
          
             _listener.Start();
             Console.WriteLine("Server started. Listening for requests...");
             _listener.BeginGetContext(HandleRequest, _listener);
+=======
+            Router(context);
+
+            requestListener.BeginGetContext(HandleRequest, requestListener);
+        }
+    }
+
+    void Router(HttpListenerContext context)
+    {
+        HttpListenerRequest request = context.Request;
+        HttpListenerResponse response = context.Response; 
+
+        switch (request.HttpMethod)
+        {
+            case ("GET"):
+                switch (request.Url?.AbsolutePath)
+                {
+                    case ("/intro"):
+                        IntroGet(response);
+                        break;
+                    case ("/game/player/1"):
+                        GameOneGet(response, request);
+                        break;
+                    case ("/game/player/2"):
+                        GameTwoGet(response);
+                        break;
+                    case ("/game/player/message"):
+                        Radio message = new Radio(_db);
+                        message.GameMessage(response);
+                        break;
+                    default:
+                        NotFound(response);
+                        break;
+                }
+                break;
+
+            case ("POST"):
+                switch (request.Url?.AbsolutePath)
+                {
+                    case ("/game/player/1"):
+                        GameOnePost(request, response);
+                        break;
+                    case ("/game/player/2"):
+                        GameTwoPost(request, response);
+                        break;
+                    case ("/player/register"):
+                        Player registerPlayer = new Player();
+                        registerPlayer.Register(request, response);
+                        break;
+                    case ("/player/status"):
+                        Player playerStatus = new Player();
+                        playerStatus.ViewStatus(request, response);
+                        break;
+                    case ("/game/player/chat"):
+                        Radio chat = new Radio(_db);
+                        chat.StoreChat(request, response);
+                        break;
+                    default:
+                        NotFound(response);
+                        break;
+                }
+                break;
+
+            default:
+                NotFound(response);
+                break;
+        }
+    }
+
+    void IntroGet(HttpListenerResponse response)
+    {
+        
+        
+        string resultIntro = string.Empty;
+        Console.WriteLine("Printing out 'Intro' from storypoints to player...");
+
+        const string qIntroGet = "select content from storypoints where storypoint_id = 1";
+        var reader = _db.CreateCommand(qIntroGet).ExecuteReader();
+        while (reader.Read())
+        {
+            resultIntro = reader.GetString(0);
+>>>>>>> main
         }
 
  

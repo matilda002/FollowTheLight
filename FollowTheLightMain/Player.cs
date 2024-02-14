@@ -5,7 +5,7 @@ namespace FollowTheLightMain;
 
 public class Player
 {
-    public void RegisterPost(HttpListenerRequest req, HttpListenerResponse res)
+    public void Register(HttpListenerRequest req, HttpListenerResponse res)
     {
         try
         {
@@ -38,22 +38,32 @@ public class Player
         }
     }
 
-    public void LoginPost(HttpListenerRequest req, HttpListenerResponse res)
+    public void ViewStatus(HttpListenerRequest req, HttpListenerResponse res)
     {
         const string dbUri = "Host=localhost;Port=5455;Username=postgres;Password=postgres;Database=followthelightdb;";
         var db = NpgsqlDataSource.Create(dbUri);
         StreamReader reader = new(req.InputStream, req.ContentEncoding);
         string username = reader.ReadToEnd();
 
-        string query = "select count(*) from players where username = @1";
-        var cmd = db.CreateCommand(query);
+        string CheckUsername = "select count(*) from players where username = @1";
+        var cmd = db.CreateCommand(CheckUsername);
         cmd.Parameters.AddWithValue("@1", username);
         int count = Convert.ToInt32(cmd.ExecuteScalar());
+        
+        string queryHp = "select hp from players where username = @1";
+        var cmd2 = db.CreateCommand(queryHp);
+        cmd2.Parameters.AddWithValue("@1", username);
+        int hp = Convert.ToInt32(cmd2.ExecuteScalar());
 
+        string queryCsp = "select current_storypoint from players where username = @1";
+        var cmd3 = db.CreateCommand(queryCsp);
+        cmd3.Parameters.AddWithValue("@1", username);
+        int csp = Convert.ToInt32(cmd3.ExecuteScalar());
+        
         string answer;
         if (count > 0)
         {
-            answer = "Username correct.";
+            answer = $"\n--Current player status--\n\n{username}\nHP: {hp}\nCurrent storypoint: {csp}\n";
         }
         else
         {
