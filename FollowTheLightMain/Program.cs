@@ -30,7 +30,7 @@ Server server = new(db);
 try
 {
     listener.Start();
-    listener.BeginGetContext(new AsyncCallback(server.HandleRequest), listener);
+    listener.BeginGetContext(server.HandleRequest, listener);
     while (listen) { }
 }
 finally
