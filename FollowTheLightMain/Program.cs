@@ -8,7 +8,7 @@ var db = NpgsqlDataSource.Create(dbUri);
 var dbCreator = new DatabaseCreator(db);
 var dbHelper = new DatabaseHelper(db);
 
-//dbHelper.ResetTables();
+dbHelper.ResetTables();
 dbCreator.CreateTables();
 dbHelper.PopulateStoryPointsTable();
 
@@ -29,7 +29,7 @@ Server server = new(db);
 try
 {
     listener.Start();
-    listener.BeginGetContext(new AsyncCallback(server.HandleRequest), listener);
+    listener.BeginGetContext(server.HandleRequest, listener);
     while (listen) { }
 }
 finally

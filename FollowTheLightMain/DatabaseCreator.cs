@@ -32,7 +32,7 @@ public class DatabaseCreator
             player_id serial primary key,
             username text,
             hp smallint default (5),
-            current_storypoint int references storypoints(storypoint_id),
+            current_storypoint int default (1) references storypoints(storypoint_id),
             unique(username)
         )";
         _db.CreateCommand(playersTable).ExecuteNonQuery();
@@ -47,6 +47,8 @@ public class DatabaseCreator
             check(from_point <> to_point),
             unique(from_point, to_point)
         )";
+        
+        _db.CreateCommand(storypathTable).ExecuteNonQuery();
         _db.CreateCommand(storypathTable).ExecuteNonQuery();
 
         const string radioTable = @"create table if not exists radio(
@@ -55,6 +57,8 @@ public class DatabaseCreator
             to_player int,
             message text
         )";
+        _db.CreateCommand(radioTable).ExecuteNonQueryAsync();
+        
         _db.CreateCommand(radioTable).ExecuteNonQuery();
     }
 }
