@@ -43,7 +43,7 @@ public class Server
                     case ("/game/player/2"):
                         GameTwoGet(response);
                         break;
-                    case ("/game/player/message"):
+                    case ("/player/message"):
                         Radio message = new Radio(_db);
                         message.GameMessage(response);
                         break;
@@ -70,9 +70,13 @@ public class Server
                         Player playerStatus = new Player(_db);
                         playerStatus.ViewStatus(request, response);
                         break;
-                    case ("/game/player/chat"):
-                        Radio chat = new Radio(_db);
-                        chat.StoreChat(request, response);
+                    case ("/player/1/chat"):
+                        Radio chatOne = new Radio(_db);
+                        chatOne.SendMessageOne(request, response);
+                        break;
+                    case ("/player/2/chat"):
+                        Radio chatTwo = new Radio(_db);
+                        chatTwo.SendMessageTwo(request, response);
                         break;
                     default:
                         NotFound(response);
@@ -241,53 +245,6 @@ public class Server
 
         res.StatusCode = (int)HttpStatusCode.Created;
         res.Close();
-    }
-
-    public void StoreChat(HttpListenerRequest req, HttpListenerResponse res)
-    {
-        try
-        {
-
-            StreamReader reader = new(req.InputStream, req.ContentEncoding);
-            string chat = reader.ReadToEnd();
-
-            string answer = "Your message has been sent";
-
-            byte[] buffer = Encoding.UTF8.GetBytes(answer);
-            res.ContentType = "text/plain";
-            res.StatusCode = (int)HttpStatusCode.OK;
-            res.OutputStream.Write(buffer, 0, buffer.Length);
-            res.Close();
-
-
-            using (var cmd = _db.CreateCommand())
-            {
-                cmd.CommandText = "CREATE TABLE IF NOT EXISTS radio(value TEXT)";
-                cmd.ExecuteNonQuery();
-            }
-
-            using (var cmd = _db.CreateCommand())
-            {
-                cmd.CommandText = "INSERT INTO radio (from_player, to_player, message) VALUES (@fromPlayer, @toPlayer, @message)";
-                cmd.Parameters.AddWithValue("@fromPlayer", 1);
-                cmd.Parameters.AddWithValue("toPlayer", 2);
-                cmd.Parameters.AddWithValue("@message", chat);
-                cmd.ExecuteNonQuery();
-            }
-        }
-
-        catch (Exception ex)
-        {
-            Console.WriteLine("Error " + ex.Message);
-            string answer = "Error";
-
-            byte[] buffer = Encoding.UTF8.GetBytes(answer);
-            res.ContentType = "text/plain";
-            res.StatusCode = (int)HttpStatusCode.InternalServerError;
-            res.OutputStream.Write(buffer, 0, buffer.Length);
-            res.Close();
-        }
-
     }
 
     void NotFound(HttpListenerResponse res)

@@ -54,7 +54,8 @@ public class DatabaseCreator
             radio_id serial primary key,
             from_player int references players(player_id),
             to_player int,
-            message text
+            message text,
+            message_time timestamp DEFAULT current_timestamp
         )";
         _db.CreateCommand(radioTable).ExecuteNonQuery();
     }
