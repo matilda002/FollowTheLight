@@ -18,6 +18,11 @@ INSERT INTO storypath(
 )
 VALUES(1, 2, 'A', 0),(2, 3, 'B', -1);
 
+INSERT INTO players(
+username
+)
+VALUES ('test'),('test2');
+
 //player choice
 UPDATE players
 SET current_storypoint = 1
