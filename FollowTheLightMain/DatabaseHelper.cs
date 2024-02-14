@@ -24,7 +24,7 @@ public class DatabaseHelper
         Console.WriteLine("Populating the storypoints table...");
 
         var cmd = _db.CreateCommand("insert into storypoints(title, content)" +
-                                                "values ($1,$2), ($3,$4), ($5,$6), ($7,$8), ($9,$10), ($11,$12), ($13,$14), ($15,$16), ($17,$18), ($19,$20)");
+                                                "values ($1,$2), ($3,$4), ($5,$6), ($7,$8), ($9,$10), ($11,$12), ($13,$14)");
 
         cmd.Parameters.AddWithValue("Intro");
         cmd.Parameters.AddWithValue("""
@@ -85,31 +85,18 @@ public class DatabaseHelper
                                     C) You fight back. Maybe you can defeat it. 
                                     D) You chicken out and go back to where the stones collapsed.
                                     """);
-        cmd.Parameters.AddWithValue("Challenge One");
-        cmd.Parameters.AddWithValue("""
-                                    You step into an open space with a pool of water and some sort stepping stones with symbols on them. It looks like different paths leading to the other side. While trying to look around for clues on where to step, you have no luck...
-                                    Maybe ask the other person how it looks for them or risk your life...You never know what's lurking in the water
-                                    """);
-        cmd.Parameters.AddWithValue("Challenge Two");
-        cmd.Parameters.AddWithValue("""
-                                    You're met by a door with a lock on it, and next to door there's the key in a safe. To unlock it you need a combination of three numbers. You search around with no luck finding clues more than a letter saying:
-                                    
-                                    "Contact the other side for the answer"
-                                    """);
-        cmd.Parameters.AddWithValue("Challenge Three");
-        cmd.Parameters.AddWithValue("""
-                                    <Svar på symboler på väggen>
-                                    """);
-
         cmd.ExecuteNonQuery();
     }
+    
+    
+    
 
     public void PopulateStoryPointsTableTwo()
     {
         Console.WriteLine("Populating the storypoints table for player two...");
 
         var cmd = _db.CreateCommand("insert into storypoints(title, content)" +
-                                    "values ($1,$2), ($3,$4), ($5,$6), ($7,$8), ($9,$10), ($11,$12), ($13,$14), ($15,$16), ($17,$18), ($19,$20)");
+                                    "values ($1,$2), ($3,$4), ($5,$6), ($7,$8), ($9,$10), ($11,$12), ($13,$14)");
        
         cmd.Parameters.AddWithValue("Story One - P2");
         cmd.Parameters.AddWithValue("""
@@ -165,21 +152,6 @@ public class DatabaseHelper
                                     C) You take the unlit candle. Maybe you'll need it later and get some light.
                                     D) You ignore the candle. Maybe you'll avoid trouble.
                                     """);
-        cmd.Parameters.AddWithValue("Challenge One - P2");
-        cmd.Parameters.AddWithValue("""
-                                    You step inside an open space, with no direction but to go forward. In the distance you see a light and when you arrive you see a candle on a table. 
-                                    On closer inspection there are three different symbols repeated in a line...The symbols are only on the table, no use for you but maybe the other person?
-                                    """);
-        cmd.Parameters.AddWithValue("Challenge Two - P2");
-        cmd.Parameters.AddWithValue("""
-                                    You see a note on the door with a mathematical problem:
-                                    
-                                    3 + 15/3 + 2*2 
-                                    """);
-        cmd.Parameters.AddWithValue("Challenge Three - P2");
-        cmd.Parameters.AddWithValue("""
-                                     <Pao symboler på väggen?>
-                                    """);
         cmd.Parameters.AddWithValue("The End");
         cmd.Parameters.AddWithValue("""
                                     You've found the exit, but desperate screams plead for rescue within the cave. What's your choice now? Leave or venture back into the darkness to investigate?
@@ -189,10 +161,39 @@ public class DatabaseHelper
                                     """);
         cmd.ExecuteNonQuery();
     }
+    
+    public void PopulateSpTablePuzzle() 
+    {
+        Console.WriteLine("Populating the storypoints table with puzzles...");
+
+        string puzzle1 = File.ReadAllText($"FollowTheLightMain/Storylines/lockpuzzle.txt");
+        string puzzle1P2 = File.ReadAllText($"FollowTheLightMain/Storylines/lockpuzzlep2.txt");
+        string puzzle2 = File.ReadAllText($"FollowTheLightMain/Storylines/stepstonespuzzle.txt");
+        string puzzle2P2 = File.ReadAllText($"FollowTheLightMain/Storylines/stepstonespuzzlep2.txt");
+        string puzzle3 = File.ReadAllText($"FollowTheLightMain/Storylines/wallpuzzle.txt");
+        string puzzle3P2 = File.ReadAllText($"FollowTheLightMain/Storylines/wallpuzzlep2.txt");
+        
+        var cmd = _db.CreateCommand("insert into storypoints(title, content)" +
+                                    "values ($1,$2), ($3,$4), ($5,$6), ($7,$8), ($9,$10), ($11,$12)");
+
+        cmd.Parameters.AddWithValue("Challenge One");
+        cmd.Parameters.AddWithValue($"{puzzle1}");
+        cmd.Parameters.AddWithValue("Challenge One - P2");
+        cmd.Parameters.AddWithValue($"{puzzle1P2}");
+        cmd.Parameters.AddWithValue("Challenge Two");
+        cmd.Parameters.AddWithValue($"{puzzle2}");
+        cmd.Parameters.AddWithValue("Challenge One");
+        cmd.Parameters.AddWithValue($"{puzzle2P2}");
+        cmd.Parameters.AddWithValue("Challenge Three - P2");
+        cmd.Parameters.AddWithValue($"{puzzle3}"); 
+        cmd.Parameters.AddWithValue("Challenge Three");
+        cmd.Parameters.AddWithValue($"{puzzle3P2}");
+        cmd.ExecuteNonQuery();
+    }
 
     public void PopulateImagesTable()
     {
-        Console.WriteLine("Populating the images table...");
+        Console.WriteLine("Populating the images table...\n\n");
 
         string js1 = File.ReadAllText($"FollowTheLightMain/images/jumpscares/js1.txt");
         string js2 = File.ReadAllText($"FollowTheLightMain/images/jumpscares/js2.txt");
@@ -201,16 +202,17 @@ public class DatabaseHelper
         string js5 = File.ReadAllText($"FollowTheLightMain/images/jumpscares/js5.txt");
         string js6 = File.ReadAllText($"FollowTheLightMain/images/jumpscares/js6.txt");
         string js7 = File.ReadAllText($"FollowTheLightMain/images/jumpscares/js7.txt");
-        string imgFrog = File.ReadAllText($"FollowTheLightMain/images/puzzles/frog.txt");
+        string imgFrog = File.ReadAllText($"FollowTheLightMain/images/frog.txt");
         string imgStepStone = File.ReadAllText($"FollowTheLightMain/images/puzzles/stepstones.txt");
         string imgStepStoneTable = File.ReadAllText($"FollowTheLightMain/images/puzzles/stepstonestable.txt");
         string imgLock = File.ReadAllText($"FollowTheLightMain/images/puzzles/lock.txt"); 
         string imgLockDoor = File.ReadAllText($"FollowTheLightMain/images/puzzles/lockdoor.txt"); 
-        string imgGlowingWall = File.ReadAllText($"FollowTheLightMain/images/puzzles/glowingwall.txt"); 
+        string imgGlowingWall = File.ReadAllText($"FollowTheLightMain/images/puzzles/glowingwall.txt");
+        string imgGlowingWallSign = File.ReadAllText($"FollowTheLightMain/images/puzzles/glowingwallsign.txt"); 
         
 
         var cmd = _db.CreateCommand("insert into images(image)" +
-                                                "values ($1), ($2), ($3), ($4), ($5), ($6), ($7), ($8), ($9), ($10), ($11), ($12), ($13)");
+                                                "values ($1), ($2), ($3), ($4), ($5), ($6), ($7), ($8), ($9), ($10), ($11), ($12), ($13), ($14)");
         
         cmd.Parameters.AddWithValue($"{js1}");
         cmd.Parameters.AddWithValue($"{js2}");
@@ -225,6 +227,7 @@ public class DatabaseHelper
         cmd.Parameters.AddWithValue($"{imgLock}");
         cmd.Parameters.AddWithValue($"{imgLockDoor}");
         cmd.Parameters.AddWithValue($"{imgGlowingWall}");
+        cmd.Parameters.AddWithValue($"{imgGlowingWallSign}");
         
         cmd.ExecuteNonQuery();
     }

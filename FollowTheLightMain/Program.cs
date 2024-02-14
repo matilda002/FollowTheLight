@@ -12,6 +12,7 @@ dbHelper.ResetTables();
 dbCreator.CreateTables();
 dbHelper.PopulateStoryPointsTable();
 dbHelper.PopulateStoryPointsTableTwo();
+dbHelper.PopulateSpTablePuzzle();
 dbHelper.PopulateImagesTable();
 
 bool listen = true;
