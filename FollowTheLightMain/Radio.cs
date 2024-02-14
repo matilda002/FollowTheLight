@@ -19,13 +19,13 @@ public class Radio
         {
 
             Console.WriteLine("Recieving message");
-            const string selectQuery = "SELECT a.message, b.username FROM radio a INNER JOIN players b ON a.from_player = b.player_id WHERE a.from_player = @playerId1";
+            const string selectQuery = "SELECT a.message, b.username FROM radio a INNER JOIN players b ON a.from_player = b.player_id WHERE a.from_player = @playerId ORDER BY a.message_time";
 
             using (var command = new NpgsqlCommand(selectQuery, connection))
             {
                 connection.Open();
 
-                command.Parameters.AddWithValue("@playerId1", 1);
+                command.Parameters.AddWithValue("@playerId", 1);
 
                 using (var reader = command.ExecuteReader())
                 {
@@ -39,7 +39,7 @@ public class Radio
                     }
 
                     command.Parameters.Clear();
-                    command.Parameters.AddWithValue("@playerId1", 2);
+                    command.Parameters.AddWithValue("@playerId", 2);
                     reader.Close();
 
                     using (var readerTwo = command.ExecuteReader())
@@ -52,6 +52,7 @@ public class Radio
                             messages.AppendLine($"{username}: {message}");
                         }
 
+                        
 
                         string allMessages = messages.ToString();
                         byte[] buffer = Encoding.UTF8.GetBytes(allMessages);
