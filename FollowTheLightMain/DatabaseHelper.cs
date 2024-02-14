@@ -166,12 +166,12 @@ public class DatabaseHelper
     {
         Console.WriteLine("Populating the storypoints table with puzzles...");
 
-        string puzzle1 = File.ReadAllText($"FollowTheLightMain/Storylines/lockpuzzle.txt");
-        string puzzle1P2 = File.ReadAllText($"FollowTheLightMain/Storylines/lockpuzzlep2.txt");
-        string puzzle2 = File.ReadAllText($"FollowTheLightMain/Storylines/stepstonespuzzle.txt");
-        string puzzle2P2 = File.ReadAllText($"FollowTheLightMain/Storylines/stepstonespuzzlep2.txt");
-        string puzzle3 = File.ReadAllText($"FollowTheLightMain/Storylines/wallpuzzle.txt");
-        string puzzle3P2 = File.ReadAllText($"FollowTheLightMain/Storylines/wallpuzzlep2.txt");
+        string puzzle1 = File.ReadAllText($"FollowTheLightMain/Storylines/puzzles-text/lockp1.txt");
+        string puzzle1P2 = File.ReadAllText($"FollowTheLightMain/Storylines/puzzles-text/lockp2.txt");
+        string puzzle2 = File.ReadAllText($"FollowTheLightMain/Storylines/puzzles-text/stepstonesp1.txt");
+        string puzzle2P2 = File.ReadAllText($"FollowTheLightMain/Storylines/puzzles-text/stepstonesp2.txt");
+        string puzzle3 = File.ReadAllText($"FollowTheLightMain/Storylines/puzzles-text/wallp1.txt");
+        string puzzle3P2 = File.ReadAllText($"FollowTheLightMain/Storylines/puzzles-text/wallp2.txt");
         
         var cmd = _db.CreateCommand("insert into storypoints(title, content)" +
                                     "values ($1,$2), ($3,$4), ($5,$6), ($7,$8), ($9,$10), ($11,$12)");
@@ -182,11 +182,11 @@ public class DatabaseHelper
         cmd.Parameters.AddWithValue($"{puzzle1P2}");
         cmd.Parameters.AddWithValue("Challenge Two");
         cmd.Parameters.AddWithValue($"{puzzle2}");
-        cmd.Parameters.AddWithValue("Challenge One");
+        cmd.Parameters.AddWithValue("Challenge Two - P2");
         cmd.Parameters.AddWithValue($"{puzzle2P2}");
-        cmd.Parameters.AddWithValue("Challenge Three - P2");
-        cmd.Parameters.AddWithValue($"{puzzle3}"); 
         cmd.Parameters.AddWithValue("Challenge Three");
+        cmd.Parameters.AddWithValue($"{puzzle3}"); 
+        cmd.Parameters.AddWithValue("Challenge Three - P2");
         cmd.Parameters.AddWithValue($"{puzzle3P2}");
         cmd.ExecuteNonQuery();
     }
@@ -203,12 +203,12 @@ public class DatabaseHelper
         string js6 = File.ReadAllText($"FollowTheLightMain/images/jumpscares/js6.txt");
         string js7 = File.ReadAllText($"FollowTheLightMain/images/jumpscares/js7.txt");
         string imgFrog = File.ReadAllText($"FollowTheLightMain/images/frog.txt");
-        string imgStepStone = File.ReadAllText($"FollowTheLightMain/images/puzzles/stepstones.txt");
-        string imgStepStoneTable = File.ReadAllText($"FollowTheLightMain/images/puzzles/stepstonestable.txt");
-        string imgLock = File.ReadAllText($"FollowTheLightMain/images/puzzles/lock.txt"); 
-        string imgLockDoor = File.ReadAllText($"FollowTheLightMain/images/puzzles/lockdoor.txt"); 
-        string imgGlowingWall = File.ReadAllText($"FollowTheLightMain/images/puzzles/glowingwall.txt");
-        string imgGlowingWallSign = File.ReadAllText($"FollowTheLightMain/images/puzzles/glowingwallsign.txt"); 
+        string imgStepStone = File.ReadAllText($"FollowTheLightMain/images/puzzles/stepstonesp2-stones.txt");
+        string imgStepStoneTable = File.ReadAllText($"FollowTheLightMain/images/puzzles/stepstonesp1-table.txt");
+        string imgLock = File.ReadAllText($"FollowTheLightMain/images/puzzles/lockp1-lock.txt"); 
+        string imgLockDoor = File.ReadAllText($"FollowTheLightMain/images/puzzles/lockp2-door.txt"); 
+        string imgGlowingWall = File.ReadAllText($"FollowTheLightMain/images/puzzles/wallp1-wall.txt");
+        string imgGlowingWallSign = File.ReadAllText($"FollowTheLightMain/images/puzzles/wallp2-sign.txt"); 
         
 
         var cmd = _db.CreateCommand("insert into images(image)" +
