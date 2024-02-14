@@ -1,0 +1,8 @@
+﻿You enter a part of a cave were you see a waterfall with a river.
+Your only option is to cross it. 
+What’s your choice?
+
+A) You use the raft that has been made from human bones and skin. 
+B) You use the boat. It looks sturdy and well made.
+C) You swim across.
+D) You go through the waterfall.
