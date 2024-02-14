@@ -23,10 +23,9 @@ namespace FollowTheLightMain
             _listener.BeginGetContext(HandleRequest, _listener);
         }
 
- 
         public void HandleRequest(IAsyncResult result)
         {
-            try
+             try // redundant ? kopplingen till Message/handlerequest
             {
                 HttpListenerContext context = _listener.EndGetContext(result);       
                 Router(context);
@@ -72,6 +71,7 @@ namespace FollowTheLightMain
                             Radio message = new Radio(_db);
                             message.GameMessage(response);
                             break;
+                        
                         default:
                             NotFound(response);
                             break;
@@ -98,22 +98,26 @@ namespace FollowTheLightMain
                         case "/game/player/6":
                             GameThreePost(request, response);
                             break;
-                        case "/player/register":
-                            Player registerPlayer = new Player();
-                            registerPlayer.RegisterPost(request, response);
-                            break;
-                        case "/player/login":
-                            Player playerLogin = new Player();
-                            playerLogin.LoginPost(request, response);
-                            break;
-                        default:
-                            NotFound(response);
-                            break;
+                        case ("/player/register"):
+                        Player registerPlayer = new Player();
+                        registerPlayer.Register(request, response);
+                        break;
+                    case ("/player/status"):
+                        Player playerStatus = new Player();
+                        playerStatus.ViewStatus(request, response);
+                        break;
+                    case ("/player/1/chat"):
+                        Radio chatOne = new Radio(_db);
+                        chatOne.SendMessageOne(request, response);
+                        break;
+                    case ("/player/2/chat"):
+                        Radio chatTwo = new Radio(_db);
+                        chatTwo.SendMessageTwo(request, response);
+                        break;
+                    default:
+                        NotFound(response);
+                        break;
                     }
-                    break;
-                default:
-                    NotFound(response);
-                    break;
             }
         }
 
@@ -258,6 +262,7 @@ namespace FollowTheLightMain
                     break;
             }
         }
+}
 
         void GameFourPost(HttpListenerRequest req, HttpListenerResponse res)
         {
@@ -381,12 +386,6 @@ namespace FollowTheLightMain
             res.StatusCode = (int)HttpStatusCode.NotFound;
             res.Close();
         }
-
- 
-        public void Stop()
-        {
-            _listener.Stop();
-            _listener.Close();
-        }
     }
 }
+
