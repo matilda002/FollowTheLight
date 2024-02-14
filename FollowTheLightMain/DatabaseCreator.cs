@@ -28,15 +28,6 @@ public class DatabaseCreator
         )";
         _db.CreateCommand(storypointTable).ExecuteNonQuery();
 
-        const string playersTable = @"create table if not exists players(
-            player_id serial primary key,
-            username text,
-            hp smallint default (5),
-            current_storypoint int default (1) references storypoints(storypoint_id),
-            unique(username)
-        )";
-        _db.CreateCommand(playersTable).ExecuteNonQuery();
-
         const string storypathTable = @"create table if not exists storypaths(
             storypath_id serial primary key,
             from_point int references storypoints(storypoint_id),
@@ -47,8 +38,17 @@ public class DatabaseCreator
             check(from_point <> to_point),
             unique(from_point, to_point, choice)
         )";
-        
         _db.CreateCommand(storypathTable).ExecuteNonQuery();
+
+        const string playersTable = @"create table if not exists players(
+            player_id serial primary key,
+            username text,
+            hp smallint default (5),
+            storypath_id int references storypaths(storypath_id),
+            current_storypoint int default (1) references storypoints(storypoint_id),
+            unique(username)
+        )";
+        _db.CreateCommand(playersTable).ExecuteNonQuery();
 
         const string radioTable = @"create table if not exists radio(
             radio_id serial primary key,
