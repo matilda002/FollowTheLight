@@ -43,7 +43,7 @@ public class Server
                     case ("/game/player/2"):
                         GameTwoGet(response);
                         break;
-                    case ("/game/player/message"):
+                    case ("/player/message"):
                         Radio message = new Radio(_db);
                         message.GameMessage(response);
                         break;
@@ -70,9 +70,13 @@ public class Server
                         Player playerStatus = new Player();
                         playerStatus.ViewStatus(request, response);
                         break;
-                    case ("/game/player/chat"):
-                        Radio chat = new Radio(_db);
-                        chat.StoreChat(request, response);
+                    case ("/player/1/chat"):
+                        Radio chatOne = new Radio(_db);
+                        chatOne.SendMessageOne(request, response);
+                        break;
+                    case ("/player/2/chat"):
+                        Radio chatTwo = new Radio(_db);
+                        chatTwo.SendMessageTwo(request, response);
                         break;
                     default:
                         NotFound(response);
