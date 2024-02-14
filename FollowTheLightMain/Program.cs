@@ -25,7 +25,7 @@ Console.CancelKeyPress += delegate (object? sender, ConsoleCancelEventArgs e)
     listen = false;
 };
 
-Server server = new Server(dbHelper);
+Server server = new Server(db);
 try
 {
     listener.Start();
