@@ -5,6 +5,13 @@ namespace FollowTheLightMain;
 
 public class Player
 {
+    private readonly NpgsqlDataSource _db;
+
+    public Player(NpgsqlDataSource db)
+    {
+        _db = db;
+    }
+
     public void Register(HttpListenerRequest req, HttpListenerResponse res)
     {
         try
@@ -76,5 +83,10 @@ public class Player
         res.OutputStream.Write(buffer, 0, buffer.Length);
         
         res.Close();
+    }
+
+    public void PlayerHpUpdate()
+    {
+
     }
 }

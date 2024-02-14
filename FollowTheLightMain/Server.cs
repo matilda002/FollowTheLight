@@ -63,11 +63,11 @@ public class Server
                         GameTwoPost(request, response);
                         break;
                     case ("/player/register"):
-                        Player registerPlayer = new Player();
+                        Player registerPlayer = new Player(_db);
                         registerPlayer.Register(request, response);
                         break;
                     case ("/player/status"):
-                        Player playerStatus = new Player();
+                        Player playerStatus = new Player(_db);
                         playerStatus.ViewStatus(request, response);
                         break;
                     case ("/game/player/chat"):
@@ -87,9 +87,7 @@ public class Server
     }
 
     void IntroGet(HttpListenerResponse response)
-    {
-        
-        
+    {        
         string resultIntro = string.Empty;
         Console.WriteLine("Printing out 'Intro' from storypoints to player...");
 
