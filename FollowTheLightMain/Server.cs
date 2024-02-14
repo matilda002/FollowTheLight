@@ -23,10 +23,18 @@ namespace FollowTheLightMain
             _listener.BeginGetContext(HandleRequest, _listener);
         }
 
- 
         public void HandleRequest(IAsyncResult result)
         {
-
+             try // redundant ? kopplingen till Message/handlerequest
+            {
+                HttpListenerContext context = _listener.EndGetContext(result);       
+                Router(context);
+                _listener.BeginGetContext(HandleRequest, _listener);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Exception: {e.Message}");
+            }
         }
         void Router(HttpListenerContext context)
         {
@@ -110,18 +118,6 @@ namespace FollowTheLightMain
                         NotFound(response);
                         break;
                     }
-            }
-
-            try // redundant ? kopplingen till Message/handlerequest
-              
-            {
-                HttpListenerContext context = _listener.EndGetContext(result);       
-                Router(context);
-                _listener.BeginGetContext(HandleRequest, _listener);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"Exception: {e.Message}");
             }
         }
 
