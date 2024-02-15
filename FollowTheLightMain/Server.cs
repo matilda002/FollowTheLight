@@ -36,10 +36,10 @@ namespace FollowTheLightMain
 
             switch (request.HttpMethod)
             {
-                case "GET":
+                case ("GET"):
                     switch (request.Url?.AbsolutePath)
                     {
-                        case "/intro":
+                        case ("/intro"):
                             IntroGet(response);
                             break;
                         case "/game/player/1":
@@ -121,37 +121,37 @@ namespace FollowTheLightMain
 
         void IntroGet(HttpListenerResponse response)
         {
-            string resultIntro = dbHelper.GetStoryPointContent(0);
+            string resultIntro = dbHelper.GetStoryPointContent(1);
             SendResponse(response, resultIntro);
         }
         void GameOneGet(HttpListenerResponse response)
         {
-            string resultStoryOne = dbHelper.GetStoryPointContent(1);
+            string resultStoryOne = dbHelper.GetStoryPointContent(2);
             SendResponse(response, resultStoryOne);
         }
         void GameTwoGet(HttpListenerResponse response)
         {
-            string resultStoryTwo = dbHelper.GetStoryPointContent(2);
+            string resultStoryTwo = dbHelper.GetStoryPointContent(3);
             SendResponse(response, resultStoryTwo);
         }
         void GameThreeGet(HttpListenerResponse response)
-        {
-            string resultStoryThree = dbHelper.GetStoryPointContent(3);
+        {   
+            string resultStoryThree = dbHelper.GetStoryPointContent(4);
             SendResponse(response, resultStoryThree);
         }
         void GameFourGet(HttpListenerResponse response)
         {
-            string resultStoryThree = dbHelper.GetStoryPointContent(4);
+            string resultStoryThree = dbHelper.GetStoryPointContent(5);
             SendResponse(response, resultStoryThree);
         }
         void GameFiveGet(HttpListenerResponse response)
         {
-            string resultStoryThree = dbHelper.GetStoryPointContent(5);
+            string resultStoryThree = dbHelper.GetStoryPointContent(6);
             SendResponse(response, resultStoryThree);
         }
         void GameSixGet(HttpListenerResponse response)
         {
-            string resultStoryThree = dbHelper.GetStoryPointContent(6);
+            string resultStoryThree = dbHelper.GetStoryPointContent(7);
             SendResponse(response, resultStoryThree);
         }
         void GameOnePost(HttpListenerRequest req, HttpListenerResponse res)
@@ -220,6 +220,7 @@ namespace FollowTheLightMain
                     answer += "Invalid choice in Game One.\n";
                     break;
             }
+            SendResponse(res, answer);
         }
         void GameThreePost(HttpListenerRequest req, HttpListenerResponse res)
         {
@@ -253,6 +254,7 @@ namespace FollowTheLightMain
                     answer += "Invalid choice in Game One.\n";
                     break;
             }
+            SendResponse(res, answer);
         }
         void GameFourPost(HttpListenerRequest req, HttpListenerResponse res)
         {
@@ -286,6 +288,7 @@ namespace FollowTheLightMain
                     answer += "Invalid choice in Game One.\n";
                     break;
             }
+            SendResponse(res, answer);
         }
         void GameFivePost(HttpListenerRequest req, HttpListenerResponse res)
         {
@@ -353,6 +356,7 @@ namespace FollowTheLightMain
                     answer += "Invalid choice in Game One.\n";
                     break;
             }
+            SendResponse(res, answer);
         }
         void SendResponse(HttpListenerResponse response, string content)
         {
@@ -364,6 +368,12 @@ namespace FollowTheLightMain
             {
                 output.Write(buffer, 0, buffer.Length);
             }
+            foreach (byte b in buffer)
+            {
+                response.OutputStream.WriteByte(b);
+                Thread.Sleep(35);
+            }
+            response.StatusCode = (int)HttpStatusCode.Created;
             response.Close();
         }
         void NotFound(HttpListenerResponse res)
