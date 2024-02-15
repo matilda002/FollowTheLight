@@ -47,9 +47,6 @@ public class Server
                         Radio message = new Radio(_db);
                         message.GameMessage(response);
                         break;
-                    case ("/challenge"):
-                        ChallengeGet(response);
-                        break;
                     default:
                         NotFound(response);
                         break;
@@ -247,47 +244,6 @@ public class Server
         res.StatusCode = (int)HttpStatusCode.Created;
         res.Close();
     }
-    void ChallengeGet(HttpListenerResponse response)
-    {
-        string resultText = string.Empty;
-        string resultImg = string.Empty;
-        Console.WriteLine("Printing out 'Challange One' from storypoints to player...");
-
-        const string qChallangeText = "select content from storypoints where storypoint_id = 9";
-        const string qChallangeImg = "select image from images where image_id = 8";
-        var reader = _db.CreateCommand(qChallangeText).ExecuteReader();
-        var readerTwo = _db.CreateCommand(qChallangeImg).ExecuteReader();
-        
-        while (reader.Read())
-        {
-            resultText = reader.GetString(0);
-        }
-        while (readerTwo.Read())
-        {
-            resultImg = readerTwo.GetString(0);
-        }
-        
-        byte[] bufferText = Encoding.UTF8.GetBytes(resultText);
-        response.ContentType = "text/plain";
-        response.StatusCode = (int)HttpStatusCode.OK;
-        
-        byte[] bufferImg = Encoding.UTF8.GetBytes(resultImg);
-        response.ContentType = "text/plain";
-        response.StatusCode = (int)HttpStatusCode.OK;
-        
-        foreach (byte b in bufferText)
-        {
-            response.OutputStream.WriteByte(b);
-            Thread.Sleep(20);
-        }
-        foreach (byte b in bufferImg)
-        {
-            response.OutputStream.WriteByte(b); 
-        }
-        
-        response.OutputStream.Close();
-    }
-
 
     public void StoreChat(HttpListenerRequest req, HttpListenerResponse res)
     {
