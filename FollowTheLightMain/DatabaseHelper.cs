@@ -166,12 +166,12 @@ public class DatabaseHelper
     {
         Console.WriteLine("Populating the storypoints table with puzzles...");
 
-        string puzzle1 = File.ReadAllText($"FollowTheLightMain/Storylines/puzzles-text/lockp1.txt");
-        string puzzle1P2 = File.ReadAllText($"FollowTheLightMain/Storylines/puzzles-text/lockp2.txt");
-        string puzzle2 = File.ReadAllText($"FollowTheLightMain/Storylines/puzzles-text/stepstonesp1.txt");
-        string puzzle2P2 = File.ReadAllText($"FollowTheLightMain/Storylines/puzzles-text/stepstonesp2.txt");
-        string puzzle3 = File.ReadAllText($"FollowTheLightMain/Storylines/puzzles-text/wallp1.txt");
-        string puzzle3P2 = File.ReadAllText($"FollowTheLightMain/Storylines/puzzles-text/wallp2.txt");
+        string puzzle1 = File.ReadAllText("FollowTheLightMain/Storylines/puzzles-text/lockp1.txt");
+        string puzzle1P2 = File.ReadAllText("FollowTheLightMain/Storylines/puzzles-text/lockp2.txt");
+        string puzzle2 = File.ReadAllText("FollowTheLightMain/Storylines/puzzles-text/stepstonesp1.txt");
+        string puzzle2P2 = File.ReadAllText("FollowTheLightMain/Storylines/puzzles-text/stepstonesp2.txt");
+        string puzzle3 = File.ReadAllText("FollowTheLightMain/Storylines/puzzles-text/wallp1.txt");
+        string puzzle3P2 = File.ReadAllText("FollowTheLightMain/Storylines/puzzles-text/wallp2.txt");
         
         var cmd = _db.CreateCommand("insert into storypoints(title, content)" +
                                     "values ($1,$2), ($3,$4), ($5,$6), ($7,$8), ($9,$10), ($11,$12)");
@@ -195,20 +195,20 @@ public class DatabaseHelper
     {
         Console.WriteLine("Populating the images table...\n\n");
 
-        string js1 = File.ReadAllText($"FollowTheLightMain/images/jumpscares/js1.txt");
-        string js2 = File.ReadAllText($"FollowTheLightMain/images/jumpscares/js2.txt");
-        string js3 = File.ReadAllText($"FollowTheLightMain/images/jumpscares/js3.txt");
-        string js4 = File.ReadAllText($"FollowTheLightMain/images/Jumpscares/js4.txt");
-        string js5 = File.ReadAllText($"FollowTheLightMain/images/jumpscares/js5.txt");
-        string js6 = File.ReadAllText($"FollowTheLightMain/images/jumpscares/js6.txt");
-        string js7 = File.ReadAllText($"FollowTheLightMain/images/jumpscares/js7.txt");
-        string imgFrog = File.ReadAllText($"FollowTheLightMain/images/frog.txt");
-        string imgStepStone = File.ReadAllText($"FollowTheLightMain/images/puzzles/stepstonesp2-stones.txt");
-        string imgStepStoneTable = File.ReadAllText($"FollowTheLightMain/images/puzzles/stepstonesp1-table.txt");
-        string imgLock = File.ReadAllText($"FollowTheLightMain/images/puzzles/lockp1-lock.txt"); 
-        string imgLockDoor = File.ReadAllText($"FollowTheLightMain/images/puzzles/lockp2-door.txt"); 
-        string imgGlowingWall = File.ReadAllText($"FollowTheLightMain/images/puzzles/wallp1-wall.txt");
-        string imgGlowingWallSign = File.ReadAllText($"FollowTheLightMain/images/puzzles/wallp2-sign.txt"); 
+        string js1 = File.ReadAllText("FollowTheLightMain/images/jumpscares/js1.txt");
+        string js2 = File.ReadAllText("FollowTheLightMain/images/jumpscares/js2.txt");
+        string js3 = File.ReadAllText("FollowTheLightMain/images/jumpscares/js3.txt");
+        string js4 = File.ReadAllText("FollowTheLightMain/images/Jumpscares/js4.txt");
+        string js5 = File.ReadAllText("FollowTheLightMain/images/jumpscares/js5.txt");
+        string js6 = File.ReadAllText("FollowTheLightMain/images/jumpscares/js6.txt");
+        string js7 = File.ReadAllText("FollowTheLightMain/images/jumpscares/js7.txt");
+        string imgFrog = File.ReadAllText("FollowTheLightMain/images/frog.txt");
+        string imgStepStone = File.ReadAllText("FollowTheLightMain/images/puzzles/stepstonesp2-stones.txt");
+        string imgStepStoneTable = File.ReadAllText("FollowTheLightMain/images/puzzles/stepstonesp1-table.txt");
+        string imgLock = File.ReadAllText("FollowTheLightMain/images/puzzles/lockp1-lock.txt"); 
+        string imgLockDoor = File.ReadAllText("FollowTheLightMain/images/puzzles/lockp2-door.txt"); 
+        string imgGlowingWall = File.ReadAllText("FollowTheLightMain/images/puzzles/wallp1-wall.txt");
+        string imgGlowingWallSign = File.ReadAllText("FollowTheLightMain/images/puzzles/wallp2-sign.txt"); 
         
 
         var cmd = _db.CreateCommand("insert into images(image)" +
