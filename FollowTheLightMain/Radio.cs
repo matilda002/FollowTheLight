@@ -19,7 +19,7 @@ public class Radio
         {
 
             Console.WriteLine("Recieving message");
-            const string selectQuery = @"select p.username, radio.message from radio join players p on radio.from_player = p.player_id where to_player = 1 or from_player = 1 order by radio.message_time";
+            const string selectQuery = @"select p.username, radio.message from radio join players p on radio.from_player = p.player_id where to_player = 1 or from_player = 1 order by radio.message_time desc limit 10";
 
             using (var command = new NpgsqlCommand(selectQuery, connection))
             {
@@ -27,17 +27,16 @@ public class Radio
 
                 using (var reader = command.ExecuteReader())
                 {
-                    StringBuilder messages = new StringBuilder();
+                    string messages = string.Empty;
                     while (reader.Read())
                     {
                         string username = reader.GetString(0);
                         string message = reader.GetString(1);
-                        messages.AppendLine($"{username}: {message}");
+                        messages = $"{username}: {message}\n" + messages;
                     }
 
 
-                    string allMessages = messages.ToString();
-                    byte[] buffer = Encoding.UTF8.GetBytes(allMessages);
+                    byte[] buffer = Encoding.UTF8.GetBytes(messages);
                     response.ContentType = "text/plain";
                     response.StatusCode = (int)HttpStatusCode.OK;
                     response.OutputStream.Write(buffer, 0, buffer.Length);
