@@ -1,0 +1,8 @@
+﻿In the dark, you find a lantern. Lighting it reveals a cave with paths on your right and left. 
+Where to? Right or left? 
+Your story starts with a flame in the darkness.
+
+A) You go right. Maybe there’s something interesting there.
+B) You go left. Maybe there’s a way out there.
+C) You stay where you are. Maybe someone will find you there.
+D) You turn off the lantern. Maybe you’ll save some battery.

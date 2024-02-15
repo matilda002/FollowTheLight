@@ -1,0 +1,8 @@
+﻿In the dark, you find matches. Lighting one reveals a cave with paths on your right and left. 
+Where to? Right or left? 
+Your story starts with a spark in the shadows and you feel fear creeping up..
+
+A) You go right. Maybe there’s something interesting there.
+B) You go left. Maybe there’s a way out there.
+C) You stay where you are. Maybe someone will find you there.
+D) You light the whole box of matches. Maybe you’ll see better.
