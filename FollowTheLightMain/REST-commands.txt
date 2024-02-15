@@ -11,3 +11,84 @@ curl -X GET localhost:3000/intro
 
 -- POST --
 curl localhost:3000/game/player/1 -d <choice>
+
+
+--Presentation--
+Registrera första spelare        --- curl localhost:3000/player/register -d "Skriv användarnamn 1 här"
+Registrera Andra spelare         --- curl localhost:3000/player/register -d "Skriv användarnamn 2 här"
+
+
+Starta intro                     --- curl -X GET localhost:3000/intro
+
+
+starta scenario 1 för spelare 1  --- curl localhost:3000/game/player/1 -d "skriv användarnamn 1 här"
+Gör val för scenario 1           --- curl localhost:3000/game/player/1 -d "välj mellan alternativ a-d"
+starta scenario 1 för spelare 2  --- curl localhost:3000/game/player/1 -d "skriv användarnamn 2 här"
+Gör val för scenario 1           --- curl localhost:3000/game/player/1 -d "välj mellan alternativ a-d"
+
+
+Spelare 1 skickar meddelande     --- curl localhost:3000/player/1/chat -d hej
+Spelare 2 skickar meddelande     --- curl localhost:3000/player/2/chat -d hur
+Kolla på chaten                  --- curl localhost:3000/player/message -s
+
+
+starta scenario 2 för spelare 1  --- curl localhost:3000/game/player/2 -d "skriv användarnamn 1 här"
+Gör val för scenario 1           --- curl localhost:3000/game/player/2 -d "välj mellan alternativ a-d"
+starta scenario 2 för spelare 2  --- curl localhost:3000/game/player/2 -d "skriv användarnamn 2 här"
+Gör val för scenario 1           --- curl localhost:3000/game/player/2 -d "välj mellan alternativ a-d"
+
+
+Spelare 1 skickar meddelande     --- curl localhost:3000/player/1/chat -d mår
+Spelare 2 skickar meddelande     --- curl localhost:3000/player/2/chat -d du
+Kolla på chaten                  --- curl localhost:3000/player/message -s
+
+
+starta scenario 3 för spelare 1  --- curl localhost:3000/game/player/3 -d "skriv användarnamn 1 här"
+Gör val för scenario 1           --- curl localhost:3000/game/player/3 -d "välj mellan alternativ a-d"
+starta scenario 3 för spelare 2  --- curl localhost:3000/game/player/3 -d "skriv användarnamn 2 här"
+Gör val för scenario 1           --- curl localhost:3000/game/player/3 -d "välj mellan alternativ a-d"
+
+
+Spelare 1 skickar meddelande     --- curl localhost:3000/player/1/chat -d jag
+Spelare 2 skickar meddelande     --- curl localhost:3000/player/2/chat -d mår
+Kolla på chaten                  --- curl localhost:3000/player/message -s
+
+
+starta scenario 4 för spelare 1  --- curl localhost:3000/game/player/4 -d "skriv användarnamn 1 här"
+Gör val för scenario 1           --- curl localhost:3000/game/player/4 -d "välj mellan alternativ a-d"
+starta scenario 4 för spelare 2  --- curl localhost:3000/game/player/4 -d "skriv användarnamn 2 här"
+Gör val för scenario 1           --- curl localhost:3000/game/player/4 -d "välj mellan alternativ a-d"
+
+
+Spelare 1 skickar meddelande     --- curl localhost:3000/player/1/chat -d bra
+Spelare 2 skickar meddelande     --- curl localhost:3000/player/2/chat -d tack
+Kolla på chaten                  --- curl localhost:3000/player/message -s
+
+
+starta scenario 5 för spelare 1  --- curl localhost:3000/game/player/5 -d "skriv användarnamn 1 här"
+Gör val för scenario 1           --- curl localhost:3000/game/player/5 -d "välj mellan alternativ a-d"
+starta scenario 5 för spelare 2  --- curl localhost:3000/game/player/5 -d "skriv användarnamn 2 här"
+Gör val för scenario 1           --- curl localhost:3000/game/player/5 -d "välj mellan alternativ a-d"
+
+
+Spelare 1 skickar meddelande     --- curl localhost:3000/player/1/chat -d så
+Spelare 2 skickar meddelande     --- curl localhost:3000/player/2/chat -d himla
+Kolla på chaten                  --- curl localhost:3000/player/message -s
+
+
+starta scenario 6 för spelare 1  --- curl localhost:3000/game/player/6 -d "skriv användarnamn 1 här"
+Gör val för scenario 1           --- curl localhost:3000/game/player/6 -d "välj mellan alternativ a-d"
+starta scenario 6 för spelare 2  --- curl localhost:3000/game/player/6 -d "skriv användarnamn 2 här"
+Gör val för scenario 1           --- curl localhost:3000/game/player/6 -d "välj mellan alternativ a-d"
+
+
+Spelare 1 skickar meddelande     --- curl localhost:3000/player/1/chat -d bra
+Spelare 2 skickar meddelande     --- curl localhost:3000/player/2/chat -d ja
+Kolla på chaten                  --- curl localhost:3000/player/message -s
+
+
+starta scenario 7 för spelare 1  --- curl localhost:3000/game/player/7 -d "skriv användarnamn 1 här"
+Gör val för scenario 1           --- curl localhost:3000/game/player/7 -d "välj mellan alternativ a-d"
+starta scenario 7 för spelare 2  --- curl localhost:3000/game/player/7 -d "skriv användarnamn 2 här"
+Gör val för scenario 1           --- curl localhost:3000/game/player/7 -d "välj mellan alternativ a-d"
+
