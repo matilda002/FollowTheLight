@@ -8,9 +8,9 @@ var db = NpgsqlDataSource.Create(dbUri);
 var dbCreator = new DatabaseCreator(db);
 var dbHelper = new DatabaseHelper(db);
 
-//dbHelper.ResetTables();
-//dbCreator.CreateTables();
-//dbHelper.PopulateStoryPointsTable();
+dbHelper.ResetTables();
+dbCreator.CreateTables();
+dbHelper.PopulateStoryPointsTable();
 
 bool listen = true;
 int port = 3000;
@@ -25,7 +25,7 @@ Console.CancelKeyPress += delegate (object? sender, ConsoleCancelEventArgs e)
     listen = false;
 };
 
-Server server = new Server(dbHelper);
+Server server = new Server(db);
 try
 {
     listener.Start();

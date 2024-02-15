@@ -9,34 +9,27 @@ namespace FollowTheLightMain
 {
     public class Server
     {
-        private readonly HttpListener _listener;
-        private readonly DatabaseHelper _db;
+        private readonly NpgsqlDataSource _db;
+        private readonly DatabaseHelper dbHelper;
 
         public Server(NpgsqlDataSource db)
         {
-            _listener = new HttpListener();
-            _db = new DatabaseHelper(db);
-            _listener.Prefixes.Add("http://localhost:3000/");
-
-            _listener.Start();
-            Console.WriteLine("Server started. Listening for requests...");
-            _listener.BeginGetContext(HandleRequest, _listener);
+            _db = db;
+            dbHelper = new(db);
         }
 
         public void HandleRequest(IAsyncResult result)
         {
-             try // redundant ? kopplingen till Message/handlerequest
+            if (result.AsyncState is HttpListener requestListener)
             {
-                HttpListenerContext context = _listener.EndGetContext(result);       
+                HttpListenerContext context = requestListener.EndGetContext(result);
+
                 Router(context);
-                _listener.BeginGetContext(HandleRequest, _listener);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"Exception: {e.Message}");
+
+                requestListener.BeginGetContext(HandleRequest, requestListener);
             }
         }
-        void Router(HttpListenerContext context)
+        public void Router(HttpListenerContext context)
         {
             HttpListenerRequest request = context.Request;
             HttpListenerResponse response = context.Response;
@@ -71,12 +64,13 @@ namespace FollowTheLightMain
                             Radio message = new Radio(_db);
                             message.GameMessage(response);
                             break;
-                        
+
                         default:
                             NotFound(response);
                             break;
                     }
                     break;
+
                 case "POST":
                     switch (request.Url?.AbsolutePath)
                     {
@@ -99,67 +93,67 @@ namespace FollowTheLightMain
                             GameThreePost(request, response);
                             break;
                         case ("/player/register"):
-                        Player registerPlayer = new Player();
-                        registerPlayer.Register(request, response);
-                        break;
-                    case ("/player/status"):
-                        Player playerStatus = new Player();
-                        playerStatus.ViewStatus(request, response);
-                        break;
-                    case ("/player/1/chat"):
-                        Radio chatOne = new Radio(_db);
-                        chatOne.SendMessageOne(request, response);
-                        break;
-                    case ("/player/2/chat"):
-                        Radio chatTwo = new Radio(_db);
-                        chatTwo.SendMessageTwo(request, response);
-                        break;
-                    default:
-                        NotFound(response);
-                        break;
+                            Player registerPlayer = new Player();
+                            registerPlayer.Register(request, response);
+                            break;
+                        case ("/player/status"):
+                            Player playerStatus = new Player();
+                            playerStatus.ViewStatus(request, response);
+                            break;
+                        case ("/player/1/chat"):
+                            Radio chatOne = new Radio(_db);
+                            chatOne.SendMessageOne(request, response);
+                            break;
+                        case ("/player/2/chat"):
+                            Radio chatTwo = new Radio(_db);
+                            chatTwo.SendMessageTwo(request, response);
+                            break;
+                        default:
+                            NotFound(response);
+                            break;
                     }
+                    break;
+                default:
+                    NotFound(response);
+                    break;
             }
         }
 
         void IntroGet(HttpListenerResponse response)
         {
-            string resultIntro = _db.GetStoryPointContent(0);
+            string resultIntro = dbHelper.GetStoryPointContent(0);
             SendResponse(response, resultIntro);
         }
-
         void GameOneGet(HttpListenerResponse response)
         {
-            string resultStoryOne = _db.GetStoryPointContent(1);
+            string resultStoryOne = dbHelper.GetStoryPointContent(1);
             SendResponse(response, resultStoryOne);
         }
-
         void GameTwoGet(HttpListenerResponse response)
         {
-            string resultStoryTwo = _db.GetStoryPointContent(2);
+            string resultStoryTwo = dbHelper.GetStoryPointContent(2);
             SendResponse(response, resultStoryTwo);
         }
-
         void GameThreeGet(HttpListenerResponse response)
         {
-            string resultStoryThree = _db.GetStoryPointContent(3);
+            string resultStoryThree = dbHelper.GetStoryPointContent(3);
             SendResponse(response, resultStoryThree);
         }
         void GameFourGet(HttpListenerResponse response)
         {
-            string resultStoryThree = _db.GetStoryPointContent(4);
+            string resultStoryThree = dbHelper.GetStoryPointContent(4);
             SendResponse(response, resultStoryThree);
         }
         void GameFiveGet(HttpListenerResponse response)
         {
-            string resultStoryThree = _db.GetStoryPointContent(5);
+            string resultStoryThree = dbHelper.GetStoryPointContent(5);
             SendResponse(response, resultStoryThree);
         }
         void GameSixGet(HttpListenerResponse response)
         {
-            string resultStoryThree = _db.GetStoryPointContent(6);
+            string resultStoryThree = dbHelper.GetStoryPointContent(6);
             SendResponse(response, resultStoryThree);
         }
-
         void GameOnePost(HttpListenerRequest req, HttpListenerResponse res)
         {
             StreamReader reader = new StreamReader(req.InputStream, req.ContentEncoding);
@@ -186,13 +180,12 @@ namespace FollowTheLightMain
                     break;
                 case "/game/player/chat":
                     Radio chat = new Radio(_db);
-                    chat.StoreChat(req, res);
+                    chat.GameMessage(res);
                     break;
                 default:
                     answer += "Invalid choice in the first scenario.\n";
                     break;
             }
-
             SendResponse(res, answer);
         }
         void GameTwoPost(HttpListenerRequest req, HttpListenerResponse res)
@@ -221,14 +214,13 @@ namespace FollowTheLightMain
                     break;
                 case "/game/player/chat":
                     Radio chat = new Radio(_db);
-                    chat.StoreChat(req, res);
+                    chat.GameMessage(res);
                     break;
                 default:
                     answer += "Invalid choice in Game One.\n";
                     break;
             }
         }
-      
         void GameThreePost(HttpListenerRequest req, HttpListenerResponse res)
         {
             StreamReader reader = new StreamReader(req.InputStream, req.ContentEncoding);
@@ -255,15 +247,13 @@ namespace FollowTheLightMain
                     break;
                 case "/game/player/chat":
                     Radio chat = new Radio(_db);
-                    chat.StoreChat(req, res);
+                    chat.GameMessage(res);
                     break;
                 default:
                     answer += "Invalid choice in Game One.\n";
                     break;
             }
         }
-}
-
         void GameFourPost(HttpListenerRequest req, HttpListenerResponse res)
         {
             StreamReader reader = new StreamReader(req.InputStream, req.ContentEncoding);
@@ -290,14 +280,13 @@ namespace FollowTheLightMain
                     break;
                 case "/game/player/chat":
                     Radio chat = new Radio(_db);
-                    chat.StoreChat(req, res);
+                    chat.GameMessage(res);
                     break;
                 default:
                     answer += "Invalid choice in Game One.\n";
                     break;
             }
         }
-
         void GameFivePost(HttpListenerRequest req, HttpListenerResponse res)
         {
             StreamReader reader = new StreamReader(req.InputStream, req.ContentEncoding);
@@ -324,14 +313,14 @@ namespace FollowTheLightMain
                     break;
                 case "/game/player/chat":
                     Radio chat = new Radio(_db);
-                    chat.StoreChat(req, res);
+                    chat.GameMessage(res);
                     break;
                 default:
                     answer += "Invalid choice in Game One.\n";
                     break;
             }
+            SendResponse(res, answer);
         }
-
         void GameSixPost(HttpListenerRequest req, HttpListenerResponse res)
         {
             StreamReader reader = new StreamReader(req.InputStream, req.ContentEncoding);
@@ -358,15 +347,13 @@ namespace FollowTheLightMain
                     break;
                 case "/game/player/chat":
                     Radio chat = new Radio(_db);
-                    chat.StoreChat(req, res);
+                    chat.GameMessage(res);
                     break;
                 default:
                     answer += "Invalid choice in Game One.\n";
                     break;
             }
         }
-
-
         void SendResponse(HttpListenerResponse response, string content)
         {
             byte[] buffer = Encoding.UTF8.GetBytes(content);
@@ -379,8 +366,6 @@ namespace FollowTheLightMain
             }
             response.Close();
         }
-
-       
         void NotFound(HttpListenerResponse res)
         {
             res.StatusCode = (int)HttpStatusCode.NotFound;
