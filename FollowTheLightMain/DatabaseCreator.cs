@@ -57,6 +57,7 @@ public class DatabaseCreator
             message text,
             message_time timestamp DEFAULT current_timestamp
         )";
+        
         _db.CreateCommand(radioTable).ExecuteNonQuery();
     }
 }
