@@ -10,10 +10,12 @@ namespace FollowTheLightMain
     public class Server
     {
         private readonly NpgsqlDataSource _db;
+        private readonly DatabaseHelper dbHelper;
 
         public Server(NpgsqlDataSource db)
         {
             _db = db;
+            dbHelper = new(db);
         }
 
         public void HandleRequest(IAsyncResult result)
@@ -110,45 +112,48 @@ namespace FollowTheLightMain
                             NotFound(response);
                             break;
                     }
+                    break;
+                default:
+                    NotFound(response);
+                    break;
             }
         }
 
         void IntroGet(HttpListenerResponse response)
         {
-            string resultIntro = _db.GetStoryPointContent(0);
+            string resultIntro = dbHelper.GetStoryPointContent(0);
             SendResponse(response, resultIntro);
         }
         void GameOneGet(HttpListenerResponse response)
         {
-            string resultStoryOne = _db.GetStoryPointContent(1);
+            string resultStoryOne = dbHelper.GetStoryPointContent(1);
             SendResponse(response, resultStoryOne);
         }
         void GameTwoGet(HttpListenerResponse response)
         {
-            string resultStoryTwo = _db.GetStoryPointContent(2);
+            string resultStoryTwo = dbHelper.GetStoryPointContent(2);
             SendResponse(response, resultStoryTwo);
         }
         void GameThreeGet(HttpListenerResponse response)
         {
-            string resultStoryThree = _db.GetStoryPointContent(3);
+            string resultStoryThree = dbHelper.GetStoryPointContent(3);
             SendResponse(response, resultStoryThree);
         }
         void GameFourGet(HttpListenerResponse response)
         {
-            string resultStoryThree = _db.GetStoryPointContent(4);
+            string resultStoryThree = dbHelper.GetStoryPointContent(4);
             SendResponse(response, resultStoryThree);
         }
         void GameFiveGet(HttpListenerResponse response)
         {
-            string resultStoryThree = _db.GetStoryPointContent(5);
+            string resultStoryThree = dbHelper.GetStoryPointContent(5);
             SendResponse(response, resultStoryThree);
         }
         void GameSixGet(HttpListenerResponse response)
         {
-            string resultStoryThree = _db.GetStoryPointContent(6);
+            string resultStoryThree = dbHelper.GetStoryPointContent(6);
             SendResponse(response, resultStoryThree);
         }
-
         void GameOnePost(HttpListenerRequest req, HttpListenerResponse res)
         {
             StreamReader reader = new StreamReader(req.InputStream, req.ContentEncoding);
@@ -175,7 +180,7 @@ namespace FollowTheLightMain
                     break;
                 case "/game/player/chat":
                     Radio chat = new Radio(_db);
-                    chat.StoreChat(req, res);
+                    chat.GameMessage(res);
                     break;
                 default:
                     answer += "Invalid choice in the first scenario.\n";
@@ -209,7 +214,7 @@ namespace FollowTheLightMain
                     break;
                 case "/game/player/chat":
                     Radio chat = new Radio(_db);
-                    chat.StoreChat(req, res);
+                    chat.GameMessage(res);
                     break;
                 default:
                     answer += "Invalid choice in Game One.\n";
@@ -242,7 +247,7 @@ namespace FollowTheLightMain
                     break;
                 case "/game/player/chat":
                     Radio chat = new Radio(_db);
-                    chat.StoreChat(req, res);
+                    chat.GameMessage(res);
                     break;
                 default:
                     answer += "Invalid choice in Game One.\n";
@@ -275,7 +280,7 @@ namespace FollowTheLightMain
                     break;
                 case "/game/player/chat":
                     Radio chat = new Radio(_db);
-                    chat.StoreChat(req, res);
+                    chat.GameMessage(res);
                     break;
                 default:
                     answer += "Invalid choice in Game One.\n";
@@ -308,12 +313,13 @@ namespace FollowTheLightMain
                     break;
                 case "/game/player/chat":
                     Radio chat = new Radio(_db);
-                    chat.StoreChat(req, res);
+                    chat.GameMessage(res);
                     break;
                 default:
                     answer += "Invalid choice in Game One.\n";
                     break;
             }
+            SendResponse(res, answer);
         }
         void GameSixPost(HttpListenerRequest req, HttpListenerResponse res)
         {
@@ -341,14 +347,13 @@ namespace FollowTheLightMain
                     break;
                 case "/game/player/chat":
                     Radio chat = new Radio(_db);
-                    chat.StoreChat(req, res);
+                    chat.GameMessage(res);
                     break;
                 default:
                     answer += "Invalid choice in Game One.\n";
                     break;
             }
         }
-
         void SendResponse(HttpListenerResponse response, string content)
         {
             byte[] buffer = Encoding.UTF8.GetBytes(content);
