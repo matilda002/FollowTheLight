@@ -1,0 +1,8 @@
+﻿A sudden collapse blocks your way with narrow light streaming in from the other side of the stones. 
+Quick, what’s your next move? 
+What's your move?
+
+A) You remove some stones. Maybe there’s a hidden passage.
+B) You climb over the stones. Maybe there’s a way out.
+C) You push the stones. Maybe they will move. 
+D) You ignore the stones and sit down and rest, maybe an idea will unfold.

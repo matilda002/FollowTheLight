@@ -5,10 +5,10 @@ namespace FollowTheLightMain;
 public class DatabaseCreator
 {
     private readonly NpgsqlDataSource _db;
+
     public DatabaseCreator(NpgsqlDataSource db)
     {
         _db = db;
-
     }
 
     public void CreateTables()

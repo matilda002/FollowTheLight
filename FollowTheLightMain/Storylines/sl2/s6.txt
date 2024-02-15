@@ -1,0 +1,8 @@
+﻿Reaching the new surface you see withered skulls around you. 
+There is a creepy altar with 3 candles in the middle of it, two are already lit whilst one is unlit.
+Choose wisely...
+
+A) You light the candle. Maybe you’ll show respect and get a reward.
+B) You blow out the candles. Something might unfold.
+C) You take the unlit candle. Maybe you’ll need it later and get some light.
+D) You ignore the candle. Maybe you’ll avoid trouble.
