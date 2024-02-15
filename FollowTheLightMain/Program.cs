@@ -12,6 +12,8 @@ dbHelper.ResetTables();
 dbCreator.CreateTables();
 dbHelper.PopulateStoryPointsTable();
 dbHelper.PopulateTableStorypaths();
+dbHelper.PopulateSpTablePuzzle();
+dbHelper.PopulateImagesTable();
 
 bool listen = true;
 int port = 3000;
@@ -26,7 +28,7 @@ Console.CancelKeyPress += delegate (object? sender, ConsoleCancelEventArgs e)
     listen = false;
 };
 
-Server server = new(db);
+Server server = new Server(db);
 try
 {
     listener.Start();

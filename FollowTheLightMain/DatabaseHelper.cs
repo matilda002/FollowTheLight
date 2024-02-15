@@ -11,142 +11,151 @@ public class DatabaseHelper
         _db = db;
     }
 
-    
     public void ResetTables()
     {
         Console.WriteLine("Resetting tables...");
         const string query = "drop schema public cascade; create schema public;";
         _db.CreateCommand(query).ExecuteNonQuery();
     }
-    
+
     public void PopulateStoryPointsTable()
     {
         Console.WriteLine("Populating the storypoints table...");
 
+        string[] titles = {
+            "Intro", "Story One", "Story Two", "Story Three",
+            "Story Four", "Story Five", "Story Six", "Story Seven",
+            "Story Eight", "Story Nine", "Story Ten", "Story Eleven", "Story Twelve"
+        };
+
+        string[][] filePaths = {
+            new string[]
+            {
+                "FollowTheLightMain/storylines/intro.txt",
+                "FollowTheLightMain/storylines/sl1/s1.txt",
+                "FollowTheLightMain/storylines/sl1/s2.txt",
+                "FollowTheLightMain/storylines/sl1/s3.txt",
+                "FollowTheLightMain/storylines/sl1/s4.txt",
+                "FollowTheLightMain/storylines/sl1/s5.txt",
+                "FollowTheLightMain/storylines/sl1/s6.txt",
+            },
+            new string[]
+            {
+                "FollowTheLightMain/storylines/intro.txt",
+                "FollowTheLightMain/storylines/sl2/s1.txt",
+                "FollowTheLightMain/storylines/sl2/s2.txt",
+                "FollowTheLightMain/storylines/sl2/s3.txt",
+                "FollowTheLightMain/storylines/sl2/s4.txt",
+                "FollowTheLightMain/storylines/sl2/s5.txt",
+                "FollowTheLightMain/storylines/sl2/s6.txt",
+            }
+        };
+
+        var cmd = _db.CreateCommand("insert into storypoints(title, content) values ($1, $2)");
+        //sl = storyline, s = storypoint
+        for (int sl = 0; sl < filePaths.Length; sl++)
+        {
+            // Load storypoints for each storyline
+            int minCount = Math.Min(titles.Length, filePaths[sl].Length);
+            for (int s = 0; s < minCount; s++)
+            {
+                string content = File.ReadAllText(filePaths[sl][s]);
+                cmd.Parameters.AddWithValue(titles[s]);
+                cmd.Parameters.AddWithValue(content);
+                cmd.ExecuteNonQuery();
+                cmd.Parameters.Clear();
+            }
+        }
+    }
+    public string GetStoryPointContent(int storyPointId)
+    {
+        string content = "";
+        try
+        {
+            var cmd = _db.CreateCommand("select content from storypoints where storypoint_id = $1");
+            cmd.Parameters.AddWithValue(storyPointId);
+            var reader = cmd.ExecuteReader();
+            if (reader.Read())
+            {
+                content = reader.GetString(0);
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error retrieving story point content: {ex.Message}");
+        }
+        return content;
+    }
+    public void PopulateSpTablePuzzle()
+    {
+        Console.WriteLine("Populating the storypoints table with puzzles...");
+
+        string puzzle1 = File.ReadAllText($"FollowTheLightMain/Storylines/puzzles-text/lockp1.txt");
+        string puzzle1P2 = File.ReadAllText($"FollowTheLightMain/Storylines/puzzles-text/lockp2.txt");
+        string puzzle2 = File.ReadAllText($"FollowTheLightMain/Storylines/puzzles-text/stepstonesp1.txt");
+        string puzzle2P2 = File.ReadAllText($"FollowTheLightMain/Storylines/puzzles-text/stepstonesp2.txt");
+        string puzzle3 = File.ReadAllText($"FollowTheLightMain/Storylines/puzzles-text/wallp1.txt");
+        string puzzle3P2 = File.ReadAllText($"FollowTheLightMain/Storylines/puzzles-text/wallp2.txt");
+
         var cmd = _db.CreateCommand("insert into storypoints(title, content)" +
-                                                "values ($1, $2), ($3, $4), ($5,$6), ($7, $8), ($9, $10), ($11, $12), ($13, $14), ($15, $16), ($17, $18),($19, $20), ($21, $22);");
+                                    "values ($1,$2), ($3,$4), ($5,$6), ($7,$8), ($9,$10), ($11,$12)");
 
-        cmd.Parameters.AddWithValue("Intro");
-        cmd.Parameters.AddWithValue("""
-                                    Awakening in dark oblivion, memories lost to the void, a bone-chilling cold grips the air. Your screams only echoes, swallowed by the oppressive cave. A faint device flickers on the ground, its voice pleading: Who is there? Where am I?
-                                    An unsettling truth lingers-strangers, bound by this abyss, must collaborate to escape. No past, no exit, just an uneasy pact in this nightmare. Can you unravel the shadows together, or be consumed by the echoes of your own fear? The game begins, and only unity can conquer the lurking horrors.
-                                    """);
-        cmd.Parameters.AddWithValue("Story One");
-        cmd.Parameters.AddWithValue("""
-                                    In the dark, you find matches. Lighting one reveals more of the cave with paths on your right and left. Where do you choose to go? Your story starts with a spark in the shadows.
-
-                                    A. To your right
-                                    B. To your left
-                                    """);
-        cmd.Parameters.AddWithValue("Story Two");
-        cmd.Parameters.AddWithValue("""
-                                    As you walk through the tunnel, you feel something underfoot. It's a piece of paper. What now? Your choices unfold as you decide what to do with it.
-
-                                    A. Eat it
-                                    B. Throw it behind you
-                                    C. Burn it with a match
-                                    D. Read it
-                                    """);
-        cmd.Parameters.AddWithValue("Story Three");
-        cmd.Parameters.AddWithValue("""
-                                    You spot a red frog sitting on a rock, it looks friendly despite the bones scattered around it. What's your move? Decide carefully to face the consequences.
-
-                                    A. Burn it with your torch
-                                    B. Walk past the frog
-                                    C. Pick it up with your hands
-                                    D. Poke it with a bone from the ground
-                                    """);
-        cmd.Parameters.AddWithValue("Story Four");
-        cmd.Parameters.AddWithValue("""
-                                    A sinister noise echoes from behind. Quick, what's your next move? Choose wisely as the story continues.
-
-                                    A. Make a shushing noise
-                                    B. Hide behind something
-                                    C. Look back and investigate the noise
-                                    D. Scream and run
-                                    """);
-        cmd.Parameters.AddWithValue("Story Five");
-        cmd.Parameters.AddWithValue("""
-                                    Facing a towering wall, your only option is to climb it. What's your choice?
-
-                                    A. Climb the slippery wall
-                                    B. Look around the area
-                                    C. Climb the rope
-                                    D. Take the ladder with missing steps
-                                    """);
-        cmd.Parameters.AddWithValue("Story Six"); // story six -> nine are only drafts, not the finished product.
-        cmd.Parameters.AddWithValue("""
-                                    Reaching the new surface you see withered skulls around you. There is a creepy altar with a candle in the middle of it.
-
-                                    A. Eat the candle
-                                    B. Light yourself on fire, the skulls were the last straw
-                                    C. Use one of the matches to light up the candle
-                                    D. Throw a skull at the alter
-                                    """);
-        cmd.Parameters.AddWithValue("Story Seven");
-        cmd.Parameters.AddWithValue("""
-                                    You spot two tunnels diverging. Each seems to lead deeper into the unknown. What's your choice?
-
-                                    A. Take the left tunnel
-                                    B. Access both tunnels before making a decision
-                                    C. Take the right tunnel for a different path
-                                    D. Turn back and explore the cave again
-                                    """);
-        cmd.Parameters.AddWithValue("Story Eight");
-        cmd.Parameters.AddWithValue("""
-                                    You see a tall figure in the dark approaching you...
-
-                                    A. Hide and close your eyes
-                                    B. Run away
-                                    C. Stand still
-                                    D. Light up the darkness with one of your matches
-                                    """);
-        cmd.Parameters.AddWithValue("Story Nine");
-        cmd.Parameters.AddWithValue("""
-                                    You come across a creaky half-open door, what's your next move?
-
-                                    A. Push the door and enter cautiously
-                                    B. Ignore the door and change your direction
-                                    C. Knock on the door to check for a response
-                                    D. <choice>
-                                    """);
-        cmd.Parameters.AddWithValue("Story Ten");
-        cmd.Parameters.AddWithValue("""
-                                    You've found the exit, but desperate screams plead for rescue within the cave. What's your choice now? Leave or venture back into the darkness to investigate?
-
-                                    A. Leave the cave
-                                    B. Go back into the darkness
-                                    """);
-
+        cmd.Parameters.AddWithValue("Challenge One");
+        cmd.Parameters.AddWithValue($"{puzzle1}");
+        cmd.Parameters.AddWithValue("Challenge One - P2");
+        cmd.Parameters.AddWithValue($"{puzzle1P2}");
+        cmd.Parameters.AddWithValue("Challenge Two");
+        cmd.Parameters.AddWithValue($"{puzzle2}");
+        cmd.Parameters.AddWithValue("Challenge Two - P2");
+        cmd.Parameters.AddWithValue($"{puzzle2P2}");
+        cmd.Parameters.AddWithValue("Challenge Three");
+        cmd.Parameters.AddWithValue($"{puzzle3}");
+        cmd.Parameters.AddWithValue("Challenge Three - P2");
+        cmd.Parameters.AddWithValue($"{puzzle3P2}");
         cmd.ExecuteNonQuery();
     }
 
     public void PopulateImagesTable()
     {
-        Console.WriteLine("Populating the images table...");
+        Console.WriteLine("Populating the images table...\n\n");
 
-        string js1 = File.ReadAllText($"FollowTheLightMain/images/jumpscares/js-1.txt");
-        string js2 = File.ReadAllText($"FollowTheLightMain/images/jumpscares/js-2.txt");
-        string js3 = File.ReadAllText($"FollowTheLightMain/images/jumpscares/js-3.txt");
-        string js4 = File.ReadAllText($"FollowTheLightMain/images/Jumpscares/js-4.txt");
-        string js5 = File.ReadAllText($"FollowTheLightMain/images/jumpscares/js-5.txt");
-        string js6 = File.ReadAllText($"FollowTheLightMain/images/jumpscares/js-6.txt");
+        string js1 = File.ReadAllText($"FollowTheLightMain/images/jumpscares/js1.txt");
+        string js2 = File.ReadAllText($"FollowTheLightMain/images/jumpscares/js2.txt");
+        string js3 = File.ReadAllText($"FollowTheLightMain/images/jumpscares/js3.txt");
+        string js4 = File.ReadAllText($"FollowTheLightMain/images/Jumpscares/js4.txt");
+        string js5 = File.ReadAllText($"FollowTheLightMain/images/jumpscares/js5.txt");
+        string js6 = File.ReadAllText($"FollowTheLightMain/images/jumpscares/js6.txt");
+        string js7 = File.ReadAllText($"FollowTheLightMain/images/jumpscares/js7.txt");
         string imgFrog = File.ReadAllText($"FollowTheLightMain/images/frog.txt");
-        
+        string imgStepStone = File.ReadAllText($"FollowTheLightMain/images/puzzles/stepstonesp2-stones.txt");
+        string imgStepStoneTable = File.ReadAllText($"FollowTheLightMain/images/puzzles/stepstonesp1-table.txt");
+        string imgLock = File.ReadAllText($"FollowTheLightMain/images/puzzles/lockp1-lock.txt");
+        string imgLockDoor = File.ReadAllText($"FollowTheLightMain/images/puzzles/lockp2-door.txt");
+        string imgGlowingWall = File.ReadAllText($"FollowTheLightMain/images/puzzles/wallp1-wall.txt");
+        string imgGlowingWallSign = File.ReadAllText($"FollowTheLightMain/images/puzzles/wallp2-sign.txt");
+
 
         var cmd = _db.CreateCommand("insert into images(image)" +
-                                                "values ($1), ($2), ($3), ($4), ($5), ($6), ($7)");
-        
+                                                "values ($1), ($2), ($3), ($4), ($5), ($6), ($7), ($8), ($9), ($10), ($11), ($12), ($13), ($14)");
+
         cmd.Parameters.AddWithValue($"{js1}");
         cmd.Parameters.AddWithValue($"{js2}");
         cmd.Parameters.AddWithValue($"{js3}");
         cmd.Parameters.AddWithValue($"{js4}");
         cmd.Parameters.AddWithValue($"{js5}");
         cmd.Parameters.AddWithValue($"{js6}");
-        cmd.Parameters.AddWithValue($"{imgFrog}"); 
+        cmd.Parameters.AddWithValue($"{js7}");
+        cmd.Parameters.AddWithValue($"{imgFrog}");
+        cmd.Parameters.AddWithValue($"{imgStepStone}");
+        cmd.Parameters.AddWithValue($"{imgStepStoneTable}");
+        cmd.Parameters.AddWithValue($"{imgLock}");
+        cmd.Parameters.AddWithValue($"{imgLockDoor}");
+        cmd.Parameters.AddWithValue($"{imgGlowingWall}");
+        cmd.Parameters.AddWithValue($"{imgGlowingWallSign}");
 
         cmd.ExecuteNonQuery();
     }
+<<<<<<< HEAD
 
     public void PopulateTableStorypaths()
     {
@@ -177,3 +186,6 @@ public class DatabaseHelper
         }
     }
 }
+=======
+}
+>>>>>>> main

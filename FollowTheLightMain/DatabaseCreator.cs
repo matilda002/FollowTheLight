@@ -5,10 +5,10 @@ namespace FollowTheLightMain;
 public class DatabaseCreator
 {
     private readonly NpgsqlDataSource _db;
+
     public DatabaseCreator(NpgsqlDataSource db)
     {
         _db = db;
-
     }
 
     public void CreateTables()
@@ -57,6 +57,7 @@ public class DatabaseCreator
             message text,
             message_time timestamp DEFAULT current_timestamp
         )";
+        
         _db.CreateCommand(radioTable).ExecuteNonQuery();
     }
 }
