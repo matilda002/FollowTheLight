@@ -9,8 +9,8 @@ var dbCreator = new DatabaseCreator(db);
 var dbHelper = new DatabaseHelper(db);
 
 //dbHelper.ResetTables();
-dbCreator.CreateTables();
-dbHelper.PopulateStoryPointsTable();
+//dbCreator.CreateTables();
+//dbHelper.PopulateStoryPointsTable();
 
 bool listen = true;
 int port = 3000;
