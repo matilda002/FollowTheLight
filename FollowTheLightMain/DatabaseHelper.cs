@@ -41,7 +41,6 @@ public class DatabaseHelper
             },
             new string[]
             {
-                "FollowTheLightMain/storylines/intro.txt",
                 "FollowTheLightMain/storylines/sl2/s1.txt",
                 "FollowTheLightMain/storylines/sl2/s2.txt",
                 "FollowTheLightMain/storylines/sl2/s3.txt",
