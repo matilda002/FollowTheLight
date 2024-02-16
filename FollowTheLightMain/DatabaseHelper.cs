@@ -165,12 +165,12 @@ public class DatabaseHelper
         cmd.Parameters.AddWithValue($"{js6}");
         cmd.Parameters.AddWithValue($"{js7}");
         cmd.Parameters.AddWithValue($"{imgFrog}");
-        cmd.Parameters.AddWithValue($"{imgStepStone}");
         cmd.Parameters.AddWithValue($"{imgStepStoneTable}");
-        cmd.Parameters.AddWithValue($"{imgLock}");
-        cmd.Parameters.AddWithValue($"{imgLockDoor}");
+        cmd.Parameters.AddWithValue($"{imgStepStone}");
         cmd.Parameters.AddWithValue($"{imgGlowingWall}");
         cmd.Parameters.AddWithValue($"{imgGlowingWallSign}");
+        cmd.Parameters.AddWithValue($"{imgLock}");
+        cmd.Parameters.AddWithValue($"{imgLockDoor}");
 
         cmd.ExecuteNonQuery();
     }
