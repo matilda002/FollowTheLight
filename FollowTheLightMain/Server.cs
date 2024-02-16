@@ -218,6 +218,24 @@ namespace FollowTheLightMain
             string resultPuzzleThreeImg = dbHelper.GetImgContent(13);
             SendResponse(response, resultPuzzleThree + resultPuzzleThreeImg);
         } 
+        void PuzzleOneP2(HttpListenerResponse response)
+        {
+            string resultPuzzleOne = dbHelper.GetStoryPointContent(15);
+            string resultPuzzleOneImg = dbHelper.GetImgContent(10);
+            SendResponse(response, resultPuzzleOne + resultPuzzleOneImg);
+        }
+        void PuzzleTwoP2(HttpListenerResponse response)
+        {
+            string resultPuzzleTwo = dbHelper.GetStoryPointContent(17);
+            string resultPuzzleTwoImg = dbHelper.GetImgContent(12);
+            SendResponse(response, resultPuzzleTwo + resultPuzzleTwoImg);
+        } 
+        void PuzzleThreeP2(HttpListenerResponse response)
+        {
+            string resultPuzzleThree = dbHelper.GetStoryPointContent(19);
+            string resultPuzzleThreeImg = dbHelper.GetImgContent(14);
+            SendResponse(response, resultPuzzleThree + resultPuzzleThreeImg);
+        } 
         
         // Player One Scenarios
         void GameOnePost(HttpListenerRequest req, HttpListenerResponse res)
