@@ -168,7 +168,6 @@ public class DatabaseHelper
         effect
         )
         VALUES ($1, $2, $3, $4)
-       
         ;";
 
         string[] storypath = File.ReadAllLines($"FollowTheLightMain/DATA/storypaths.csv");
@@ -178,7 +177,7 @@ public class DatabaseHelper
             using (var cmd = _db.CreateCommand(query))
             {
                 cmd.Parameters.AddWithValue( int.Parse(data[0]));
-                cmd.Parameters.AddWithValue(int.Parse(data[1]));
+                cmd.Parameters.AddWithValue( int.Parse(data[1]));
                 cmd.Parameters.AddWithValue( data[2]);
                 cmd.Parameters.AddWithValue( int.Parse(data[3]));
                 cmd.ExecuteNonQuery();
