@@ -52,13 +52,13 @@ namespace FollowTheLightMain
                             GameThreeGet(response);
                             break;
                         case "/game/player/4":
-                            GameFourGet(response);
+                            GameThreeGet(response);
                             break;
                         case "/game/player/5":
-                            GameFiveGet(response);
+                            GameThreeGet(response);
                             break;
                         case "/game/player/6":
-                            GameSixGet(response);
+                            GameThreeGet(response);
                             break;
                         case "/game/player2/1":
                             GameSevenGet(response);
@@ -213,13 +213,13 @@ namespace FollowTheLightMain
         }
         void GameElevenGet(HttpListenerResponse response)
         {
-            string result = dbHelper.GetStoryPointContent(12);
-            SendResponse(response, result);
+            string resultStoryThree = dbHelper.GetStoryPointContent(12);
+            SendResponse(response, resultStoryThree);
         }
         void GameTwelveGet(HttpListenerResponse response)
         {
-            string result = dbHelper.GetStoryPointContent(13);
-            SendResponse(response, result);
+            string resultStoryThree = dbHelper.GetStoryPointContent(13);
+            SendResponse(response, resultStoryThree);
         }
 
         // Player One Storyline
