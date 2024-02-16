@@ -156,10 +156,7 @@ namespace FollowTheLightMain
             string resultStoryThree = dbHelper.GetStoryPointContent(7);
             SendResponse(response, resultStoryThree);
         }
-<<<<<<< HEAD
-        
-=======
-        void GameSevenGet(HttpListenerResponse response)
+       void GameSevenGet(HttpListenerResponse response)
         {
             string resultStoryThree = dbHelper.GetStoryPointContent(8);
             SendResponse(response, resultStoryThree);
@@ -190,9 +187,7 @@ namespace FollowTheLightMain
             SendResponse(response, resultStoryThree);
         }
 
-        // Player One Scenarios
->>>>>>> main
-        void GameOnePost(HttpListenerRequest req, HttpListenerResponse res)
+       void GameOnePost(HttpListenerRequest req, HttpListenerResponse res)
         {
             StreamReader reader = new StreamReader(req.InputStream, req.ContentEncoding);
             string body = reader.ReadToEnd();
@@ -396,11 +391,7 @@ namespace FollowTheLightMain
             }
             SendResponse(res, answer);
         }
-<<<<<<< HEAD
-        
-=======
-
-        // Player Two Scenarios
+       // Player Two Scenarios
         void GameSevenPost(HttpListenerRequest req, HttpListenerResponse res) // Scenario One
         {
             StreamReader reader = new StreamReader(req.InputStream, req.ContentEncoding);
@@ -605,8 +596,6 @@ namespace FollowTheLightMain
             }
             SendResponse(res, answer);
         }
-
->>>>>>> main
         void SendResponse(HttpListenerResponse response, string content)
         {
             byte[] buffer = Encoding.UTF8.GetBytes(content);
