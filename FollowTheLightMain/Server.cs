@@ -52,13 +52,31 @@ namespace FollowTheLightMain
                             GameThreeGet(response);
                             break;
                         case "/game/player/4":
-                            GameThreeGet(response);
+                            GameFourGet(response);
                             break;
                         case "/game/player/5":
-                            GameThreeGet(response);
+                            GameFiveGet(response);
                             break;
                         case "/game/player/6":
-                            GameThreeGet(response);
+                            GameSixGet(response);
+                            break;
+                        case "/game/player2/1":
+                            GameSevenGet(response);
+                            break;
+                        case "/game/player2/2":
+                            GameEightGet(response);
+                            break;
+                        case "/game/player2/3":
+                            GameNineGet(response);
+                            break;
+                        case "/game/player2/4":
+                            GameTenGet(response);
+                            break;
+                        case "/game/player2/5":
+                            GameElevenGet(response);
+                            break;
+                        case "/game/player2/6":
+                            GameTwelveGet(response);
                             break;
                         case "/game/player/message":
                             Radio message = new Radio(_db);
@@ -84,13 +102,31 @@ namespace FollowTheLightMain
                             GameThreePost(request, response);
                             break;
                         case "/game/player/4":
-                            GameThreePost(request, response);
+                            GameFourPost(request, response);
                             break;
                         case "/game/player/5":
-                            GameThreePost(request, response);
+                            GameFivePost(request, response);
                             break;
                         case "/game/player/6":
-                            GameThreePost(request, response);
+                            GameSixPost(request, response);
+                            break;
+                        case "/game/player2/1":
+                            GameSevenPost(request, response);
+                            break;
+                        case "/game/player2/2":
+                            GameEightPost(request, response);
+                            break;
+                        case "/game/player2/3":
+                            GameNinePost(request, response);
+                            break;
+                        case "/game/player2/4":
+                            GameTenPost(request, response);
+                            break;
+                        case "/game/player2/5":
+                            GameElevenPost(request, response);
+                            break;
+                        case "/game/player2/6":
+                            GameTwelvePost(request, response);
                             break;
                         case ("/player/register"):
                             Player registerPlayer = new Player();
@@ -121,69 +157,69 @@ namespace FollowTheLightMain
 
         void IntroGet(HttpListenerResponse response)
         {
-            string resultIntro = dbHelper.GetStoryPointContent(1);
-            SendResponse(response, resultIntro);
+            string res = dbHelper.GetStoryPointContent(1);
+            SendResponse(response, res);
         }
 
         void GameOneGet(HttpListenerResponse response)
         {
-            string resultStoryOne = dbHelper.GetStoryPointContent(2);
-            SendResponse(response, resultStoryOne);
+            string result = dbHelper.GetStoryPointContent(2);
+            SendResponse(response, result);
         }
         void GameTwoGet(HttpListenerResponse response)
         {
-            string resultStoryTwo = dbHelper.GetStoryPointContent(3);
-            SendResponse(response, resultStoryTwo);
+            string result = dbHelper.GetStoryPointContent(3);
+            SendResponse(response, result);
         }
         void GameThreeGet(HttpListenerResponse response)
         {   
-            string resultStoryThree = dbHelper.GetStoryPointContent(4);
-            SendResponse(response, resultStoryThree);
+            string result = dbHelper.GetStoryPointContent(4);
+            SendResponse(response, result);
         }
         void GameFourGet(HttpListenerResponse response)
         {
-            string resultStoryThree = dbHelper.GetStoryPointContent(5);
-            SendResponse(response, resultStoryThree);
+            string result = dbHelper.GetStoryPointContent(5);
+            SendResponse(response, result);
         }
         void GameFiveGet(HttpListenerResponse response)
         {
-            string resultStoryThree = dbHelper.GetStoryPointContent(6);
-            SendResponse(response, resultStoryThree);
+            string result = dbHelper.GetStoryPointContent(6);
+            SendResponse(response, result);
         }
         void GameSixGet(HttpListenerResponse response)
         {
-            string resultStoryThree = dbHelper.GetStoryPointContent(7);
-            SendResponse(response, resultStoryThree);
+            string result = dbHelper.GetStoryPointContent(7);
+            SendResponse(response, result);
         }
         void GameSevenGet(HttpListenerResponse response)
         {
-            string resultStoryThree = dbHelper.GetStoryPointContent(8);
-            SendResponse(response, resultStoryThree);
+            string result = dbHelper.GetStoryPointContent(8);
+            SendResponse(response, result);
         }
         void GameEightGet(HttpListenerResponse response)
         {
-            string resultStoryThree = dbHelper.GetStoryPointContent(9);
-            SendResponse(response, resultStoryThree);
+            string result = dbHelper.GetStoryPointContent(9);
+            SendResponse(response, result);
         }
         void GameNineGet(HttpListenerResponse response)
         {
-            string resultStoryThree = dbHelper.GetStoryPointContent(10);
-            SendResponse(response, resultStoryThree);
+            string result = dbHelper.GetStoryPointContent(10);
+            SendResponse(response, result);
         }
         void GameTenGet(HttpListenerResponse response)
         {
-            string resultStoryThree = dbHelper.GetStoryPointContent(11);
-            SendResponse(response, resultStoryThree);
+            string result = dbHelper.GetStoryPointContent(11);
+            SendResponse(response, result);
         }
         void GameElevenGet(HttpListenerResponse response)
         {
-            string resultStoryThree = dbHelper.GetStoryPointContent(12);
-            SendResponse(response, resultStoryThree);
+            string result = dbHelper.GetStoryPointContent(12);
+            SendResponse(response, result);
         }
         void GameTwelveGet(HttpListenerResponse response)
         {
-            string resultStoryThree = dbHelper.GetStoryPointContent(13);
-            SendResponse(response, resultStoryThree);
+            string result = dbHelper.GetStoryPointContent(13);
+            SendResponse(response, result);
         }
 
         // Player One Storyline
