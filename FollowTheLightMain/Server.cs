@@ -186,7 +186,7 @@ namespace FollowTheLightMain
             SendResponse(response, resultStoryThree);
         }
 
-        // Player One Scenarios
+        // Player One Storyline
         void GameOnePost(HttpListenerRequest req, HttpListenerResponse res)
         {
             StreamReader reader = new StreamReader(req.InputStream, req.ContentEncoding);
@@ -392,7 +392,7 @@ namespace FollowTheLightMain
             SendResponse(res, answer);
         }
 
-        // Player Two Scenarios
+        // Player Two Storyline
         void GameSevenPost(HttpListenerRequest req, HttpListenerResponse res) // Scenario One
         {
             StreamReader reader = new StreamReader(req.InputStream, req.ContentEncoding);
