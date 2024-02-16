@@ -29,7 +29,6 @@ namespace FollowTheLightMain
                 requestListener.BeginGetContext(HandleRequest, requestListener);
             }
         }
-        
         public void Router(HttpListenerContext context)
         {
             HttpListenerRequest request = context.Request;
@@ -37,10 +36,10 @@ namespace FollowTheLightMain
 
             switch (request.HttpMethod)
             {
-                case ("GET"):
+                case "GET":
                     switch (request.Url?.AbsolutePath)
                     {
-                        case ("/intro"):
+                        case "/intro":
                             IntroGet(response);
                             break;
                         case "/game/player/1":
@@ -93,19 +92,19 @@ namespace FollowTheLightMain
                         case "/game/player/6":
                             GameThreePost(request, response);
                             break;
-                        case ("/player/register"):
+                        case "/player/register":
                             Player registerPlayer = new Player(_db);
                             registerPlayer.Register(request, response);
                             break;
-                        case ("/player/status"):
+                        case "/player/status":
                             Player playerStatus = new Player(_db);
                             playerStatus.ViewStatus(request, response);
                             break;
-                        case ("/player/1/chat"):
+                        case "/player/1/chat":
                             Radio chatOne = new Radio(_db);
                             chatOne.SendMessageOne(request, response);
                             break;
-                        case ("/player/2/chat"):
+                        case "/player/2/chat":
                             Radio chatTwo = new Radio(_db);
                             chatTwo.SendMessageTwo(request, response);
                             break;
@@ -114,6 +113,7 @@ namespace FollowTheLightMain
                             break;
                     }
                     break;
+                
                 default:
                     NotFound(response);
                     break;
@@ -125,7 +125,6 @@ namespace FollowTheLightMain
             string resultIntro = dbHelper.GetStoryPointContent(1);
             SendResponse(response, resultIntro);
         }
-
         void GameOneGet(HttpListenerResponse response)
         {
             string resultStoryOne = dbHelper.GetStoryPointContent(2);
@@ -137,7 +136,7 @@ namespace FollowTheLightMain
             SendResponse(response, resultStoryTwo);
         }
         void GameThreeGet(HttpListenerResponse response)
-        {   
+        {
             string resultStoryThree = dbHelper.GetStoryPointContent(4);
             SendResponse(response, resultStoryThree);
         }
@@ -145,7 +144,7 @@ namespace FollowTheLightMain
         {
             string resultStoryThree = dbHelper.GetStoryPointContent(5);
             SendResponse(response, resultStoryThree);
-        }
+        }//callin wrong method
         void GameFiveGet(HttpListenerResponse response)
         {
             string resultStoryThree = dbHelper.GetStoryPointContent(6);
@@ -156,7 +155,7 @@ namespace FollowTheLightMain
             string resultStoryThree = dbHelper.GetStoryPointContent(7);
             SendResponse(response, resultStoryThree);
         }
-       void GameSevenGet(HttpListenerResponse response)
+        void GameSevenGet(HttpListenerResponse response)
         {
             string resultStoryThree = dbHelper.GetStoryPointContent(8);
             SendResponse(response, resultStoryThree);
@@ -187,7 +186,7 @@ namespace FollowTheLightMain
             SendResponse(response, resultStoryThree);
         }
 
-       void GameOnePost(HttpListenerRequest req, HttpListenerResponse res)
+        void GameOnePost(HttpListenerRequest req, HttpListenerResponse res)
         {
             StreamReader reader = new StreamReader(req.InputStream, req.ContentEncoding);
             string body = reader.ReadToEnd();
@@ -391,7 +390,8 @@ namespace FollowTheLightMain
             }
             SendResponse(res, answer);
         }
-       // Player Two Scenarios
+
+        // Player Two Scenarios
         void GameSevenPost(HttpListenerRequest req, HttpListenerResponse res) // Scenario One
         {
             StreamReader reader = new StreamReader(req.InputStream, req.ContentEncoding);
@@ -614,7 +614,7 @@ namespace FollowTheLightMain
             response.StatusCode = (int)HttpStatusCode.Created;
             response.Close();
         }
-        
+
         void NotFound(HttpListenerResponse res)
         {
             res.StatusCode = (int)HttpStatusCode.NotFound;

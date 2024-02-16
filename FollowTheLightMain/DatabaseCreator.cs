@@ -41,7 +41,7 @@ public class DatabaseCreator
             effect smallint,
             image_id smallint references images(image_id),
             check(from_point <> to_point),
-            unique(from_point, to_point, choice)
+            unique(player, from_point, to_point, choice)
         )";
         _db.CreateCommand(storypathTable).ExecuteNonQuery();
 

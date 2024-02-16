@@ -114,7 +114,6 @@ public class DatabaseHelper
         cmd.Parameters.AddWithValue($"{puzzle3P2}");
         cmd.ExecuteNonQuery();
     }
-
     public void PopulateImagesTable()
     {
         Console.WriteLine("Populating the images table...\n\n");
@@ -161,12 +160,13 @@ public class DatabaseHelper
         Console.WriteLine("Populating storypaths-table...");
 
         const string query = @"INSERT INTO storypaths(
+        player,
         from_point,
         to_point,
         choice,
         effect
         )
-        VALUES ($1, $2, $3, $4)
+        VALUES ($1::player_role, $2, $3, $4, $5)
         ;";
 
         string[] storypath = File.ReadAllLines($"FollowTheLightMain/DATA/storypaths.csv");
@@ -175,10 +175,11 @@ public class DatabaseHelper
             string[] data = storypath[i].Split(',');
             using (var cmd = _db.CreateCommand(query))
             {
-                cmd.Parameters.AddWithValue( int.Parse(data[0]));
-                cmd.Parameters.AddWithValue( int.Parse(data[1]));
-                cmd.Parameters.AddWithValue( data[2]);
-                cmd.Parameters.AddWithValue( int.Parse(data[3]));
+                cmd.Parameters.AddWithValue(data[0]);
+                cmd.Parameters.AddWithValue(int.Parse(data[1]));
+                cmd.Parameters.AddWithValue(int.Parse(data[2]));
+                cmd.Parameters.AddWithValue(data[3]);
+                cmd.Parameters.AddWithValue(int.Parse(data[4]));
                 cmd.ExecuteNonQuery();
             }
         }

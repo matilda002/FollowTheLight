@@ -44,7 +44,6 @@ public class Player
             res.Close();
         }
     }
-
     public void ViewStatus(HttpListenerRequest req, HttpListenerResponse res)
     {
         const string dbUri = "Host=localhost;Port=5455;Username=postgres;Password=postgres;Database=followthelightdb;";
