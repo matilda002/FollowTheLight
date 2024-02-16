@@ -1,8 +1,5 @@
-﻿using System;
-using System.IO;
-using System.Net;
+﻿using System.Net;
 using System.Text;
-using System.Threading;
 using Npgsql;
 
 namespace FollowTheLightMain
@@ -10,7 +7,7 @@ namespace FollowTheLightMain
     public class Server
     {
         private readonly NpgsqlDataSource _db;
-        private readonly DatabaseHelper dbHelper;
+        private readonly DatabaseHelper dbHelper; // rename to _dbHelper
 
         public Server(NpgsqlDataSource db)
         {
@@ -33,6 +30,7 @@ namespace FollowTheLightMain
         {
             HttpListenerRequest request = context.Request;
             HttpListenerResponse response = context.Response;
+            PostPuzzle puzzle = new (_db);
 
             switch (request.HttpMethod)
             {
@@ -90,7 +88,7 @@ namespace FollowTheLightMain
                             GameTwoPost(request, response);
                             break;
                         case "/game/puzzle/1": ///////
-                            PuzzleOneP1Post(request, response);
+                            puzzle.PuzzleOneP1Post(request, response);
                             break;
                         case "/game/player/3":
                             GameThreePost(request, response);
@@ -648,30 +646,6 @@ namespace FollowTheLightMain
             }
             SendResponse(res, answer);
         }
-
-        // Player One Puzzle Post
-        void PuzzleOneP1Post(HttpListenerRequest req, HttpListenerResponse res)
-        {
-            StreamReader reader = new StreamReader(req.InputStream, req.ContentEncoding);
-            string body = reader.ReadToEnd();
-            string answer = string.Empty;
-
-            switch (body)
-            {
-                case "666":
-                    answer += "You paint the devil's number on the stone, it moves and reveals a path\n";
-                    break;
-                case "/game/player/chat":
-                    Radio chat = new Radio(_db);
-                    chat.GameMessage(res);
-                    break;
-                default:
-                    answer += "A huge cockroach helped you move the rock, and gave you dirty look.\n";
-                    break;
-            }
-            SendResponse(res, answer);
-        }
-        
         
         
         void SendResponse(HttpListenerResponse response, string content)
@@ -699,4 +673,3 @@ namespace FollowTheLightMain
         }
     }
 }
-
