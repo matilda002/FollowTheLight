@@ -11,7 +11,6 @@ var dbHelper = new DatabaseHelper(db);
 dbHelper.ResetTables();
 dbCreator.CreateTables();
 dbHelper.PopulateStoryPointsTable();
-dbHelper.PopulateStoryPointsTableTwo();
 dbHelper.PopulateSpTablePuzzle();
 dbHelper.PopulateImagesTable();
 
