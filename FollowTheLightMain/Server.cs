@@ -1,8 +1,8 @@
 ﻿using System.Net;
 using System.Text;
 using Npgsql;
-
 namespace FollowTheLightMain
+
 {
     public class Server
     {
@@ -206,39 +206,39 @@ namespace FollowTheLightMain
         // Puzzles Get
         void PuzzleOneP1(HttpListenerResponse response)
         {
-            string resultPuzzleOne = dbHelper.GetStoryPointContent(14);
-            string resultPuzzleOneImg = dbHelper.GetImgContent(9);
-            SendResponse(response, resultPuzzleOne + resultPuzzleOneImg);
+            string result = dbHelper.GetStoryPointContent(14);
+            string resultImg = dbHelper.GetImgContent(9);
+            SendResponse(response, result + resultImg);
         }
         void PuzzleTwoP1(HttpListenerResponse response)
         {
-            string resultPuzzleTwo = dbHelper.GetStoryPointContent(16);
-            string resultPuzzleTwoImg = dbHelper.GetImgContent(11);
-            SendResponse(response, resultPuzzleTwo + resultPuzzleTwoImg);
+            string result = dbHelper.GetStoryPointContent(16);
+            string resultImg = dbHelper.GetImgContent(11);
+            SendResponse(response, result + resultImg);
         } 
         void PuzzleThreeP1(HttpListenerResponse response)
         {
-            string resultPuzzleThree = dbHelper.GetStoryPointContent(18);
-            string resultPuzzleThreeImg = dbHelper.GetImgContent(13);
-            SendResponse(response, resultPuzzleThree + resultPuzzleThreeImg);
+            string result = dbHelper.GetStoryPointContent(18);
+            string resultImg = dbHelper.GetImgContent(13);
+            SendResponse(response, result + resultImg);
         } 
         void PuzzleOneP2(HttpListenerResponse response)
         {
-            string resultPuzzleOne = dbHelper.GetStoryPointContent(15);
-            string resultPuzzleOneImg = dbHelper.GetImgContent(10);
-            SendResponse(response, resultPuzzleOne + resultPuzzleOneImg);
+            string result = dbHelper.GetStoryPointContent(15);
+            string resultImg = dbHelper.GetImgContent(10);
+            SendResponse(response, result + resultImg);
         }
         void PuzzleTwoP2(HttpListenerResponse response)
         {
-            string resultPuzzleTwo = dbHelper.GetStoryPointContent(17);
-            string resultPuzzleTwoImg = dbHelper.GetImgContent(12);
-            SendResponse(response, resultPuzzleTwo + resultPuzzleTwoImg);
+            string result = dbHelper.GetStoryPointContent(17);
+            string resultImg = dbHelper.GetImgContent(12);
+            SendResponse(response, result + resultImg);
         } 
         void PuzzleThreeP2(HttpListenerResponse response)
         {
-            string resultPuzzleThree = dbHelper.GetStoryPointContent(19);
-            string resultPuzzleThreeImg = dbHelper.GetImgContent(14);
-            SendResponse(response, resultPuzzleThree + resultPuzzleThreeImg);
+            string result = dbHelper.GetStoryPointContent(19);
+            string resultImg = dbHelper.GetImgContent(14);
+            SendResponse(response, result + resultImg);
         } 
         
         // Player One Scenarios
