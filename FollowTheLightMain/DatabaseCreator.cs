@@ -21,7 +21,7 @@ public class DatabaseCreator
         )";
         _db.CreateCommand(imagesTable).ExecuteNonQuery();
 
-        const string playerRole = @"CREATE TYPE player_role AS ENUM ('P1', 'P2');";
+        const string playerRole = @"CREATE TYPE player_role AS ENUM ('1P', '2P', 'CO');";
         _db.CreateCommand(playerRole).ExecuteNonQuery();
 
         const string storypointTable = @"create table if not exists storypoints(
@@ -33,7 +33,8 @@ public class DatabaseCreator
         _db.CreateCommand(storypointTable).ExecuteNonQuery();
 
         const string storypathTable = @"create table if not exists storypaths(
-            storypath_id serial primary key,      
+            storypath_id serial primary key,
+            player player_role,
             from_point int references storypoints(storypoint_id),
             to_point int references storypoints(storypoint_id),
             choice varchar(5),
@@ -48,6 +49,7 @@ public class DatabaseCreator
             player_id serial primary key,
             username text,
             hp smallint default (5),
+            player player_role,
             storypath_id int references storypaths(storypath_id),
             current_storypoint int default (1) references storypoints(storypoint_id),
             unique(username)
