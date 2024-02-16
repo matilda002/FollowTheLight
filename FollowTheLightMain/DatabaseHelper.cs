@@ -109,7 +109,7 @@ public class DatabaseHelper
     public void PopulateSpTablePuzzle()
     {
         Console.WriteLine("Populating the storypoints table with puzzles...");
-
+        
         string puzzle1 = File.ReadAllText("FollowTheLightMain/Storylines/puzzles-text/stepstonesp1.txt");
         string puzzle1P2 = File.ReadAllText("FollowTheLightMain/Storylines/puzzles-text/stepstonesp2.txt");
         string puzzle2 = File.ReadAllText("FollowTheLightMain/Storylines/puzzles-text/wallp1.txt");
@@ -158,9 +158,9 @@ public class DatabaseHelper
 
         var cmd = _db.CreateCommand("insert into images(image) values ($1)");
         
-        for (int sl = 0; sl < filePaths.Length; sl++)
+        foreach (string img in filePaths)
         {
-            string content = File.ReadAllText(filePaths[sl]); 
+            string content = File.ReadAllText(img); 
             cmd.Parameters.AddWithValue(content);
             cmd.ExecuteNonQuery();
             cmd.Parameters.Clear();
