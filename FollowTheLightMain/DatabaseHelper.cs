@@ -17,13 +17,6 @@ public class DatabaseHelper
         const string query = "drop schema public cascade; create schema public;";
         _db.CreateCommand(query).ExecuteNonQuery();
     }
-<<<<<<< HEAD
- 
-    
-
-    
-    public void PopulateSpTablePuzzle() 
-=======
 
     public void PopulateStoryPointsTable()
     {
@@ -62,7 +55,7 @@ public class DatabaseHelper
         //sl = storyline, s = storypoint
         for (int sl = 0; sl < filePaths.Length; sl++)
         {
-            // Load storypoints for each storyline
+          // Load storypoints for each storyline
             int minCount = Math.Min(titles.Length, filePaths[sl].Length);
             for (int s = 0; s < minCount; s++)
             {
@@ -93,8 +86,8 @@ public class DatabaseHelper
         }
         return content;
     }
+
     public void PopulateSpTablePuzzle()
->>>>>>> 825ca723134c12c721737963a72a50068e6342c6
     {
         Console.WriteLine("Populating the storypoints table with puzzles...");
 
@@ -163,8 +156,7 @@ public class DatabaseHelper
 
         cmd.ExecuteNonQuery();
     }
-<<<<<<< HEAD
-
+    
     public void PopulateTableStorypaths()
     {
         Console.WriteLine("Populating storypaths-table...");
@@ -194,9 +186,4 @@ public class DatabaseHelper
         }
     }
 }
-<<<<<<< HEAD
-=======
-=======
-}
->>>>>>> main
->>>>>>> 825ca723134c12c721737963a72a50068e6342c6
+
