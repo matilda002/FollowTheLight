@@ -125,6 +125,7 @@ namespace FollowTheLightMain
             string resultIntro = dbHelper.GetStoryPointContent(1);
             SendResponse(response, resultIntro);
         }
+
         void GameOneGet(HttpListenerResponse response)
         {
             string resultStoryOne = dbHelper.GetStoryPointContent(2);
@@ -155,7 +156,42 @@ namespace FollowTheLightMain
             string resultStoryThree = dbHelper.GetStoryPointContent(7);
             SendResponse(response, resultStoryThree);
         }
+<<<<<<< HEAD
         
+=======
+        void GameSevenGet(HttpListenerResponse response)
+        {
+            string resultStoryThree = dbHelper.GetStoryPointContent(8);
+            SendResponse(response, resultStoryThree);
+        }
+        void GameEightGet(HttpListenerResponse response)
+        {
+            string resultStoryThree = dbHelper.GetStoryPointContent(9);
+            SendResponse(response, resultStoryThree);
+        }
+        void GameNineGet(HttpListenerResponse response)
+        {
+            string resultStoryThree = dbHelper.GetStoryPointContent(10);
+            SendResponse(response, resultStoryThree);
+        }
+        void GameTenGet(HttpListenerResponse response)
+        {
+            string resultStoryThree = dbHelper.GetStoryPointContent(11);
+            SendResponse(response, resultStoryThree);
+        }
+        void GameElevenGet(HttpListenerResponse response)
+        {
+            string resultStoryThree = dbHelper.GetStoryPointContent(12);
+            SendResponse(response, resultStoryThree);
+        }
+        void GameTwelveGet(HttpListenerResponse response)
+        {
+            string resultStoryThree = dbHelper.GetStoryPointContent(13);
+            SendResponse(response, resultStoryThree);
+        }
+
+        // Player One Scenarios
+>>>>>>> main
         void GameOnePost(HttpListenerRequest req, HttpListenerResponse res)
         {
             StreamReader reader = new StreamReader(req.InputStream, req.ContentEncoding);
@@ -360,7 +396,217 @@ namespace FollowTheLightMain
             }
             SendResponse(res, answer);
         }
+<<<<<<< HEAD
         
+=======
+
+        // Player Two Scenarios
+        void GameSevenPost(HttpListenerRequest req, HttpListenerResponse res) // Scenario One
+        {
+            StreamReader reader = new StreamReader(req.InputStream, req.ContentEncoding);
+            string body = reader.ReadToEnd();
+            string answer = string.Empty;
+
+            switch (body)
+            {
+                case "A":
+                case "a":
+                    answer += "Option A chosen in the first scenario. Taking a closer look, you see the corpse has been mutilated and eaten by something. There is a note on the corpse’s chest pocket. The note has written “Beware of the red frog. It is poisonous but poking it will make it go away”.. Maybe the other player can use it to avoid the dangers that might unfold. \n";
+                    break;
+                case "B":
+                case "b":
+                    answer += "You chose option B in the first scenario.\n";
+                    break;
+                case "C":
+                case "c":
+                    answer += "Option C chosen in the first scenario. You disturb a swarm of flesh-eating insects that attack you. You lose a health point.\r\n \n";
+                    break;
+                case "D":
+                case "d":
+                    answer += "Option D chosen in the first scenario. You trip over a wire and trigger a trap that shoots arrows made of human bones at you. You lose a health point. \n";
+                    break;
+                case "/game/player/chat":
+                    Radio chat = new Radio(_db);
+                    chat.GameMessage(res);
+                    break;
+                default:
+                    answer += "Invalid choice in Game One.\n";
+                    break;
+            }
+            SendResponse(res, answer);
+        }
+        void GameEightPost(HttpListenerRequest req, HttpListenerResponse res) // Scenario Two
+        {
+            StreamReader reader = new StreamReader(req.InputStream, req.ContentEncoding);
+            string body = reader.ReadToEnd();
+            string answer = string.Empty;
+
+            switch (body)
+            {
+                case "A":
+                case "a":
+                    answer += "Option A chosen in the second scenario. The spider seems pleased with the scratches and purrs softly. It pulls a string on the web which opens a secret passage to continue. passing the spider it screeches and whispers “If it can not hear you, it can not see you” before disappearing into the depth. \n";
+                    break;
+                case "B":
+                case "b":
+                    answer += "You chose option B in the second scenario. The spider gets angry and spits venom at you. You lose a health point.\n";
+                    break;
+                case "C":
+                case "c":
+                    answer += "Option C chosen in the second scenario. The spider ignores you and wraps you in its web. You lose a health point.\n";
+                    break;
+                case "D":
+                case "d":
+                    answer += "Option D chosen in the second scenario. \n";
+                    break;
+                case "/game/player/chat":
+                    Radio chat = new Radio(_db);
+                    chat.GameMessage(res);
+                    break;
+                default:
+                    answer += "Invalid choice in Game One.\n";
+                    break;
+            }
+            SendResponse(res, answer);
+        }
+        void GameNinePost(HttpListenerRequest req, HttpListenerResponse res) // Scenario Three
+        {
+            StreamReader reader = new StreamReader(req.InputStream, req.ContentEncoding);
+            string body = reader.ReadToEnd();
+            string answer = string.Empty;
+
+            switch (body)
+            {
+                case "A":
+                case "a":
+                    answer += "Option A chosen in the third scenario. \n";
+                    break;
+                case "B":
+                case "b":
+                    answer += "You chose option B in the third scenario. You hide behind a pile of bones and see a shadowy figure pass by. It looks like a tall repulsing creature with horns and a wretched tail. You notice a ladder engraved on his back.\n";
+                    break;
+                case "C":
+                case "c":
+                    answer += "Option C chosen in the third scenario. You provoke the creature and it attacks you. You lose a health point. \n";
+                    break;
+                case "D":
+                case "d":
+                    answer += "Option D chosen in the third scenario. You get too close to the creature and it bites you. You lose a health point.\r\n\n";
+                    break;
+                case "/game/player/chat":
+                    Radio chat = new Radio(_db);
+                    chat.GameMessage(res);
+                    break;
+                default:
+                    answer += "Invalid choice in Game One.\n";
+                    break;
+            }
+            SendResponse(res, answer);
+        }
+        void GameTenPost(HttpListenerRequest req, HttpListenerResponse res)
+        {
+            StreamReader reader = new StreamReader(req.InputStream, req.ContentEncoding);
+            string body = reader.ReadToEnd();
+            string answer = string.Empty;
+
+            switch (body)
+            {
+                case "A":
+                case "a":
+                    answer += "Option A chosen in the fourth scenario.The raft is sturdy despite looking half done and takes you safely to the other side where you spot a withered sign saying: “Stop running and Follow The Light”... \n";
+                    break;
+                case "B":
+                case "b":
+                    answer += "You chose option B in the fourth scenario. Embarking the boat you notice little too late that it has holes. The boat starts to leak and sink rapidly. You try to swim back to the shore, but you feel something grab your leg and pull you down. You scream, but no one can hear you. You drowned. [ YOU DIED ] \n";
+                    break;
+                case "C":
+                case "c":
+                    answer += "Option C chosen in the fourth scenario. Swept away by the current, you hit your head on a rock and almost lose consciousness. You lose a health point. You wake up back on the shore.\n";
+                    break;
+                case "D":
+                case "d":
+                    answer += "Option D chosen in the fourth scenario. The waterfall is not a gentle shower, but a raging torrent. It slams you against the rocks and pushes you back to the shore. You are bruised, battered, and soaked. You lose a health point and your dignity. That was stupid.\n";
+                    break;
+                case "/game/player/chat":
+                    Radio chat = new Radio(_db);
+                    chat.GameMessage(res);
+                    break;
+                default:
+                    answer += "Invalid choice in Game One.\n";
+                    break;
+            }
+            SendResponse(res, answer);
+        }// Scenario Four
+        void GameElevenPost(HttpListenerRequest req, HttpListenerResponse res)// Scenario Five
+        {
+            StreamReader reader = new StreamReader(req.InputStream, req.ContentEncoding);
+            string body = reader.ReadToEnd();
+            string answer = string.Empty;
+
+            switch (body)
+            {
+                case "A":
+                case "a":
+                    answer += "Option A chosen in the fifth scenario. By quietly standing still, the danger does not sense your presence. When passing you, it is sinisterly almost inaudible repeating “Honor the Gods, Honor the Gods…” \n";
+                    break;
+                case "B":
+                case "b":
+                    answer += "You chose option B in the fifth scenario. You trip over a skull and fall to the ground. The figure catches up to you and slashes you with its claws. You lose a health point.\n";
+                    break;
+                case "C":
+                case "c":
+                    answer += "Option C chosen in the fifth scenario. You grab a bone and swing it at the figure. It breaks the bone and grabs you by the neck and mangle you. [ YOU DIED ] \n";
+                    break;
+                case "D":
+                case "d":
+                    answer += "Option D chosen in the fifth scenario. \n";
+                    break;
+                case "/game/player/chat":
+                    Radio chat = new Radio(_db);
+                    chat.GameMessage(res);
+                    break;
+                default:
+                    answer += "Invalid choice in Game One.\n";
+                    break;
+            }
+            SendResponse(res, answer);
+        }
+        void GameTwelvePost(HttpListenerRequest req, HttpListenerResponse res)// Scenario Six
+        {
+            StreamReader reader = new StreamReader(req.InputStream, req.ContentEncoding);
+            string body = reader.ReadToEnd();
+            string answer = string.Empty;
+
+            switch (body)
+            {
+                case "A":
+                case "a":
+                    answer += "Option A chosen in the sixth scenario. You light the candle, feeling a surge of gratitude from the gods. The wall behind you begins to rumble and quake. You turn around and see a large crack forming on the surface. A faint light seeps through the gap. You have discovered a hidden chamber that was guarded by the gods.\n";
+                    break;
+                case "B":
+                case "b":
+                    answer += "You chose option B in the sixth scenario. Ah yes, you have angered the Gods. Wretched screams close in and something bites you and leaves a blood wound. You lose a health point.\n";
+                    break;
+                case "C":
+                case "c":
+                    answer += "Option C chosen in the sixth scenario. Ah yes, you have angered the Gods. You feel a excruciating pain around your hand and drop the candle. You lose a health point.\n";
+                    break;
+                case "D":
+                case "d":
+                    answer += "Option D chosen in the sixth scenario. \n";
+                    break;
+                case "/game/player/chat":
+                    Radio chat = new Radio(_db);
+                    chat.GameMessage(res);
+                    break;
+                default:
+                    answer += "Invalid choice in Game One.\n";
+                    break;
+            }
+            SendResponse(res, answer);
+        }
+
+>>>>>>> main
         void SendResponse(HttpListenerResponse response, string content)
         {
             byte[] buffer = Encoding.UTF8.GetBytes(content);
