@@ -11,19 +11,9 @@ var dbHelper = new DatabaseHelper(db);
 dbHelper.ResetTables();
 dbCreator.CreateTables();
 dbHelper.PopulateStoryPointsTable();
-<<<<<<< HEAD
-<<<<<<< HEAD
-dbHelper.PopulateTableStorypaths();
-=======
-dbHelper.PopulateStoryPointsTableTwo();
-dbHelper.PopulateSpTablePuzzle();
-dbHelper.PopulateImagesTable();
->>>>>>> main
-=======
 dbHelper.PopulateTableStorypaths();
 dbHelper.PopulateSpTablePuzzle();
 dbHelper.PopulateImagesTable();
->>>>>>> 825ca723134c12c721737963a72a50068e6342c6
 
 bool listen = true;
 int port = 3000;
