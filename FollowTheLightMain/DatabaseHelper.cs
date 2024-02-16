@@ -11,158 +11,82 @@ public class DatabaseHelper
         _db = db;
     }
 
-    
     public void ResetTables()
     {
         Console.WriteLine("Resetting tables...");
         const string query = "drop schema public cascade; create schema public;";
         _db.CreateCommand(query).ExecuteNonQuery();
     }
-    
+
     public void PopulateStoryPointsTable()
     {
         Console.WriteLine("Populating the storypoints table...");
 
-        var cmd = _db.CreateCommand("insert into storypoints(title, content)" +
-                                                "values ($1,$2), ($3,$4), ($5,$6), ($7,$8), ($9,$10), ($11,$12), ($13,$14)");
+        string[] titles = {
+            "Intro", "Story One", "Story Two", "Story Three",
+            "Story Four", "Story Five", "Story Six", "Story Seven",
+            "Story Eight", "Story Nine", "Story Ten", "Story Eleven", "Story Twelve"
+        };
 
-        cmd.Parameters.AddWithValue("Intro");
-        cmd.Parameters.AddWithValue("""
-                                    Awakening in pitch-black oblivion, memories lost to the void, a bone-chilling cold grips the air. Screams reverberate, swallowed by the oppressive dark. A faint device flickers, its voice pleading, “Who's there? Where am I?” An unsettling truth lingers—strangers, bound by this abyss, must collaborate to escape.
-                                    No past, no exit, just an uneasy pact in this nightmarish hell. Can you unravel the shadows together, or be devoured by the creatures of your own fear? The game begins, and only unity can survive the lurking horrors.
-                                    """);
-        cmd.Parameters.AddWithValue("Story One");
-        cmd.Parameters.AddWithValue("""
-                                    In the dark, you find matches. Lighting one reveals a cave with paths on your right and left. Where to? Right or left? Your story starts with a spark in the shadows. You feel fear creeping up.
-                                   
-                                    A) You go right. Maybe there's something interesting there.
-                                    B) You go left. Maybe there's a way out there.
-                                    C) You stay where you are. Maybe someone will find you there. 
-                                    D) You light the whole box of matches. Maybe you'll see better.
-                                    """);
-        cmd.Parameters.AddWithValue("Story Two");
-        cmd.Parameters.AddWithValue("""
-                                    As you walk through the tunnel, you feel something underfoot. It's a piece of paper. What now? Your choices unfold as you decide what to do next.
-                                    
-                                    A) You pick up the paper. Maybe there's something useful on it.
-                                    B) You leave the paper. Maybe it's a trap or a distraction.
-                                    C) You burn the paper. Maybe it can be used to fuel your torch. 
-                                    D) You eat the paper. Maybe you're hungry or curious. 
-                                    """);
-        cmd.Parameters.AddWithValue("Story Three");
-        cmd.Parameters.AddWithValue("""
-                                    You spot a red frog sitting on a rock, it looks friendly despite the bones scattered around it. What's your move? Choose wisely as the story continues.
-                                    
-                                    A) You pet the frog. Maybe it will be your friend.
-                                    B) You kiss the frog. Maybe it will turn into something/someone helpful.
-                                    C) You ignore the frog. Maybe it's not important.
-                                    D) You poke it with a bone from the ground. Maybe it will move. 
-                                    """);
-        cmd.Parameters.AddWithValue("Story Four");
-        cmd.Parameters.AddWithValue("""
-                                    A sinister noise echoes from behind. Quick, what's your next move? Decide carefully to face the unfolding story.
-                                    
-                                    A) Quietly run away from the noise. Maybe it's something dangerous.
-                                    B) You hide behind something. Maybe it won't see or hear you.
-                                    C) You make a shushing noise back. Maybe it will be scared of you.
-                                    D) You investigate the noise. Maybe it's something interesting.
-                                    """);
-        cmd.Parameters.AddWithValue("Story Five");
-        cmd.Parameters.AddWithValue("""
-                                    A sudden collapse blocks your way with narrow light streaming in from the other side of the stones. Quick, what's your next move? Decide carefully to face the unfolding story.
-                                    
-                                    A) You remove some stones. Maybe there's a hidden passage.
-                                    B) You climb over the stones. Maybe there's a way out.
-                                    C) You push the stones. Maybe they will move. 
-                                    D) You ignore the stones and sit down and rest, maybe an idea will unfold.
-                                    """);
-        cmd.Parameters.AddWithValue("Story Six");
-        cmd.Parameters.AddWithValue("""
-                                    In the passage you notice a tall figure's shadow in the dark approaching you.
-                                    
-                                    A) You stand still. Maybe it won't notice you.
-                                    B) You run past it. Maybe you can escape it.
-                                    C) You fight back. Maybe you can defeat it. 
-                                    D) You chicken out and go back to where the stones collapsed.
-                                    """);
-        cmd.ExecuteNonQuery();
+        string[][] filePaths = {
+            new string[]
+            {
+                "FollowTheLightMain/storylines/intro.txt",
+                "FollowTheLightMain/storylines/sl1/s1.txt",
+                "FollowTheLightMain/storylines/sl1/s2.txt",
+                "FollowTheLightMain/storylines/sl1/s3.txt",
+                "FollowTheLightMain/storylines/sl1/s4.txt",
+                "FollowTheLightMain/storylines/sl1/s5.txt",
+                "FollowTheLightMain/storylines/sl1/s6.txt",
+            },
+            new string[]
+            {
+                "FollowTheLightMain/storylines/intro.txt",
+                "FollowTheLightMain/storylines/sl2/s1.txt",
+                "FollowTheLightMain/storylines/sl2/s2.txt",
+                "FollowTheLightMain/storylines/sl2/s3.txt",
+                "FollowTheLightMain/storylines/sl2/s4.txt",
+                "FollowTheLightMain/storylines/sl2/s5.txt",
+                "FollowTheLightMain/storylines/sl2/s6.txt",
+            }
+        };
+
+        var cmd = _db.CreateCommand("insert into storypoints(title, content) values ($1, $2)");
+        //sl = storyline, s = storypoint
+        for (int sl = 0; sl < filePaths.Length; sl++)
+        {
+            // Load storypoints for each storyline
+            int minCount = Math.Min(titles.Length, filePaths[sl].Length);
+            for (int s = 0; s < minCount; s++)
+            {
+                string content = File.ReadAllText(filePaths[sl][s]);
+                cmd.Parameters.AddWithValue(titles[s]);
+                cmd.Parameters.AddWithValue(content);
+                cmd.ExecuteNonQuery();
+                cmd.Parameters.Clear();
+            }
+        }
     }
-    
-    
-    
-
-    public void PopulateStoryPointsTableTwo()
+    public string GetStoryPointContent(int storyPointId)
     {
-        Console.WriteLine("Populating the storypoints table for player two...");
-
-        var cmd = _db.CreateCommand("insert into storypoints(title, content)" +
-                                    "values ($1,$2), ($3,$4), ($5,$6), ($7,$8), ($9,$10), ($11,$12), ($13,$14)");
-       
-        cmd.Parameters.AddWithValue("Story One - P2");
-        cmd.Parameters.AddWithValue("""
-                                    In the dark, you find a lantern. Lighting it reveals a cave with paths on your right and left. Where to? Right or left? Your story starts with a flame in the darkness.
-                                    
-                                    A) You go right. Maybe there's something interesting there.
-                                    B) You go left. Maybe there's a way out there. 
-                                    C) You stay where you are. Maybe someone will find you there. 
-                                    D) You turn off the lantern. Maybe you'll save some battery.
-                                    """);
-        cmd.Parameters.AddWithValue("Story Two - P2");
-        cmd.Parameters.AddWithValue("""
-                                    As you walk through the tunnel, you smell something rotten. It's a corpse of a previous explorer. What now? Your choices unfold as you decide what to do next.
-                                    
-                                    A) You search the corpse. Maybe there's something useful there. 
-                                    B) You ignore the corpse. Maybe it's better not to know what happened there. 
-                                    C) You bury the corpse. Maybe it's the respectful thing to do.
-                                    D) You run away from the corpse. Maybe it's infected with something.
-                                    """);
-        cmd.Parameters.AddWithValue("Story Three - P2");
-        cmd.Parameters.AddWithValue("""
-                                    You spot a giant spider sitting on a web, it looks dangerous with the skeletons hanging around it. What's your move? Choose wisely as the story continues.
-                                    
-                                    A) You scratch its leg. Maybe it will like it and let you pass. 
-                                    B) You throw a rock at it. Maybe it will get scared and go away. 
-                                    C) You talk to it. Maybe it will understand you and help you.
-                                    D) You avoid it. There might be another way around it.
-                                    """);
-        cmd.Parameters.AddWithValue("Story Four - P2");
-        cmd.Parameters.AddWithValue("""
-                                    Facing a towering wall, your only option is to climb. What's your choice?
-                                    
-                                    A) Take the ladder with missing steps.
-                                    B) Climb the rope.
-                                    C) Climb the slippery wall (-1) You slip and hit your head on a rock. You lose a health point.
-                                    D) Look around for another way.
-                                    """);
-        cmd.Parameters.AddWithValue("Story Five - P2");
-        cmd.Parameters.AddWithValue("""
-                                    Facing a waterfall with a river , your only option is to cross it. What's your choice?
-                                    
-                                    A) You use the raft that has been made from human bones and skin.
-                                    B) You use the boat. It looks sturdy and well made.
-                                    C) You swim across. 
-                                    D) You go through the waterfall. 
-                                    """);
-        cmd.Parameters.AddWithValue("Story Six - P2");
-        cmd.Parameters.AddWithValue("""
-                                    Reaching the new surface you see withered skulls around you. There is a creepy altar with 3 candles in the middle of it, two are already lit whilst one is unlit.
-                                    
-                                    A) You light the candle. Maybe you'll show respect and get a reward.
-                                    B) You blow out the candles. Something might unfold. 
-                                    C) You take the unlit candle. Maybe you'll need it later and get some light.
-                                    D) You ignore the candle. Maybe you'll avoid trouble.
-                                    """);
-        cmd.Parameters.AddWithValue("The End");
-        cmd.Parameters.AddWithValue("""
-                                    You've found the exit, but desperate screams plead for rescue within the cave. What's your choice now? Leave or venture back into the darkness to investigate?
-
-                                    A) Leave the cave
-                                    B) Go back into the darkness
-                                    """);
-        cmd.ExecuteNonQuery();
+        string content = "";
+        try
+        {
+            var cmd = _db.CreateCommand("select content from storypoints where storypoint_id = $1");
+            cmd.Parameters.AddWithValue(storyPointId);
+            var reader = cmd.ExecuteReader();
+            if (reader.Read())
+            {
+                content = reader.GetString(0);
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error retrieving story point content: {ex.Message}");
+        }
+        return content;
     }
-    
-    public void PopulateSpTablePuzzle() 
+    public void PopulateSpTablePuzzle()
     {
         Console.WriteLine("Populating the storypoints table with puzzles...");
 
@@ -172,7 +96,7 @@ public class DatabaseHelper
         string puzzle2P2 = File.ReadAllText($"FollowTheLightMain/Storylines/puzzles-text/stepstonesp2.txt");
         string puzzle3 = File.ReadAllText($"FollowTheLightMain/Storylines/puzzles-text/wallp1.txt");
         string puzzle3P2 = File.ReadAllText($"FollowTheLightMain/Storylines/puzzles-text/wallp2.txt");
-        
+
         var cmd = _db.CreateCommand("insert into storypoints(title, content)" +
                                     "values ($1,$2), ($3,$4), ($5,$6), ($7,$8), ($9,$10), ($11,$12)");
 
@@ -185,7 +109,7 @@ public class DatabaseHelper
         cmd.Parameters.AddWithValue("Challenge Two - P2");
         cmd.Parameters.AddWithValue($"{puzzle2P2}");
         cmd.Parameters.AddWithValue("Challenge Three");
-        cmd.Parameters.AddWithValue($"{puzzle3}"); 
+        cmd.Parameters.AddWithValue($"{puzzle3}");
         cmd.Parameters.AddWithValue("Challenge Three - P2");
         cmd.Parameters.AddWithValue($"{puzzle3P2}");
         cmd.ExecuteNonQuery();
@@ -205,15 +129,15 @@ public class DatabaseHelper
         string imgFrog = File.ReadAllText($"FollowTheLightMain/images/frog.txt");
         string imgStepStone = File.ReadAllText($"FollowTheLightMain/images/puzzles/stepstonesp2-stones.txt");
         string imgStepStoneTable = File.ReadAllText($"FollowTheLightMain/images/puzzles/stepstonesp1-table.txt");
-        string imgLock = File.ReadAllText($"FollowTheLightMain/images/puzzles/lockp1-lock.txt"); 
-        string imgLockDoor = File.ReadAllText($"FollowTheLightMain/images/puzzles/lockp2-door.txt"); 
+        string imgLock = File.ReadAllText($"FollowTheLightMain/images/puzzles/lockp1-lock.txt");
+        string imgLockDoor = File.ReadAllText($"FollowTheLightMain/images/puzzles/lockp2-door.txt");
         string imgGlowingWall = File.ReadAllText($"FollowTheLightMain/images/puzzles/wallp1-wall.txt");
-        string imgGlowingWallSign = File.ReadAllText($"FollowTheLightMain/images/puzzles/wallp2-sign.txt"); 
-        
+        string imgGlowingWallSign = File.ReadAllText($"FollowTheLightMain/images/puzzles/wallp2-sign.txt");
+
 
         var cmd = _db.CreateCommand("insert into images(image)" +
                                                 "values ($1), ($2), ($3), ($4), ($5), ($6), ($7), ($8), ($9), ($10), ($11), ($12), ($13), ($14)");
-        
+
         cmd.Parameters.AddWithValue($"{js1}");
         cmd.Parameters.AddWithValue($"{js2}");
         cmd.Parameters.AddWithValue($"{js3}");
@@ -228,7 +152,7 @@ public class DatabaseHelper
         cmd.Parameters.AddWithValue($"{imgLockDoor}");
         cmd.Parameters.AddWithValue($"{imgGlowingWall}");
         cmd.Parameters.AddWithValue($"{imgGlowingWallSign}");
-        
+
         cmd.ExecuteNonQuery();
     }
 }

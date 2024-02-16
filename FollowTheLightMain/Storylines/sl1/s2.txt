@@ -1,0 +1,8 @@
+﻿As you walk through the tunnel, you feel something underfoot. It’s a piece of paper. 
+What now? 
+Your choices unfold as you decide what to do next.
+
+A) You pick up the paper. Maybe there’s something useful on it. 
+B) You leave the paper. Maybe it’s a trap or a distraction.
+C) You burn the paper. Maybe it can be used to fuel your torch.
+D) You eat the paper. Maybe you’re hungry or curious.

@@ -1,0 +1,8 @@
+﻿You spot a red frog sitting on a rock, it looks friendly despite the bones scattered around it. 
+What’s your move? 
+Choose wisely as the story continues.
+
+A) You pet the frog. Maybe it will be your friend. 
+B) You kiss the frog. Maybe it will turn into something/someone helpful. 
+C) You ignore the frog. Maybe it’s not important. 
+D) You poke it with a bone from the ground. Maybe it will move.

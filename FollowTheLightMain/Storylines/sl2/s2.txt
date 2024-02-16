@@ -1,0 +1,8 @@
+﻿As you walk through the tunnel, you smell something rotten. 
+It’s a corpse of a previous explorer. What do you do? 
+Your choices unfold as you decide what to do next.
+
+A) You search the corpse. Maybe there’s something useful there.
+B) You ignore the corpse. Maybe it’s better not to know what happened there.
+C) You bury the corpse. Maybe it’s the respectful thing to do.
+D) You run away from the corpse. Maybe it’s infected with something.
