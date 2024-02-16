@@ -171,7 +171,7 @@ public class DatabaseHelper
        
         ;";
 
-        string[] storypath = File.ReadAllLines($"../../../DATA/storypaths.csv");
+        string[] storypath = File.ReadAllLines($"FollowTheLightMain/DATA/storypaths.csv");
         for (int i = 1; i <  storypath.Length; i++)
         {
             string[] data = storypath[i].Split(',');

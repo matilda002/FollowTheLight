@@ -94,11 +94,11 @@ namespace FollowTheLightMain
                             GameThreePost(request, response);
                             break;
                         case ("/player/register"):
-                            Player registerPlayer = new Player();
+                            Player registerPlayer = new Player(_db);
                             registerPlayer.Register(request, response);
                             break;
                         case ("/player/status"):
-                            Player playerStatus = new Player();
+                            Player playerStatus = new Player(_db);
                             playerStatus.ViewStatus(request, response);
                             break;
                         case ("/player/1/chat"):

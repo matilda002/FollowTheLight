@@ -20,16 +20,20 @@ public class DatabaseCreator
             image text
         )";
         _db.CreateCommand(imagesTable).ExecuteNonQuery();
-        
+
+        const string playerRole = @"CREATE TYPE player_role AS ENUM ('P1', 'P2');";
+        _db.CreateCommand(playerRole).ExecuteNonQuery();
+
         const string storypointTable = @"create table if not exists storypoints(
             storypoint_id serial primary key,
             title text,
-            content text
+            content text,
+            player player_role
         )";
         _db.CreateCommand(storypointTable).ExecuteNonQuery();
 
         const string storypathTable = @"create table if not exists storypaths(
-            storypath_id serial primary key,
+            storypath_id serial primary key,      
             from_point int references storypoints(storypoint_id),
             to_point int references storypoints(storypoint_id),
             choice varchar(5),
@@ -49,7 +53,7 @@ public class DatabaseCreator
             unique(username)
         )";
         _db.CreateCommand(playersTable).ExecuteNonQuery();
-
+        
         const string radioTable = @"create table if not exists radio(
             radio_id serial primary key,
             from_player int references players(player_id),
@@ -57,7 +61,6 @@ public class DatabaseCreator
             message text,
             message_time timestamp DEFAULT current_timestamp
         )";
-        
         _db.CreateCommand(radioTable).ExecuteNonQuery();
     }
 }
