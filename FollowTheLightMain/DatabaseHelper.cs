@@ -106,8 +106,6 @@ public class DatabaseHelper
         return image;
     }
     
-    
-    
     public void PopulateSpTablePuzzle()
     {
         Console.WriteLine("Populating the storypoints table with puzzles...");
