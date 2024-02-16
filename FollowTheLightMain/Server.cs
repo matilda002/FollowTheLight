@@ -96,11 +96,17 @@ namespace FollowTheLightMain
                         case "/game/player/4":
                             GameFourPost(request, response);
                             break;
+                        case "/game/puzzle/2": ///////
+                            puzzle.PuzzleTwoP1Post(request, response);
+                            break;
                         case "/game/player/5":
                             GameFivePost(request, response);
                             break;
                         case "/game/player/6":
                             GameSixPost(request, response);
+                            break;
+                        case "/game/puzzle/3": ///////
+                            puzzle.PuzzleThreeP1Post(request, response);
                             break;
                         case ("/player/register"):
                             Player registerPlayer = new Player();

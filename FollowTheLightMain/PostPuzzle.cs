@@ -40,7 +40,7 @@ public class PostPuzzle
     public void PuzzleTwoP1Post(HttpListenerRequest req, HttpListenerResponse res)
     {
         StreamReader reader = new StreamReader(req.InputStream, req.ContentEncoding);
-        string body = reader.ReadToEnd();
+        string body = reader.ReadToEnd().ToUpper();
         string answer = string.Empty;
 
         switch (body)
@@ -94,9 +94,9 @@ public class PostPuzzle
 
         switch (body)
         {
-            case "NOP":
+            case "0%@00@%":
                 answer += """
-                          Clue
+                          You made it past the water just in time.
                           """;
                 break;
             case "/game/player/chat":
@@ -104,7 +104,9 @@ public class PostPuzzle
                 chat.GameMessage(res);
                 break;
             default:
-                answer += "\n";
+                DatabaseHelper dbHelper = new(_db);
+                string js = dbHelper.GetImgContent(7);
+                answer += $"You fell into the water stepping on the wrong stone...\n{js}";
                 break;
         }
         SendResponse(res, answer);
@@ -112,14 +114,15 @@ public class PostPuzzle
     public void PuzzleTwoP2Post(HttpListenerRequest req, HttpListenerResponse res)
     {
         StreamReader reader = new StreamReader(req.InputStream, req.ContentEncoding);
-        string body = reader.ReadToEnd();
+        string body = reader.ReadToEnd().ToUpper();
         string answer = string.Empty;
 
         switch (body)
         {
-            case "NOP":
+            case "ANTILOP":
                 answer += """
-                          Clue
+                          Dragon let's you continue and whispers:
+                          "Be a feather"
                           """;
                 break;
             case "/game/player/chat":
@@ -127,7 +130,10 @@ public class PostPuzzle
                 chat.GameMessage(res);
                 break;
             default:
-                answer += "\n";
+                answer += """
+                          "Not the correct answer my friend", says the dragon in a disappointed tone.
+                          It still moves out of your way, but you feel it's deathly stare..
+                          """;
                 break;
         }
         SendResponse(res, answer);
@@ -135,14 +141,16 @@ public class PostPuzzle
     public void PuzzleThreeP2Post(HttpListenerRequest req, HttpListenerResponse res)
     {
         StreamReader reader = new StreamReader(req.InputStream, req.ContentEncoding);
-        string body = reader.ReadToEnd();
+        string body = reader.ReadToEnd().ToUpper();
         string answer = string.Empty;
 
         switch (body)
         {
-            case "NOP":
+            case "ENTER":
                 answer += """
-                          Clue
+                          You opened the door! Right when you take a step to the other side, a piece of
+                          leather falls on your face. It's almost like human skin with an engraving:
+                          "Maybe you're the only one left..."
                           """;
                 break;
             case "/game/player/chat":
@@ -150,13 +158,13 @@ public class PostPuzzle
                 chat.GameMessage(res);
                 break;
             default:
-                answer += "\n";
+                answer += "You slip on a piece of leather, suddenly a giant cockroach steals it\n";
                 break;
         }
         SendResponse(res, answer);
     }
 
-    private void SendResponse(HttpListenerResponse response, string content)
+    private static void SendResponse(HttpListenerResponse response, string content)
     {
         byte[] buffer = Encoding.UTF8.GetBytes(content);
         response.ContentType = "text/plain";
@@ -169,7 +177,6 @@ public class PostPuzzle
         foreach (byte b in buffer)
         {
             response.OutputStream.WriteByte(b);
-            Thread.Sleep(35);
         }
         response.StatusCode = (int)HttpStatusCode.Created;
         response.Close();
