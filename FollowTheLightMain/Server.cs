@@ -48,18 +48,27 @@ namespace FollowTheLightMain
                         case "/game/player/2":
                             GameTwoGet(response);
                             break;
+                        case "/game/puzzle/1": ///////
+                            PuzzleOneP1(response);
+                            break;
                         case "/game/player/3":
                             GameThreeGet(response);
                             break;
                         case "/game/player/4":
-                            GameThreeGet(response);
+                            GameFourGet(response);
                             break;
+                        case "/game/puzzle/2": ///////
+                            PuzzleTwoP1(response);
+                            break; 
                         case "/game/player/5":
-                            GameThreeGet(response);
+                            GameFiveGet(response);
                             break;
                         case "/game/player/6":
-                            GameThreeGet(response);
+                            GameSixGet(response);
                             break;
+                        case "/game/puzzle/3": ///////
+                            PuzzleThreeP1(response);
+                            break; 
                         case "/game/player/message":
                             Radio message = new Radio(_db);
                             message.GameMessage(response);
@@ -80,17 +89,20 @@ namespace FollowTheLightMain
                         case "/game/player/2":
                             GameTwoPost(request, response);
                             break;
+                        case "/game/puzzle/1": ///////
+                            PuzzleOneP1Post(request, response);
+                            break;
                         case "/game/player/3":
                             GameThreePost(request, response);
                             break;
                         case "/game/player/4":
-                            GameThreePost(request, response);
+                            GameFourPost(request, response);
                             break;
                         case "/game/player/5":
-                            GameThreePost(request, response);
+                            GameFivePost(request, response);
                             break;
                         case "/game/player/6":
-                            GameThreePost(request, response);
+                            GameSixPost(request, response);
                             break;
                         case ("/player/register"):
                             Player registerPlayer = new Player();
@@ -187,6 +199,26 @@ namespace FollowTheLightMain
             SendResponse(response, resultStoryThree);
         }
 
+        // Puzzles Get
+        void PuzzleOneP1(HttpListenerResponse response)
+        {
+            string resultPuzzleOne = dbHelper.GetStoryPointContent(14);
+            string resultPuzzleOneImg = dbHelper.GetImgContent(9);
+            SendResponse(response, resultPuzzleOne + resultPuzzleOneImg);
+        }
+        void PuzzleTwoP1(HttpListenerResponse response)
+        {
+            string resultPuzzleTwo = dbHelper.GetStoryPointContent(16);
+            string resultPuzzleTwoImg = dbHelper.GetImgContent(11);
+            SendResponse(response, resultPuzzleTwo + resultPuzzleTwoImg);
+        } 
+        void PuzzleThreeP1(HttpListenerResponse response)
+        {
+            string resultPuzzleThree = dbHelper.GetStoryPointContent(18);
+            string resultPuzzleThreeImg = dbHelper.GetImgContent(13);
+            SendResponse(response, resultPuzzleThree + resultPuzzleThreeImg);
+        } 
+        
         // Player One Scenarios
         void GameOnePost(HttpListenerRequest req, HttpListenerResponse res)
         {
@@ -599,6 +631,31 @@ namespace FollowTheLightMain
             SendResponse(res, answer);
         }
 
+        // Player One Puzzle Post
+        void PuzzleOneP1Post(HttpListenerRequest req, HttpListenerResponse res)
+        {
+            StreamReader reader = new StreamReader(req.InputStream, req.ContentEncoding);
+            string body = reader.ReadToEnd();
+            string answer = string.Empty;
+
+            switch (body)
+            {
+                case "666":
+                    answer += "You paint the devil's number on the stone, it moves and reveals a path\n";
+                    break;
+                case "/game/player/chat":
+                    Radio chat = new Radio(_db);
+                    chat.GameMessage(res);
+                    break;
+                default:
+                    answer += "A huge cockroach helped you move the rock, and gave you dirty look.\n";
+                    break;
+            }
+            SendResponse(res, answer);
+        }
+        
+        
+        
         void SendResponse(HttpListenerResponse response, string content)
         {
             byte[] buffer = Encoding.UTF8.GetBytes(content);
