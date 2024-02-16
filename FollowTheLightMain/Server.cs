@@ -138,7 +138,8 @@ namespace FollowTheLightMain
         void GameThreeGet(HttpListenerResponse response)
         {   
             string resultStoryThree = dbHelper.GetStoryPointContent(4);
-            SendResponse(response, resultStoryThree);
+            string resultStoryThreeImg = dbHelper.GetImgContent(8);
+            SendResponse(response, resultStoryThree + resultStoryThreeImg);
         }
         void GameFourGet(HttpListenerResponse response)
         {

@@ -85,16 +85,39 @@ public class DatabaseHelper
         }
         return content;
     }
+    
+    public string GetImgContent(int imgId)
+    {
+        string image = string.Empty;
+        try
+        {
+            var cmd = _db.CreateCommand("select image from images where image_id = $1");
+            cmd.Parameters.AddWithValue(imgId);
+            var reader = cmd.ExecuteReader();
+            if (reader.Read())
+            {
+                image = reader.GetString(0);
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error retrieving story point content: {ex.Message}");
+        }
+        return image;
+    }
+    
+    
+    
     public void PopulateSpTablePuzzle()
     {
         Console.WriteLine("Populating the storypoints table with puzzles...");
 
-        string puzzle1 = File.ReadAllText("FollowTheLightMain/Storylines/puzzles-text/lockp1.txt");
-        string puzzle1P2 = File.ReadAllText("FollowTheLightMain/Storylines/puzzles-text/lockp2.txt");
-        string puzzle2 = File.ReadAllText("FollowTheLightMain/Storylines/puzzles-text/stepstonesp1.txt");
-        string puzzle2P2 = File.ReadAllText("FollowTheLightMain/Storylines/puzzles-text/stepstonesp2.txt");
-        string puzzle3 = File.ReadAllText("FollowTheLightMain/Storylines/puzzles-text/wallp1.txt");
-        string puzzle3P2 = File.ReadAllText("FollowTheLightMain/Storylines/puzzles-text/wallp2.txt");
+        string puzzle1 = File.ReadAllText("FollowTheLightMain/Storylines/puzzles-text/stepstonesp1.txt");
+        string puzzle1P2 = File.ReadAllText("FollowTheLightMain/Storylines/puzzles-text/stepstonesp2.txt");
+        string puzzle2 = File.ReadAllText("FollowTheLightMain/Storylines/puzzles-text/wallp1.txt");
+        string puzzle2P2 = File.ReadAllText("FollowTheLightMain/Storylines/puzzles-text/wallp2.txt");
+        string puzzle3 = File.ReadAllText("FollowTheLightMain/Storylines/puzzles-text/lockp1.txt");
+        string puzzle3P2 = File.ReadAllText("FollowTheLightMain/Storylines/puzzles-text/lockp2.txt"); 
         
         var cmd = _db.CreateCommand("insert into storypoints(title, content)" +
                                     "values ($1,$2), ($3,$4), ($5,$6), ($7,$8), ($9,$10), ($11,$12)");
