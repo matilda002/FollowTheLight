@@ -184,5 +184,23 @@ public class DatabaseHelper
             }
         }
     }
+    public void PopulateRolesOnStorypoints()
+    {
+        Console.WriteLine("Populating roles on storypoints...");
+
+        const string query = @"INSERT INTO storypoints(player) VALUES ($1::player_role);";
+
+        string[] lines = File.ReadAllLines($"FollowTheLightMain/storylines/roles.csv");
+        for (int i = 0; i <  lines.Length; i++)
+        {
+            string[] data = lines[i].Split(',');
+            using (var cmd = _db.CreateCommand(query))
+            {
+                cmd.Parameters.AddWithValue(data[0]);
+                cmd.ExecuteNonQuery();
+            }
+        }
+    }
 }
+
 

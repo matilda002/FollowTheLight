@@ -21,7 +21,7 @@ public class DatabaseCreator
         )";
         _db.CreateCommand(imagesTable).ExecuteNonQuery();
 
-        const string playerRole = @"CREATE TYPE player_role AS ENUM ('1P', '2P', 'CO');";
+        const string playerRole = @"CREATE TYPE player_role AS ENUM ('1P', '2P', 'DUO');";
         _db.CreateCommand(playerRole).ExecuteNonQuery();
 
         const string storypointTable = @"create table if not exists storypoints(
