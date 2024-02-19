@@ -272,7 +272,7 @@ namespace FollowTheLightMain
         void PuzzleOneP1(HttpListenerResponse response)
         {
             string result = dbHelper.GetStoryPointContent(14);
-            string resultImg = dbHelper.GetImgContent(9);
+            string resultImg = dbHelper.GetImgContent(10);
             SendResponse(response, result + resultImg);
         }
         void PuzzleTwoP1(HttpListenerResponse response)
@@ -290,7 +290,7 @@ namespace FollowTheLightMain
         void PuzzleOneP2(HttpListenerResponse response)
         {
             string result = dbHelper.GetStoryPointContent(15);
-            string resultImg = dbHelper.GetImgContent(10);
+            string resultImg = dbHelper.GetImgContent(9);
             SendResponse(response, result + resultImg);
         }
         void PuzzleTwoP2(HttpListenerResponse response)
