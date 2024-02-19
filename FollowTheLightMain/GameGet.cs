@@ -5,11 +5,9 @@ namespace FollowTheLightMain;
 
 public class GameGet
 {
-    private readonly NpgsqlDataSource _db;
     private readonly DatabaseHelper _dbHelper; 
     public GameGet(NpgsqlDataSource db)
     {
-        _db = db;
         _dbHelper = new(db);
     } 
     
@@ -124,22 +122,22 @@ public class GameGet
     }
     
     private void SendResponse(HttpListenerResponse response, string content)
+    {
+        byte[] buffer = Encoding.UTF8.GetBytes(content);
+        response.ContentType = "text/plain";
+        response.StatusCode = (int)HttpStatusCode.OK;
+    
+        using (Stream output = response.OutputStream)
         {
-            byte[] buffer = Encoding.UTF8.GetBytes(content);
-            response.ContentType = "text/plain";
-            response.StatusCode = (int)HttpStatusCode.OK;
-    
-            using (Stream output = response.OutputStream)
-            {
-                output.Write(buffer, 0, buffer.Length);
-            }
-    
-            foreach (byte b in buffer)
-            {
-                response.OutputStream.WriteByte(b);
-            }
-    
-            response.StatusCode = (int)HttpStatusCode.Created;
-            response.Close();
+            output.Write(buffer, 0, buffer.Length);
         }
+    
+        foreach (byte b in buffer)
+        {
+            response.OutputStream.WriteByte(b);
+        }
+    
+        response.StatusCode = (int)HttpStatusCode.Created;
+        response.Close();
+    }
 }

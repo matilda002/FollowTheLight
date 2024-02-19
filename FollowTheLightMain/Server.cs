@@ -167,16 +167,16 @@ public class Server
                     case "/game/player2/9":
                         postPuzzle.PuzzleThreeP2(request, response);
                         break;
-                    case ("/player/register"):
+                    case "/player/register":
                         player.Register(request, response);
                         break;
-                    case ("/player/status"):
+                    case "/player/status":
                         player.ViewStatus(request, response);
                         break;
-                    case ("/player/1/chat"):
+                    case "/player/1/chat":
                         radio.SendMessageOne(request, response);
                         break;
-                    case ("/player/2/chat"):
+                    case "/player/2/chat":
                         radio.SendMessageTwo(request, response);
                         break;
                     default:
