@@ -4,7 +4,6 @@ namespace FollowTheLightMain;
 public class DatabaseHelper
 {
     private readonly NpgsqlDataSource _db;
-
     public DatabaseHelper(NpgsqlDataSource db)
     {
         _db = db;
