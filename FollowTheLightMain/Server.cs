@@ -67,6 +67,24 @@ namespace FollowTheLightMain
                         case "/game/puzzle/3": ///////
                             PuzzleThreeP1(response);
                             break; 
+                        case "/game/player2/1":
+                            GameSevenGet(response);
+                            break;
+                        case "/game/player2/2":
+                            GameEightGet(response);
+                            break;
+                        case "/game/player2/3":
+                            GameNineGet(response);
+                            break;
+                        case "/game/player2/4":
+                            GameTenGet(response);
+                            break;
+                        case "/game/player2/5":
+                            GameElevenGet(response);
+                            break;
+                        case "/game/player2/6":
+                            GameTwelveGet(response);
+                            break;
                         case "/game/player/message":
                             Radio message = new Radio(_db);
                             message.GameMessage(response);
@@ -108,6 +126,24 @@ namespace FollowTheLightMain
                         case "/game/puzzle/3": ///////
                             puzzle.PuzzleThreeP1Post(request, response);
                             break;
+                        case "/game/player2/1":
+                            GameSevenPost(request, response);
+                            break;
+                        case "/game/player2/2":
+                            GameEightPost(request, response);
+                            break;
+                        case "/game/player2/3":
+                            GameNinePost(request, response);
+                            break;
+                        case "/game/player2/4":
+                            GameTenPost(request, response);
+                            break;
+                        case "/game/player2/5":
+                            GameElevenPost(request, response);
+                            break;
+                        case "/game/player2/6":
+                            GameTwelvePost(request, response);
+                            break;
                         case ("/player/register"):
                             Player registerPlayer = new Player();
                             registerPlayer.Register(request, response);
@@ -137,60 +173,60 @@ namespace FollowTheLightMain
 
         void IntroGet(HttpListenerResponse response)
         {
-            string resultIntro = dbHelper.GetStoryPointContent(1);
-            SendResponse(response, resultIntro);
+            string res = dbHelper.GetStoryPointContent(1);
+            SendResponse(response, res);
         }
 
         void GameOneGet(HttpListenerResponse response)
         {
-            string resultStoryOne = dbHelper.GetStoryPointContent(2);
-            SendResponse(response, resultStoryOne);
+            string result = dbHelper.GetStoryPointContent(2);
+            SendResponse(response, result);
         }
         void GameTwoGet(HttpListenerResponse response)
         {
-            string resultStoryTwo = dbHelper.GetStoryPointContent(3);
-            SendResponse(response, resultStoryTwo);
+            string result = dbHelper.GetStoryPointContent(3);
+            SendResponse(response, result);
         }
         void GameThreeGet(HttpListenerResponse response)
         {   
-            string resultStoryThree = dbHelper.GetStoryPointContent(4);
-            string resultStoryThreeImg = dbHelper.GetImgContent(8);
-            SendResponse(response, resultStoryThree + resultStoryThreeImg);
+            string result = dbHelper.GetStoryPointContent(4);
+            string resultImg = dbHelper.GetImgContent(8);
+            SendResponse(response, result + resultImg);
         }
         void GameFourGet(HttpListenerResponse response)
         {
-            string resultStoryThree = dbHelper.GetStoryPointContent(5);
-            SendResponse(response, resultStoryThree);
+            string result = dbHelper.GetStoryPointContent(5);
+            SendResponse(response, result);
         }
         void GameFiveGet(HttpListenerResponse response)
         {
-            string resultStoryThree = dbHelper.GetStoryPointContent(6);
-            SendResponse(response, resultStoryThree);
+            string result = dbHelper.GetStoryPointContent(6);
+            SendResponse(response, result);
         }
         void GameSixGet(HttpListenerResponse response)
         {
-            string resultStoryThree = dbHelper.GetStoryPointContent(7);
-            SendResponse(response, resultStoryThree);
+            string result = dbHelper.GetStoryPointContent(7);
+            SendResponse(response, result);
         }
         void GameSevenGet(HttpListenerResponse response)
         {
-            string resultStoryThree = dbHelper.GetStoryPointContent(8);
-            SendResponse(response, resultStoryThree);
+            string result = dbHelper.GetStoryPointContent(8);
+            SendResponse(response, result);
         }
         void GameEightGet(HttpListenerResponse response)
         {
-            string resultStoryThree = dbHelper.GetStoryPointContent(9);
-            SendResponse(response, resultStoryThree);
+            string result = dbHelper.GetStoryPointContent(9);
+            SendResponse(response, result);
         }
         void GameNineGet(HttpListenerResponse response)
         {
-            string resultStoryThree = dbHelper.GetStoryPointContent(10);
-            SendResponse(response, resultStoryThree);
+            string result = dbHelper.GetStoryPointContent(10);
+            SendResponse(response, result);
         }
         void GameTenGet(HttpListenerResponse response)
         {
-            string resultStoryThree = dbHelper.GetStoryPointContent(11);
-            SendResponse(response, resultStoryThree);
+            string result = dbHelper.GetStoryPointContent(11);
+            SendResponse(response, result);
         }
         void GameElevenGet(HttpListenerResponse response)
         {
@@ -241,7 +277,7 @@ namespace FollowTheLightMain
             SendResponse(response, result + resultImg);
         } 
         
-        // Player One Scenarios
+        // Player One Storyline
         void GameOnePost(HttpListenerRequest req, HttpListenerResponse res)
         {
             StreamReader reader = new StreamReader(req.InputStream, req.ContentEncoding);
@@ -447,7 +483,7 @@ namespace FollowTheLightMain
             SendResponse(res, answer);
         }
 
-        // Player Two Scenarios
+        // Player Two Storyline
         void GameSevenPost(HttpListenerRequest req, HttpListenerResponse res) // Scenario One
         {
             StreamReader reader = new StreamReader(req.InputStream, req.ContentEncoding);
