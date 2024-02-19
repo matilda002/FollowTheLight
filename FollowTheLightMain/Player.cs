@@ -5,6 +5,13 @@ namespace FollowTheLightMain;
 
 public class Player
 {
+    private readonly NpgsqlDataSource _db;
+
+    public Player(NpgsqlDataSource db)
+    {
+        _db = db;
+    }
+
     public void Register(HttpListenerRequest req, HttpListenerResponse res)
     {
         try
@@ -37,7 +44,6 @@ public class Player
             res.Close();
         }
     }
-
     public void ViewStatus(HttpListenerRequest req, HttpListenerResponse res)
     {
         const string dbUri = "Host=localhost;Port=5455;Username=postgres;Password=postgres;Database=followthelightdb;";

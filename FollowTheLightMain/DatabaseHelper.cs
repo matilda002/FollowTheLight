@@ -61,7 +61,7 @@ public class DatabaseHelper
         //sl = storyline, s = storypoint
         for (int sl = 0; sl < filePaths.Length; sl++)
         {
-            // Load storypoints for each storyline
+          // Load storypoints for each storyline
             int minCount = Math.Min(titles.Length, filePaths[sl].Length);
             for (int s = 0; s < minCount; s++)
             {
@@ -180,5 +180,52 @@ public class DatabaseHelper
             Console.WriteLine($"Error retrieving story point content: {ex.Message}");
         }
         return image;
+    }
+
+    public void PopulateTableStorypaths()
+    {
+        Console.WriteLine("Populating storypaths-table...");
+
+        const string query = @"INSERT INTO storypaths(
+        player,
+        from_point,
+        to_point,
+        choice,
+        effect
+        )
+        VALUES ($1::player_role, $2, $3, $4, $5)
+        ;";
+
+        string[] storypath = File.ReadAllLines($"FollowTheLightMain/DATA/storypaths.csv");
+        for (int i = 1; i <  storypath.Length; i++)
+        {
+            string[] data = storypath[i].Split(',');
+            using (var cmd = _db.CreateCommand(query))
+            {
+                cmd.Parameters.AddWithValue(data[0]);
+                cmd.Parameters.AddWithValue(int.Parse(data[1]));
+                cmd.Parameters.AddWithValue(int.Parse(data[2]));
+                cmd.Parameters.AddWithValue(data[3]);
+                cmd.Parameters.AddWithValue(int.Parse(data[4]));
+                cmd.ExecuteNonQuery();
+            }
+        }
+    }
+    public void PopulateRolesOnStorypoints()
+    {
+        Console.WriteLine("Populating roles on storypoints...");
+
+        const string query = @"INSERT INTO storypoints(player) VALUES ($1::player_role);";
+
+        string[] lines = File.ReadAllLines($"FollowTheLightMain/storylines/roles.csv");
+        for (int i = 0; i <  lines.Length; i++)
+        {
+            string[] data = lines[i].Split(',');
+            using (var cmd = _db.CreateCommand(query))
+            {
+                cmd.Parameters.AddWithValue(data[0]);
+                cmd.ExecuteNonQuery();
+            }
+        }
     }
 }

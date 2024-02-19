@@ -7,15 +7,16 @@ var db = NpgsqlDataSource.Create(dbUri);
 
 var dbCreator = new DatabaseCreator(db);
 var dbHelper = new DatabaseHelper(db);
-/*
+
 dbHelper.ResetTables();
 dbCreator.CreateTables();
 dbHelper.PopulateStoryPointIntro();
 dbHelper.PopulateStoryPointsTable();
+dbHelper.PopulateTableStorypaths();
 dbHelper.PopulateSpTablePuzzle();
 dbHelper.PopulateStoryPointEnding();
 dbHelper.PopulateImagesTable();
-*/
+
 bool listen = true;
 int port = 3000;
 
