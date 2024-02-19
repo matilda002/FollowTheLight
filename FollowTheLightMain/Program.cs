@@ -13,6 +13,7 @@ dbCreator.CreateTables();
 dbHelper.PopulateStoryPointIntro();
 dbHelper.PopulateStoryPointsTable();
 dbHelper.PopulateSpTablePuzzle();
+dbHelper.PopulateStoryPointEnding();
 dbHelper.PopulateImagesTable();
 
 bool listen = true;
