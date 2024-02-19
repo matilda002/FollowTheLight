@@ -1,5 +1,4 @@
 ﻿using Npgsql;
-
 namespace FollowTheLightMain;
 
 public class DatabaseHelper
@@ -28,7 +27,6 @@ public class DatabaseHelper
         cmd.Parameters.AddWithValue($"{intro}");
         cmd.ExecuteNonQuery();
     }
-
     public void PopulateStoryPointsTable()
     {
         Console.WriteLine("[ Populating table: 'storypoints' ]");
@@ -76,47 +74,6 @@ public class DatabaseHelper
             }
         }
     }
-    
-    public string GetStoryPointContent(int storyPointId)
-    {
-        string content = "";
-        try
-        {
-            var cmd = _db.CreateCommand("select content from storypoints where storypoint_id = $1");
-            cmd.Parameters.AddWithValue(storyPointId);
-            var reader = cmd.ExecuteReader();
-            if (reader.Read())
-            {
-                content = reader.GetString(0);
-            }
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error retrieving story point content: {ex.Message}");
-        }
-        return content;
-    }
-    
-    public string GetImgContent(int imgId)
-    {
-        string image = string.Empty;
-        try
-        {
-            var cmd = _db.CreateCommand("select image from images where image_id = $1");
-            cmd.Parameters.AddWithValue(imgId);
-            var reader = cmd.ExecuteReader();
-            if (reader.Read())
-            {
-                image = reader.GetString(0);
-            }
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error retrieving story point content: {ex.Message}");
-        }
-        return image;
-    }
-    
     public void PopulateSpTablePuzzle()
     {
         Console.WriteLine("[ Populating table: 'storypoints' with puzzles ]");
@@ -145,7 +102,6 @@ public class DatabaseHelper
         cmd.Parameters.AddWithValue($"{puzzle3P2}");
         cmd.ExecuteNonQuery();
     }
-    
     public void PopulateStoryPointEnding()
     {
         Console.WriteLine("[ Populating table: 'storypoints' with the end ]");
@@ -156,7 +112,6 @@ public class DatabaseHelper
         cmd.Parameters.AddWithValue($"{end}");
         cmd.ExecuteNonQuery();
     }
-
     public void PopulateImagesTable()
     {
         Console.WriteLine("[ Populating table: 'images' ]\n\n");
@@ -188,4 +143,44 @@ public class DatabaseHelper
             cmd.Parameters.Clear();
         }
     }
+    
+    public string GetStoryPointContent(int storyPointId)
+    {
+        string content = "";
+        try
+        {
+            var cmd = _db.CreateCommand("select content from storypoints where storypoint_id = $1");
+            cmd.Parameters.AddWithValue(storyPointId);
+            var reader = cmd.ExecuteReader();
+            if (reader.Read())
+            {
+                content = reader.GetString(0);
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error retrieving story point content: {ex.Message}");
+        }
+        return content;
+    }
+    public string GetImgContent(int imgId)
+    {
+        string image = string.Empty;
+        try
+        {
+            var cmd = _db.CreateCommand("select image from images where image_id = $1");
+            cmd.Parameters.AddWithValue(imgId);
+            var reader = cmd.ExecuteReader();
+            if (reader.Read())
+            {
+                image = reader.GetString(0);
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error retrieving story point content: {ex.Message}");
+        }
+        return image;
+    }
+
 }
