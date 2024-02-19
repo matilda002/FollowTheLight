@@ -24,7 +24,7 @@ public class PostPuzzle
                 answer += """
                           You paint the devil's number on the stone, it moves and reveals a tunnel.
                           There is a sign in the tunnel, and hard to read. You think it says:
-                          "DON'T TRUST THEM"
+                          "DON'T TRUST THEE"
                           """;
                 break;
             case "/game/player/chat":
@@ -32,7 +32,7 @@ public class PostPuzzle
                 chat.GameMessage(res);
                 break;
             default:
-                answer += "A huge cockroach helped you move the rock, and gave you dirty look.\n";
+                answer += "A huge cockroach helped you move the rock, and gave you dirty look.\nYou move on with shame";
                 break;
         }
         SendResponse(res, answer);
@@ -47,7 +47,10 @@ public class PostPuzzle
         {
             case "NOP":
                 answer += """
-                          Clue
+                          You cracked the code, and a message appears on the wall:
+                          
+                          "There is always ears hearing your every move,
+                          In the darkness, an ear is an eye."
                           """;
                 break;
             case "/game/player/chat":
@@ -55,7 +58,10 @@ public class PostPuzzle
                 chat.GameMessage(res);
                 break;
             default:
-                answer += "The letters stopped glowing, and won't lit up again\n";
+                answer += """
+                          The letters stopped glowing, and won't lit up again. You let out a sigh and
+                          hear a chuckle in the distance..."
+                          """;
                 break;
         }
         SendResponse(res, answer);
@@ -79,7 +85,7 @@ public class PostPuzzle
                 chat.GameMessage(res);
                 break;
             default:
-                answer += "The code lock exploded and looks like it burned up a rolled up piece of paper\n";
+                answer += "The code lock exploded and looks like it burned up a piece of paper\n";
                 break;
         }
         SendResponse(res, answer);
@@ -96,7 +102,8 @@ public class PostPuzzle
         {
             case "0%@00@%":
                 answer += """
-                          You made it past the water just in time.
+                          You made it past the water just in time before something dragged you in...
+                          Remember, water can be dangerous. In the dark anything can hide
                           """;
                 break;
             case "/game/player/chat":
@@ -106,7 +113,7 @@ public class PostPuzzle
             default:
                 DatabaseHelper dbHelper = new(_db);
                 string js = dbHelper.GetImgContent(7);
-                answer += $"You fell into the water stepping on the wrong stone...\n{js}";
+                answer += $"You fell into the water while stepping on the wrong stone...\n{js}";
                 break;
         }
         SendResponse(res, answer);
@@ -122,7 +129,7 @@ public class PostPuzzle
             case "ANTILOP":
                 answer += """
                           Dragon let's you continue and whispers:
-                          "Be a feather"
+                          "It might be light as a feather, but no less sturdy"
                           """;
                 break;
             case "/game/player/chat":
@@ -158,7 +165,7 @@ public class PostPuzzle
                 chat.GameMessage(res);
                 break;
             default:
-                answer += "You slip on a piece of leather, suddenly a giant cockroach steals it\n";
+                answer += "You slip on a piece of leather, and suddenly a giant cockroach steals it\n";
                 break;
         }
         SendResponse(res, answer);
