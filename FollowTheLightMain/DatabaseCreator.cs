@@ -1,11 +1,9 @@
 ﻿using Npgsql;
-
 namespace FollowTheLightMain;
 
 public class DatabaseCreator
 {
     private readonly NpgsqlDataSource _db;
-
     public DatabaseCreator(NpgsqlDataSource db)
     {
         _db = db;
@@ -13,7 +11,7 @@ public class DatabaseCreator
 
     public void CreateTables()
     {
-        Console.WriteLine("Creating tables...\n");
+        Console.WriteLine("[ Tables: Creating ]\n");
 
         const string imagesTable = @"create table if not exists images(
             image_id serial primary key,

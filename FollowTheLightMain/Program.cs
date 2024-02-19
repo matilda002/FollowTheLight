@@ -14,6 +14,7 @@ dbHelper.PopulateStoryPointIntro();
 dbHelper.PopulateStoryPointsTable();
 dbHelper.PopulateTableStorypaths();
 dbHelper.PopulateSpTablePuzzle();
+dbHelper.PopulateStoryPointEnding();
 dbHelper.PopulateImagesTable();
 
 bool listen = true;
