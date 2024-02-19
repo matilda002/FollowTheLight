@@ -165,16 +165,11 @@ namespace FollowTheLightMain
                         case "/game/player2/8":
                             GameTwelvePost(request, response);
                             break;
-<<<<<<< HEAD
-                        case "/player/register":
-                            Player registerPlayer = new Player(_db);
-=======
-                        case "/game/player2/9":
+                       case "/game/player2/9":
                             puzzle.PuzzleThreeP2Post(request, response);
                             break;
                         case ("/player/register"):
                             Player registerPlayer = new Player();
->>>>>>> main
                             registerPlayer.Register(request, response);
                             break;
                         case "/player/status":
@@ -206,15 +201,12 @@ namespace FollowTheLightMain
             string res = dbHelper.GetStoryPointContent(1);
             SendResponse(response, res);
         }
-<<<<<<< HEAD
-=======
         void EndGet(HttpListenerResponse response)
         {
             string res = dbHelper.GetStoryPointContent(20);
             SendResponse(response, res);
         }
 
->>>>>>> main
         void GameOneGet(HttpListenerResponse response)
         {
             string result = dbHelper.GetStoryPointContent(2);
@@ -277,9 +269,6 @@ namespace FollowTheLightMain
             SendResponse(response, resultStoryThree);
         }
 
-<<<<<<< HEAD
-=======
-        // Puzzles Get
         void PuzzleOneP1(HttpListenerResponse response)
         {
             string result = dbHelper.GetStoryPointContent(14);
@@ -316,9 +305,7 @@ namespace FollowTheLightMain
             string resultImg = dbHelper.GetImgContent(14);
             SendResponse(response, result + resultImg);
         } 
-        
-        // Player One Storyline
->>>>>>> main
+
         void GameOnePost(HttpListenerRequest req, HttpListenerResponse res)
         {
             StreamReader reader = new StreamReader(req.InputStream, req.ContentEncoding);
@@ -729,11 +716,7 @@ namespace FollowTheLightMain
             }
             SendResponse(res, answer);
         }
-<<<<<<< HEAD
-=======
-        
-        
->>>>>>> main
+
         void SendResponse(HttpListenerResponse response, string content)
         {
             byte[] buffer = Encoding.UTF8.GetBytes(content);
@@ -759,8 +742,5 @@ namespace FollowTheLightMain
             res.Close();
         }
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> main
+
