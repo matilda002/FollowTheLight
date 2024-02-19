@@ -18,12 +18,22 @@ public class DatabaseHelper
         _db.CreateCommand(query).ExecuteNonQuery();
     }
 
+    public void PopulateStoryPointIntro()
+    {
+        string intro = File.ReadAllText($"FollowTheLightMain/Storylines/intro.txt");
+        var cmd = _db.CreateCommand("insert into storypoints(title, content)" +
+                                    "values ($1,$2)");
+        cmd.Parameters.AddWithValue("Intro");
+        cmd.Parameters.AddWithValue($"{intro}");
+        cmd.ExecuteNonQuery();
+    }
+
     public void PopulateStoryPointsTable()
     {
         Console.WriteLine("Populating the storypoints table...");
 
         string[] titles = {
-            "Intro", "Story One", "Story Two", "Story Three",
+            "Story One", "Story Two", "Story Three",
             "Story Four", "Story Five", "Story Six", "Story Seven",
             "Story Eight", "Story Nine", "Story Ten", "Story Eleven", "Story Twelve"
         };
@@ -31,7 +41,6 @@ public class DatabaseHelper
         string[][] filePaths = {
             new string[]
             {
-                "FollowTheLightMain/storylines/intro.txt",
                 "FollowTheLightMain/storylines/sl1/s1.txt",
                 "FollowTheLightMain/storylines/sl1/s2.txt",
                 "FollowTheLightMain/storylines/sl1/s3.txt",

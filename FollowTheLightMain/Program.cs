@@ -10,6 +10,7 @@ var dbHelper = new DatabaseHelper(db);
 
 dbHelper.ResetTables();
 dbCreator.CreateTables();
+dbHelper.PopulateStoryPointIntro();
 dbHelper.PopulateStoryPointsTable();
 dbHelper.PopulateTableStorypaths();
 dbHelper.PopulateSpTablePuzzle();
