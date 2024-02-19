@@ -20,8 +20,8 @@ public class DatabaseHelper
 
     public void PopulateStoryPointIntro()
     {
-        Console.WriteLine("[ Populating table: 'storypoints' with intro ]");
-        string intro = File.ReadAllText($"FollowTheLightMain/Storylines/intro.txt");
+        Console.WriteLine("[ Populating table: 'storypoints' with the intro ]");
+        string intro = File.ReadAllText("FollowTheLightMain/Storylines/intro.txt");
         var cmd = _db.CreateCommand("insert into storypoints(title, content)" +
                                     "values ($1,$2)");
         cmd.Parameters.AddWithValue("Intro");
@@ -143,6 +143,17 @@ public class DatabaseHelper
         cmd.Parameters.AddWithValue($"{puzzle3}");
         cmd.Parameters.AddWithValue("Challenge Three - P2");
         cmd.Parameters.AddWithValue($"{puzzle3P2}");
+        cmd.ExecuteNonQuery();
+    }
+    
+    public void PopulateStoryPointEnding()
+    {
+        Console.WriteLine("[ Populating table: 'storypoints' with the end ]");
+        string end = File.ReadAllText("FollowTheLightMain/Storylines/end.txt");
+        var cmd = _db.CreateCommand("insert into storypoints(title, content)" +
+                                    "values ($1,$2)");
+        cmd.Parameters.AddWithValue("End");
+        cmd.Parameters.AddWithValue($"{end}");
         cmd.ExecuteNonQuery();
     }
 

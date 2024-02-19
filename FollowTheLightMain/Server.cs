@@ -67,6 +67,9 @@ namespace FollowTheLightMain
                         case "/game/player/9": 
                             PuzzleThreeP1(response);
                             break; 
+                        case "/game/player/10":
+                            EndGet(response);
+                            break; 
                         case "/game/player2/1":
                             GameSevenGet(response);
                             break;
@@ -93,6 +96,9 @@ namespace FollowTheLightMain
                             break;
                         case "/game/player2/9":
                             PuzzleThreeP2(response);
+                            break; 
+                        case "/game/player2/10":
+                            EndGet(response);
                             break; 
                         case "/game/player/message":
                             Radio message = new Radio(_db);
@@ -192,6 +198,11 @@ namespace FollowTheLightMain
         void IntroGet(HttpListenerResponse response)
         {
             string res = dbHelper.GetStoryPointContent(1);
+            SendResponse(response, res);
+        }
+        void EndGet(HttpListenerResponse response)
+        {
+            string res = dbHelper.GetStoryPointContent(20);
             SendResponse(response, res);
         }
 
