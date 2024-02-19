@@ -34,10 +34,10 @@ namespace FollowTheLightMain
 
             switch (request.HttpMethod)
             {
-                case ("GET"):
+                case "GET":
                     switch (request.Url?.AbsolutePath)
                     {
-                        case ("/intro"):
+                        case "/intro":
                             IntroGet(response);
                             break;
                         case "/game/player/1":
@@ -46,25 +46,25 @@ namespace FollowTheLightMain
                         case "/game/player/2":
                             GameTwoGet(response);
                             break;
-                        case "/game/puzzle/1": ///////
+                        case "/game/player/3":
                             PuzzleOneP1(response);
                             break;
-                        case "/game/player/3":
+                        case "/game/player/4":
                             GameThreeGet(response);
                             break;
-                        case "/game/player/4":
+                        case "/game/player/5":
                             GameFourGet(response);
                             break;
-                        case "/game/puzzle/2": ///////
+                        case "/game/player/6": 
                             PuzzleTwoP1(response);
                             break; 
-                        case "/game/player/5":
+                        case "/game/player/7":
                             GameFiveGet(response);
                             break;
-                        case "/game/player/6":
+                        case "/game/player/8":
                             GameSixGet(response);
                             break;
-                        case "/game/puzzle/3": ///////
+                        case "/game/player/9": 
                             PuzzleThreeP1(response);
                             break; 
                         case "/game/player2/1":
@@ -74,17 +74,26 @@ namespace FollowTheLightMain
                             GameEightGet(response);
                             break;
                         case "/game/player2/3":
+                            PuzzleOneP2(response);
+                            break; 
+                        case "/game/player2/4":
                             GameNineGet(response);
                             break;
-                        case "/game/player2/4":
+                        case "/game/player2/5":
                             GameTenGet(response);
                             break;
-                        case "/game/player2/5":
+                        case "/game/player2/6":
+                            PuzzleTwoP2(response);
+                            break; 
+                        case "/game/player2/7":
                             GameElevenGet(response);
                             break;
-                        case "/game/player2/6":
+                        case "/game/player2/8":
                             GameTwelveGet(response);
                             break;
+                        case "/game/player2/9":
+                            PuzzleThreeP2(response);
+                            break; 
                         case "/game/player/message":
                             Radio message = new Radio(_db);
                             message.GameMessage(response);
@@ -105,25 +114,25 @@ namespace FollowTheLightMain
                         case "/game/player/2":
                             GameTwoPost(request, response);
                             break;
-                        case "/game/puzzle/1": ///////
+                        case "/game/player/3":
                             puzzle.PuzzleOneP1Post(request, response);
                             break;
-                        case "/game/player/3":
+                        case "/game/player/4":
                             GameThreePost(request, response);
                             break;
-                        case "/game/player/4":
+                        case "/game/player/5":
                             GameFourPost(request, response);
                             break;
-                        case "/game/puzzle/2": ///////
+                        case "/game/player/6":
                             puzzle.PuzzleTwoP1Post(request, response);
                             break;
-                        case "/game/player/5":
+                        case "/game/player/7":
                             GameFivePost(request, response);
                             break;
-                        case "/game/player/6":
+                        case "/game/player/8":
                             GameSixPost(request, response);
                             break;
-                        case "/game/puzzle/3": ///////
+                        case "/game/player/9":
                             puzzle.PuzzleThreeP1Post(request, response);
                             break;
                         case "/game/player2/1":
@@ -133,16 +142,25 @@ namespace FollowTheLightMain
                             GameEightPost(request, response);
                             break;
                         case "/game/player2/3":
-                            GameNinePost(request, response);
+                            puzzle.PuzzleOneP2Post(request, response);
                             break;
                         case "/game/player2/4":
-                            GameTenPost(request, response);
+                            GameNinePost(request, response);
                             break;
                         case "/game/player2/5":
-                            GameElevenPost(request, response);
+                            GameTenPost(request, response);
                             break;
                         case "/game/player2/6":
+                            puzzle.PuzzleTwoP2Post(request, response);
+                            break;
+                        case "/game/player2/7":
+                            GameElevenPost(request, response);
+                            break;
+                        case "/game/player2/8":
                             GameTwelvePost(request, response);
+                            break;
+                        case "/game/player2/9":
+                            puzzle.PuzzleThreeP2Post(request, response);
                             break;
                         case ("/player/register"):
                             Player registerPlayer = new Player();
