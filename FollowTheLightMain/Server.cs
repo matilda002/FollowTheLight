@@ -173,7 +173,7 @@ namespace FollowTheLightMain
                             registerPlayer.Register(request, response);
                             break;
                         case "/player/status":
-                            Player playerStatus = new Player(_db);
+                            Player playerStatus = new Player();
                             playerStatus.ViewStatus(request, response);
                             break;
                         case "/player/1/chat":
