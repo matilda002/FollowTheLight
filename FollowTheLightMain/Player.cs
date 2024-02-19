@@ -14,7 +14,7 @@ public class Player
             StreamReader reader = new(req.InputStream, req.ContentEncoding);
             string body = reader.ReadToEnd();
             
-            string queryToDb = "insert into players (username) values (@1)";
+            const string queryToDb = "insert into players (username) values (@1)";
             var cmd = db.CreateCommand(queryToDb);
             cmd.Parameters.AddWithValue("@1", body);
             cmd.ExecuteNonQuery();
@@ -45,17 +45,17 @@ public class Player
         StreamReader reader = new(req.InputStream, req.ContentEncoding);
         string username = reader.ReadToEnd();
 
-        string checkUsername = "select count(*) from players where username = @1";
+        const string checkUsername = "select count(*) from players where username = @1";
         var cmd = db.CreateCommand(checkUsername);
         cmd.Parameters.AddWithValue("@1", username);
         int count = Convert.ToInt32(cmd.ExecuteScalar());
         
-        string queryHp = "select hp from players where username = @1";
+        const string queryHp = "select hp from players where username = @1";
         var cmd2 = db.CreateCommand(queryHp);
         cmd2.Parameters.AddWithValue("@1", username);
         int hp = Convert.ToInt32(cmd2.ExecuteScalar());
 
-        string queryCsp = "select current_storypoint from players where username = @1";
+        const string queryCsp = "select current_storypoint from players where username = @1";
         var cmd3 = db.CreateCommand(queryCsp);
         cmd3.Parameters.AddWithValue("@1", username);
         int csp = Convert.ToInt32(cmd3.ExecuteScalar());

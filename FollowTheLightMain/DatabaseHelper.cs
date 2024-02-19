@@ -181,5 +181,4 @@ public class DatabaseHelper
         }
         return image;
     }
-
 }

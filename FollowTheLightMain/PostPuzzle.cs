@@ -12,7 +12,7 @@ public class PostPuzzle
     }
     
     // Player One
-    public void PuzzleOneP1Post(HttpListenerRequest req, HttpListenerResponse res)
+    public void PuzzleOneP1(HttpListenerRequest req, HttpListenerResponse res)
     {
         StreamReader reader = new StreamReader(req.InputStream, req.ContentEncoding);
         string body = reader.ReadToEnd();
@@ -37,7 +37,7 @@ public class PostPuzzle
         }
         SendResponse(res, answer);
     }
-    public void PuzzleTwoP1Post(HttpListenerRequest req, HttpListenerResponse res)
+    public void PuzzleTwoP1(HttpListenerRequest req, HttpListenerResponse res)
     {
         StreamReader reader = new StreamReader(req.InputStream, req.ContentEncoding);
         string body = reader.ReadToEnd().ToUpper();
@@ -66,7 +66,7 @@ public class PostPuzzle
         }
         SendResponse(res, answer);
     }
-    public void PuzzleThreeP1Post(HttpListenerRequest req, HttpListenerResponse res)
+    public void PuzzleThreeP1(HttpListenerRequest req, HttpListenerResponse res)
     {
         StreamReader reader = new StreamReader(req.InputStream, req.ContentEncoding);
         string body = reader.ReadToEnd();
@@ -92,7 +92,7 @@ public class PostPuzzle
     }
     
     // Player Two
-    public void PuzzleOneP2Post(HttpListenerRequest req, HttpListenerResponse res)
+    public void PuzzleOneP2(HttpListenerRequest req, HttpListenerResponse res)
     {
         StreamReader reader = new StreamReader(req.InputStream, req.ContentEncoding);
         string body = reader.ReadToEnd();
@@ -118,7 +118,7 @@ public class PostPuzzle
         }
         SendResponse(res, answer);
     }
-    public void PuzzleTwoP2Post(HttpListenerRequest req, HttpListenerResponse res)
+    public void PuzzleTwoP2(HttpListenerRequest req, HttpListenerResponse res)
     {
         StreamReader reader = new StreamReader(req.InputStream, req.ContentEncoding);
         string body = reader.ReadToEnd().ToUpper();
@@ -145,7 +145,7 @@ public class PostPuzzle
         }
         SendResponse(res, answer);
     }
-    public void PuzzleThreeP2Post(HttpListenerRequest req, HttpListenerResponse res)
+    public void PuzzleThreeP2(HttpListenerRequest req, HttpListenerResponse res)
     {
         StreamReader reader = new StreamReader(req.InputStream, req.ContentEncoding);
         string body = reader.ReadToEnd().ToUpper();
