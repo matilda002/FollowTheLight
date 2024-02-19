@@ -13,13 +13,14 @@ public class DatabaseHelper
 
     public void ResetTables()
     {
-        Console.WriteLine("Resetting tables...");
+        Console.WriteLine("[ Tables: Resetting ]");
         const string query = "drop schema public cascade; create schema public;";
         _db.CreateCommand(query).ExecuteNonQuery();
     }
 
     public void PopulateStoryPointIntro()
     {
+        Console.WriteLine("[ Populating table: 'storypoints' with intro ]");
         string intro = File.ReadAllText($"FollowTheLightMain/Storylines/intro.txt");
         var cmd = _db.CreateCommand("insert into storypoints(title, content)" +
                                     "values ($1,$2)");
@@ -30,7 +31,7 @@ public class DatabaseHelper
 
     public void PopulateStoryPointsTable()
     {
-        Console.WriteLine("Populating the storypoints table...");
+        Console.WriteLine("[ Populating table: 'storypoints' ]");
 
         string[] titles = {
             "Story One", "Story Two", "Story Three",
@@ -75,6 +76,7 @@ public class DatabaseHelper
             }
         }
     }
+    
     public string GetStoryPointContent(int storyPointId)
     {
         string content = "";
@@ -117,7 +119,7 @@ public class DatabaseHelper
     
     public void PopulateSpTablePuzzle()
     {
-        Console.WriteLine("Populating the storypoints table with puzzles...");
+        Console.WriteLine("[ Populating table: 'storypoints' with puzzles ]");
         
         string puzzle1 = File.ReadAllText("FollowTheLightMain/Storylines/puzzles-text/stepstonesp1.txt");
         string puzzle1P2 = File.ReadAllText("FollowTheLightMain/Storylines/puzzles-text/stepstonesp2.txt");
@@ -146,7 +148,7 @@ public class DatabaseHelper
 
     public void PopulateImagesTable()
     {
-        Console.WriteLine("Populating the images table...\n\n");
+        Console.WriteLine("[ Populating table: 'images' ]\n\n");
 
         string[] filePaths = {
             "FollowTheLightMain/images/jumpscares/js1.txt",
@@ -159,10 +161,10 @@ public class DatabaseHelper
             "FollowTheLightMain/images/frog.txt",
             "FollowTheLightMain/images/puzzles/stepstonesp2-stones.txt",
             "FollowTheLightMain/images/puzzles/stepstonesp1-table.txt",
+            "FollowTheLightMain/images/puzzles/wallp1-wall.txt", 
+            "FollowTheLightMain/images/puzzles/wallp2-sign.txt",
             "FollowTheLightMain/images/puzzles/lockp1-lock.txt", 
             "FollowTheLightMain/images/puzzles/lockp2-door.txt", 
-            "FollowTheLightMain/images/puzzles/wallp1-wall.txt", 
-            "FollowTheLightMain/images/puzzles/wallp2-sign.txt" 
         };
 
         var cmd = _db.CreateCommand("insert into images(image) values ($1)");
