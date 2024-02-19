@@ -5,14 +5,8 @@ namespace FollowTheLightMain;
 
 public class Player
 {
-    private readonly NpgsqlDataSource _db;
 
-    public Player(NpgsqlDataSource db)
-    {
-        _db = db;
-    }
-
-    public void Register(HttpListenerRequest req, HttpListenerResponse res)
+   public void Register(HttpListenerRequest req, HttpListenerResponse res)
     {
         try
         {
