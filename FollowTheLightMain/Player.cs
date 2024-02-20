@@ -45,8 +45,8 @@ public class Player
         StreamReader reader = new(req.InputStream, req.ContentEncoding);
         string username = reader.ReadToEnd();
 
-        string CheckUsername = "select count(*) from players where username = @1";
-        var cmd = db.CreateCommand(CheckUsername);
+        string checkUsername = "select count(*) from players where username = @1";
+        var cmd = db.CreateCommand(checkUsername);
         cmd.Parameters.AddWithValue("@1", username);
         int count = Convert.ToInt32(cmd.ExecuteScalar());
         

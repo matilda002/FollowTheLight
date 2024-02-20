@@ -1,11 +1,9 @@
 ﻿using Npgsql;
-
 namespace FollowTheLightMain;
 
 public class DatabaseHelper
 {
     private readonly NpgsqlDataSource _db;
-
     public DatabaseHelper(NpgsqlDataSource db)
     {
         _db = db;
@@ -13,17 +11,27 @@ public class DatabaseHelper
 
     public void ResetTables()
     {
-        Console.WriteLine("Resetting tables...");
+        Console.WriteLine("[ Tables: Resetting ]");
         const string query = "drop schema public cascade; create schema public;";
         _db.CreateCommand(query).ExecuteNonQuery();
     }
 
+    public void PopulateStoryPointIntro()
+    {
+        Console.WriteLine("[ Populating table: 'storypoints' with the intro ]");
+        string intro = File.ReadAllText("FollowTheLightMain/Storylines/intro.txt");
+        var cmd = _db.CreateCommand("insert into storypoints(title, content)" +
+                                    "values ($1,$2)");
+        cmd.Parameters.AddWithValue("Intro");
+        cmd.Parameters.AddWithValue($"{intro}");
+        cmd.ExecuteNonQuery();
+    }
     public void PopulateStoryPointsTable()
     {
-        Console.WriteLine("Populating the storypoints table...");
+        Console.WriteLine("[ Populating table: 'storypoints' ]");
 
         string[] titles = {
-            "Intro", "Story One", "Story Two", "Story Three",
+            "Story One", "Story Two", "Story Three",
             "Story Four", "Story Five", "Story Six", "Story Seven",
             "Story Eight", "Story Nine", "Story Ten", "Story Eleven", "Story Twelve"
         };
@@ -31,7 +39,6 @@ public class DatabaseHelper
         string[][] filePaths = {
             new string[]
             {
-                "FollowTheLightMain/storylines/intro.txt",
                 "FollowTheLightMain/storylines/sl1/s1.txt",
                 "FollowTheLightMain/storylines/sl1/s2.txt",
                 "FollowTheLightMain/storylines/sl1/s3.txt",
@@ -41,7 +48,6 @@ public class DatabaseHelper
             },
             new string[]
             {
-                "FollowTheLightMain/storylines/intro.txt",
                 "FollowTheLightMain/storylines/sl2/s1.txt",
                 "FollowTheLightMain/storylines/sl2/s2.txt",
                 "FollowTheLightMain/storylines/sl2/s3.txt",
@@ -67,6 +73,76 @@ public class DatabaseHelper
             }
         }
     }
+    public void PopulateSpTablePuzzle()
+    {
+        Console.WriteLine("[ Populating table: 'storypoints' with puzzles ]");
+        
+        string puzzle1 = File.ReadAllText("FollowTheLightMain/Storylines/puzzles-text/stepstonesp1.txt");
+        string puzzle1P2 = File.ReadAllText("FollowTheLightMain/Storylines/puzzles-text/stepstonesp2.txt");
+        string puzzle2 = File.ReadAllText("FollowTheLightMain/Storylines/puzzles-text/wallp1.txt");
+        string puzzle2P2 = File.ReadAllText("FollowTheLightMain/Storylines/puzzles-text/wallp2.txt");
+        string puzzle3 = File.ReadAllText("FollowTheLightMain/Storylines/puzzles-text/lockp1.txt");
+        string puzzle3P2 = File.ReadAllText("FollowTheLightMain/Storylines/puzzles-text/lockp2.txt"); 
+        
+        var cmd = _db.CreateCommand("insert into storypoints(title, content)" +
+                                    "values ($1,$2), ($3,$4), ($5,$6), ($7,$8), ($9,$10), ($11,$12)");
+
+        cmd.Parameters.AddWithValue("Challenge One");
+        cmd.Parameters.AddWithValue($"{puzzle1}");
+        cmd.Parameters.AddWithValue("Challenge One - P2");
+        cmd.Parameters.AddWithValue($"{puzzle1P2}");
+        cmd.Parameters.AddWithValue("Challenge Two");
+        cmd.Parameters.AddWithValue($"{puzzle2}");
+        cmd.Parameters.AddWithValue("Challenge Two - P2");
+        cmd.Parameters.AddWithValue($"{puzzle2P2}");
+        cmd.Parameters.AddWithValue("Challenge Three");
+        cmd.Parameters.AddWithValue($"{puzzle3}");
+        cmd.Parameters.AddWithValue("Challenge Three - P2");
+        cmd.Parameters.AddWithValue($"{puzzle3P2}");
+        cmd.ExecuteNonQuery();
+    }
+    public void PopulateStoryPointEnding()
+    {
+        Console.WriteLine("[ Populating table: 'storypoints' with the end ]");
+        string end = File.ReadAllText("FollowTheLightMain/Storylines/end.txt");
+        var cmd = _db.CreateCommand("insert into storypoints(title, content)" +
+                                    "values ($1,$2)");
+        cmd.Parameters.AddWithValue("End");
+        cmd.Parameters.AddWithValue($"{end}");
+        cmd.ExecuteNonQuery();
+    }
+    public void PopulateImagesTable()
+    {
+        Console.WriteLine("[ Populating table: 'images' ]\n\n");
+
+        string[] filePaths = {
+            "FollowTheLightMain/images/jumpscares/js1.txt",
+            "FollowTheLightMain/images/jumpscares/js2.txt",
+            "FollowTheLightMain/images/jumpscares/js3.txt",
+            "FollowTheLightMain/images/Jumpscares/js4.txt",
+            "FollowTheLightMain/images/jumpscares/js5.txt",
+            "FollowTheLightMain/images/jumpscares/js6.txt",
+            "FollowTheLightMain/images/jumpscares/js7.txt",
+            "FollowTheLightMain/images/frog.txt",
+            "FollowTheLightMain/images/puzzles/stepstonesp2-stones.txt",
+            "FollowTheLightMain/images/puzzles/stepstonesp1-table.txt",
+            "FollowTheLightMain/images/puzzles/wallp1-wall.txt", 
+            "FollowTheLightMain/images/puzzles/wallp2-sign.txt",
+            "FollowTheLightMain/images/puzzles/lockp1-lock.txt", 
+            "FollowTheLightMain/images/puzzles/lockp2-door.txt", 
+        };
+
+        var cmd = _db.CreateCommand("insert into images(image) values ($1)");
+        
+        foreach (string img in filePaths)
+        {
+            string content = File.ReadAllText(img); 
+            cmd.Parameters.AddWithValue(content);
+            cmd.ExecuteNonQuery();
+            cmd.Parameters.Clear();
+        }
+    }
+    
     public string GetStoryPointContent(int storyPointId)
     {
         string content = "";
@@ -86,73 +162,24 @@ public class DatabaseHelper
         }
         return content;
     }
-    public void PopulateSpTablePuzzle()
+    public string GetImgContent(int imgId)
     {
-        Console.WriteLine("Populating the storypoints table with puzzles...");
-
-        string puzzle1 = File.ReadAllText($"FollowTheLightMain/Storylines/puzzles-text/lockp1.txt");
-        string puzzle1P2 = File.ReadAllText($"FollowTheLightMain/Storylines/puzzles-text/lockp2.txt");
-        string puzzle2 = File.ReadAllText($"FollowTheLightMain/Storylines/puzzles-text/stepstonesp1.txt");
-        string puzzle2P2 = File.ReadAllText($"FollowTheLightMain/Storylines/puzzles-text/stepstonesp2.txt");
-        string puzzle3 = File.ReadAllText($"FollowTheLightMain/Storylines/puzzles-text/wallp1.txt");
-        string puzzle3P2 = File.ReadAllText($"FollowTheLightMain/Storylines/puzzles-text/wallp2.txt");
-
-        var cmd = _db.CreateCommand("insert into storypoints(title, content)" +
-                                    "values ($1,$2), ($3,$4), ($5,$6), ($7,$8), ($9,$10), ($11,$12)");
-
-        cmd.Parameters.AddWithValue("Challenge One");
-        cmd.Parameters.AddWithValue($"{puzzle1}");
-        cmd.Parameters.AddWithValue("Challenge One - P2");
-        cmd.Parameters.AddWithValue($"{puzzle1P2}");
-        cmd.Parameters.AddWithValue("Challenge Two");
-        cmd.Parameters.AddWithValue($"{puzzle2}");
-        cmd.Parameters.AddWithValue("Challenge Two - P2");
-        cmd.Parameters.AddWithValue($"{puzzle2P2}");
-        cmd.Parameters.AddWithValue("Challenge Three");
-        cmd.Parameters.AddWithValue($"{puzzle3}");
-        cmd.Parameters.AddWithValue("Challenge Three - P2");
-        cmd.Parameters.AddWithValue($"{puzzle3P2}");
-        cmd.ExecuteNonQuery();
+        string image = string.Empty;
+        try
+        {
+            var cmd = _db.CreateCommand("select image from images where image_id = $1");
+            cmd.Parameters.AddWithValue(imgId);
+            var reader = cmd.ExecuteReader();
+            if (reader.Read())
+            {
+                image = reader.GetString(0);
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error retrieving story point content: {ex.Message}");
+        }
+        return image;
     }
 
-    public void PopulateImagesTable()
-    {
-        Console.WriteLine("Populating the images table...\n\n");
-
-        string js1 = File.ReadAllText($"FollowTheLightMain/images/jumpscares/js1.txt");
-        string js2 = File.ReadAllText($"FollowTheLightMain/images/jumpscares/js2.txt");
-        string js3 = File.ReadAllText($"FollowTheLightMain/images/jumpscares/js3.txt");
-        string js4 = File.ReadAllText($"FollowTheLightMain/images/Jumpscares/js4.txt");
-        string js5 = File.ReadAllText($"FollowTheLightMain/images/jumpscares/js5.txt");
-        string js6 = File.ReadAllText($"FollowTheLightMain/images/jumpscares/js6.txt");
-        string js7 = File.ReadAllText($"FollowTheLightMain/images/jumpscares/js7.txt");
-        string imgFrog = File.ReadAllText($"FollowTheLightMain/images/frog.txt");
-        string imgStepStone = File.ReadAllText($"FollowTheLightMain/images/puzzles/stepstonesp2-stones.txt");
-        string imgStepStoneTable = File.ReadAllText($"FollowTheLightMain/images/puzzles/stepstonesp1-table.txt");
-        string imgLock = File.ReadAllText($"FollowTheLightMain/images/puzzles/lockp1-lock.txt");
-        string imgLockDoor = File.ReadAllText($"FollowTheLightMain/images/puzzles/lockp2-door.txt");
-        string imgGlowingWall = File.ReadAllText($"FollowTheLightMain/images/puzzles/wallp1-wall.txt");
-        string imgGlowingWallSign = File.ReadAllText($"FollowTheLightMain/images/puzzles/wallp2-sign.txt");
-
-
-        var cmd = _db.CreateCommand("insert into images(image)" +
-                                                "values ($1), ($2), ($3), ($4), ($5), ($6), ($7), ($8), ($9), ($10), ($11), ($12), ($13), ($14)");
-
-        cmd.Parameters.AddWithValue($"{js1}");
-        cmd.Parameters.AddWithValue($"{js2}");
-        cmd.Parameters.AddWithValue($"{js3}");
-        cmd.Parameters.AddWithValue($"{js4}");
-        cmd.Parameters.AddWithValue($"{js5}");
-        cmd.Parameters.AddWithValue($"{js6}");
-        cmd.Parameters.AddWithValue($"{js7}");
-        cmd.Parameters.AddWithValue($"{imgFrog}");
-        cmd.Parameters.AddWithValue($"{imgStepStone}");
-        cmd.Parameters.AddWithValue($"{imgStepStoneTable}");
-        cmd.Parameters.AddWithValue($"{imgLock}");
-        cmd.Parameters.AddWithValue($"{imgLockDoor}");
-        cmd.Parameters.AddWithValue($"{imgGlowingWall}");
-        cmd.Parameters.AddWithValue($"{imgGlowingWallSign}");
-
-        cmd.ExecuteNonQuery();
-    }
 }
