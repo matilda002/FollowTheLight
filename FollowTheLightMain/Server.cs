@@ -31,7 +31,7 @@ public class Server
         Player player = new();
         Radio radio = new(_db);
         GameGet get = new(_db);
-        GamePost post = new();
+        GamePost post = new(_db);
 
         switch (request.HttpMethod)
         {
@@ -39,7 +39,7 @@ public class Server
                 switch (request.Url?.AbsolutePath)
                 {
                     case "/player":
-                        get.Game(response);
+                        get.Game(request, response);
                         break;
                     case "/game/player/message":
                         radio.GameMessage(response);

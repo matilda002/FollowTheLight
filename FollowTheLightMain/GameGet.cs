@@ -1,20 +1,41 @@
 ﻿using System.Net;
 using System.Text;
 using Npgsql;
+
 namespace FollowTheLightMain;
 
 public class GameGet
 {
     private readonly DatabaseHelper _dbHelper; 
+    private readonly NpgsqlDataSource _db;
+
     public GameGet(NpgsqlDataSource db)
     {
+        _db = db;
         _dbHelper = new(db);
     } 
-    
-    
-    public void Game(HttpListenerResponse response)
+    public void Game(HttpListenerRequest request, HttpListenerResponse response)
     {
-        string result = _dbHelper.GetStoryPointContent(2);
+        StreamReader reader1 = new StreamReader(request.InputStream, request.ContentEncoding);
+        string username = reader1.ReadToEnd().ToLower();
+        
+        string query = @"UPDATE players SET hp = hp - (select effect 
+        from player_paths where choice = @2 AND username = @1),
+            storypoint_id = (SELECT to_point FROM player_paths WHERE choice = @2 AND username = @1)
+        WHERE username = @1;
+        SELECT content FROM player_paths WHERE choice = @2 AND username = @1;";
+        var updateCmd = _db.CreateCommand(query);
+        updateCmd.Parameters.AddWithValue("@1", username);
+        updateCmd.Parameters.AddWithValue("@2", "CONTINUE");
+        
+        var result = "";
+        using (var reader = updateCmd.ExecuteReader())
+        {
+            while (reader.Read())
+            {
+                result = reader.GetString(0); 
+            }
+        }
         SendResponse(response, result);
     }
     

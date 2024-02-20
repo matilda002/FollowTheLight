@@ -1,50 +1,51 @@
 ﻿using System.Net;
 using System.Text;
+using Npgsql;
 namespace FollowTheLightMain;
 
 public class GamePost
 {
+    private readonly DatabaseHelper _dbHelper; 
+    private readonly NpgsqlDataSource _db;
+
+    public GamePost(NpgsqlDataSource db)
+    {
+        _db = db;
+        _dbHelper = new(db);
+    } 
     public void Game(HttpListenerRequest req, HttpListenerResponse res)
     {
-        StreamReader reader = new StreamReader(req.InputStream, req.ContentEncoding);
-        string body = reader.ReadToEnd().ToLower();
-        string answer = string.Empty;
+        StreamReader reader1 = new StreamReader(req.InputStream, req.ContentEncoding);
+        string username = reader1.ReadToEnd().ToLower();
+        
+        string queryresult = @"update players
+        set hp= hp - (select effect from player_paths where choice = @2 and username = @1),
+        storypoint_id = (select to_point from player_paths where choice = @2 and username = @1)
+        where username = @1
+        returning (select content from player_paths where choice = @2 and username = @1);";
+        var updateCmd = _db.CreateCommand(queryresult);
+        updateCmd.Parameters.AddWithValue("$1", username);
+        updateCmd.Parameters.AddWithValue("$2", "CONTINUE");
 
-        switch (body)
+        string result = "";
+        using (var reader = updateCmd.ExecuteReader())
         {
-            case "a":
-                answer +=
-                    "Option A chosen in the first scenario. You found a torch and noticed that the cave wall has “Fear not the dead” written creepily in blood.\n";
-                break;
-            case "b":
-                answer += "You chose option B in the first scenario.\n";
-                break;
-            case "c":
-                answer +=
-                    "Option C chosen in the first scenario. You feel a cold hand grab your ankle and drag you into the dark. You lose a health point.\n";
-                break;
-            case "d":
-                answer +=
-                    "Option D chosen in the first scenario. You waste a match and attract unwanted attention. You lose a health point.\n";
-                break;
-            default:
-                answer += "Invalid choice in the first scenario.\n";
-                break;
+            if (reader.Read())
+            {
+                result = reader.GetString(0);
+            }
         }
-        SendResponse(res, answer);
+        SendResponse(res, result);
     }
-    
     private void SendResponse(HttpListenerResponse response, string content)
     {
         byte[] buffer = Encoding.UTF8.GetBytes(content);
         response.ContentType = "text/plain";
         response.StatusCode = (int)HttpStatusCode.OK;
-
         using (Stream output = response.OutputStream)
         {
             output.Write(buffer, 0, buffer.Length);
         }
-
         response.StatusCode = (int)HttpStatusCode.Created;
         response.Close();
     }

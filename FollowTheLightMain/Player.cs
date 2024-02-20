@@ -11,6 +11,7 @@ public class Player
         {
             const string dbUri = "Host=localhost;Port=5455;Username=postgres;Password=postgres;Database=followthelightdb;";
             var db = NpgsqlDataSource.Create(dbUri);
+            
             StreamReader reader = new(req.InputStream, req.ContentEncoding);
             string body = reader.ReadToEnd();
             
