@@ -60,7 +60,7 @@ public class Radio
         }
         catch (Exception ex)
         {
-            Console.WriteLine("[ Error: " + ex + " ]");
+            Console.WriteLine("[ Error: " + ex.Message + " ]");
             string answer = "Error";
             SendResponseEx(res, answer);
         }
@@ -93,7 +93,7 @@ public class Radio
             }
             catch (Exception ex)
             {
-                Console.WriteLine("[ Error: " + ex + " ]");
+                Console.WriteLine("[ Error: " + ex.Message + " ]");
                 string answer = "Error";
                 SendResponseEx(res, answer);
             }

@@ -29,7 +29,7 @@ public class Player
         }
         catch (Exception ex)
         {
-            string answer = "[ Error: " + ex + " ]";
+            string answer = "[ Error: " + ex.Message + " ]";
             byte[] buffer = Encoding.UTF8.GetBytes(answer);
             res.ContentType = "text/plain";
             res.OutputStream.Write(buffer, 0, buffer.Length);

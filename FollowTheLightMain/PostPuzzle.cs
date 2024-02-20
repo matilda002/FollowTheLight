@@ -147,17 +147,17 @@ public class PostPuzzle
         SendResponse(res, answer);
     }
 
-    private void SendResponse(HttpListenerResponse response, string content)
+    private void SendResponse(HttpListenerResponse res, string content)
     {
         byte[] buffer = Encoding.UTF8.GetBytes(content);
-        response.ContentType = "text/plain";
+        res.ContentType = "text/plain";
         
-        using (Stream output = response.OutputStream)
+        using (Stream output = res.OutputStream)
         {
             output.Write(buffer, 0, buffer.Length);
         }
         
-        response.StatusCode = (int)HttpStatusCode.OK;
-        response.Close();
+        res.StatusCode = (int)HttpStatusCode.OK;
+        res.Close();
     }
 }
