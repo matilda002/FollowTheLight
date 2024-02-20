@@ -29,12 +29,14 @@ public class DatabaseHelper
     public void PopulateStoryPointsTable()
     {
         Console.WriteLine("[ Populating table: 'storypoints' ]");
-
+        
         string[] titles = {
             "Story One", "Story Two", "Story Three",
             "Story Four", "Story Five", "Story Six", "Story Seven",
             "Story Eight", "Story Nine", "Story Ten", "Story Eleven", "Story Twelve"
         };
+        
+        string[] roles = {"FollowTheLightMain/storylines/roles.csv"};
 
         string[][] filePaths = {
             new string[]
@@ -57,7 +59,7 @@ public class DatabaseHelper
             }
         };
 
-        var cmd = _db.CreateCommand("insert into storypoints(title, content) values ($1, $2)");
+        var cmd = _db.CreateCommand("insert into storypoints(title, content, player) values ($1, $2, $3::player_role)");
         //sl = storyline, s = storypoint
         for (int sl = 0; sl < filePaths.Length; sl++)
         {
@@ -67,6 +69,7 @@ public class DatabaseHelper
             {
                 string content = File.ReadAllText(filePaths[sl][s]);
                 cmd.Parameters.AddWithValue(titles[s]);
+                cmd.Parameters.AddWithValue(content);
                 cmd.Parameters.AddWithValue(content);
                 cmd.ExecuteNonQuery();
                 cmd.Parameters.Clear();
@@ -215,7 +218,7 @@ public class DatabaseHelper
     {
         Console.WriteLine("Populating roles on storypoints...");
 
-        const string query = @"INSERT INTO storypoints(player) VALUES ($1::player_role);";
+        const string query = @"INSERT INTO storypoints set player VALUES ($1::player_role);";
 
         string[] lines = File.ReadAllLines($"FollowTheLightMain/storylines/roles.csv");
         for (int i = 0; i <  lines.Length; i++)
