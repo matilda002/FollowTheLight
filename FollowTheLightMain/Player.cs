@@ -5,13 +5,6 @@ namespace FollowTheLightMain;
 
 public class Player
 {
-    private readonly NpgsqlDataSource _db;
-
-    public Player(NpgsqlDataSource db)
-    {
-        _db = db;
-    }
-
     public void Register(HttpListenerRequest req, HttpListenerResponse res)
     {
         try
@@ -34,9 +27,9 @@ public class Player
             
             res.Close();
         }
-        catch
+        catch (Exception ex)
         {
-            string answer = "error occured";
+            string answer = "[ Error: " + ex + " ]";
             byte[] buffer = Encoding.UTF8.GetBytes(answer);
             res.ContentType = "text/plain";
             res.OutputStream.Write(buffer, 0, buffer.Length);

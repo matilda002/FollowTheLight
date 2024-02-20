@@ -27,10 +27,6 @@ public class PostPuzzle
                           "DON'T TRUST THEE"
                           """;
                 break;
-            case "/game/player/chat":
-                Radio chat = new Radio(_db);
-                chat.GameMessage(res);
-                break;
             default:
                 answer += "A huge cockroach helped you move the rock, and gave you dirty look.\nYou move on with shame";
                 break;
@@ -52,10 +48,6 @@ public class PostPuzzle
                           "There is always ears hearing your every move,
                           In the darkness, an ear is an eye."
                           """;
-                break;
-            case "/game/player/chat":
-                Radio chat = new Radio(_db);
-                chat.GameMessage(res);
                 break;
             default:
                 answer += """
@@ -80,10 +72,6 @@ public class PostPuzzle
                           "Maybe there is no-one left..."
                           """;
                 break;
-            case "/game/player/chat":
-                Radio chat = new Radio(_db);
-                chat.GameMessage(res);
-                break;
             default:
                 answer += "The code lock exploded and looks like it burned up a piece of paper\n";
                 break;
@@ -106,10 +94,6 @@ public class PostPuzzle
                           Remember, water can be dangerous. In the dark anything can hide
                           """;
                 break;
-            case "/game/player/chat":
-                Radio chat = new Radio(_db);
-                chat.GameMessage(res);
-                break;
             default:
                 DatabaseHelper dbHelper = new(_db);
                 string js = dbHelper.GetImgContent(7);
@@ -131,10 +115,6 @@ public class PostPuzzle
                           Dragon let's you continue and whispers:
                           "It might be light as a feather, but no less sturdy"
                           """;
-                break;
-            case "/game/player/chat":
-                Radio chat = new Radio(_db);
-                chat.GameMessage(res);
                 break;
             default:
                 answer += """
@@ -160,10 +140,6 @@ public class PostPuzzle
                           "Maybe you're the only one left..."
                           """;
                 break;
-            case "/game/player/chat":
-                Radio chat = new Radio(_db);
-                chat.GameMessage(res);
-                break;
             default:
                 answer += "You slip on a piece of leather, and suddenly a giant cockroach steals it\n";
                 break;
@@ -175,17 +151,13 @@ public class PostPuzzle
     {
         byte[] buffer = Encoding.UTF8.GetBytes(content);
         response.ContentType = "text/plain";
-        response.StatusCode = (int)HttpStatusCode.OK;
-
+        
         using (Stream output = response.OutputStream)
         {
             output.Write(buffer, 0, buffer.Length);
         }
-        foreach (byte b in buffer)
-        {
-            response.OutputStream.WriteByte(b);
-        }
-        response.StatusCode = (int)HttpStatusCode.Created;
+        
+        response.StatusCode = (int)HttpStatusCode.OK;
         response.Close();
     }
 }

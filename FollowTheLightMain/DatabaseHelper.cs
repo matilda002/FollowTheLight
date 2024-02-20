@@ -196,7 +196,7 @@ public class DatabaseHelper
         VALUES ($1::player_role, $2, $3, $4, $5)
         ;";
 
-        string[] storypath = File.ReadAllLines($"FollowTheLightMain/DATA/storypaths.csv");
+        string[] storypath = File.ReadAllLines("FollowTheLightMain/DATA/storypaths.csv");
         for (int i = 1; i <  storypath.Length; i++)
         {
             string[] data = storypath[i].Split(',');
@@ -215,9 +215,9 @@ public class DatabaseHelper
     {
         Console.WriteLine("Populating roles on storypoints...");
 
-        const string query = @"INSERT INTO storypoints(player) VALUES ($1::player_role);";
+        const string query = "INSERT INTO storypoints(player) VALUES ($1::player_role);";
 
-        string[] lines = File.ReadAllLines($"FollowTheLightMain/storylines/roles.csv");
+        string[] lines = File.ReadAllLines("FollowTheLightMain/storylines/roles.csv");
         for (int i = 0; i <  lines.Length; i++)
         {
             string[] data = lines[i].Split(',');
