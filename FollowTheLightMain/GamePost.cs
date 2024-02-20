@@ -371,11 +371,6 @@ public class GamePost
             output.Write(buffer, 0, buffer.Length);
         }
 
-        foreach (byte b in buffer)
-        {
-            response.OutputStream.WriteByte(b);
-        }
-
         response.StatusCode = (int)HttpStatusCode.Created;
         response.Close();
     }

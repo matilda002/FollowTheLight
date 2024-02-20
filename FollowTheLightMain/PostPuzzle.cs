@@ -147,7 +147,7 @@ public class PostPuzzle
         SendResponse(res, answer);
     }
 
-    private static void SendResponse(HttpListenerResponse response, string content)
+    private void SendResponse(HttpListenerResponse response, string content)
     {
         byte[] buffer = Encoding.UTF8.GetBytes(content);
         response.ContentType = "text/plain";
