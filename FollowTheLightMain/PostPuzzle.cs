@@ -12,7 +12,7 @@ public class PostPuzzle
     }
     
     // Player One
-    public void PuzzleOneP1Post(HttpListenerRequest req, HttpListenerResponse res)
+    public void PuzzleOneP1(HttpListenerRequest req, HttpListenerResponse res)
     {
         StreamReader reader = new StreamReader(req.InputStream, req.ContentEncoding);
         string body = reader.ReadToEnd();
@@ -27,17 +27,13 @@ public class PostPuzzle
                           "DON'T TRUST THEE"
                           """;
                 break;
-            case "/game/player/chat":
-                Radio chat = new Radio(_db);
-                chat.GameMessage(res);
-                break;
             default:
                 answer += "A huge cockroach helped you move the rock, and gave you dirty look.\nYou move on with shame";
                 break;
         }
         SendResponse(res, answer);
     }
-    public void PuzzleTwoP1Post(HttpListenerRequest req, HttpListenerResponse res)
+    public void PuzzleTwoP1(HttpListenerRequest req, HttpListenerResponse res)
     {
         StreamReader reader = new StreamReader(req.InputStream, req.ContentEncoding);
         string body = reader.ReadToEnd().ToUpper();
@@ -53,10 +49,6 @@ public class PostPuzzle
                           In the darkness, an ear is an eye."
                           """;
                 break;
-            case "/game/player/chat":
-                Radio chat = new Radio(_db);
-                chat.GameMessage(res);
-                break;
             default:
                 answer += """
                           The letters stopped glowing, and won't lit up again. You let out a sigh and
@@ -66,7 +58,7 @@ public class PostPuzzle
         }
         SendResponse(res, answer);
     }
-    public void PuzzleThreeP1Post(HttpListenerRequest req, HttpListenerResponse res)
+    public void PuzzleThreeP1(HttpListenerRequest req, HttpListenerResponse res)
     {
         StreamReader reader = new StreamReader(req.InputStream, req.ContentEncoding);
         string body = reader.ReadToEnd();
@@ -80,10 +72,6 @@ public class PostPuzzle
                           "Maybe there is no-one left..."
                           """;
                 break;
-            case "/game/player/chat":
-                Radio chat = new Radio(_db);
-                chat.GameMessage(res);
-                break;
             default:
                 answer += "The code lock exploded and looks like it burned up a piece of paper\n";
                 break;
@@ -92,7 +80,7 @@ public class PostPuzzle
     }
     
     // Player Two
-    public void PuzzleOneP2Post(HttpListenerRequest req, HttpListenerResponse res)
+    public void PuzzleOneP2(HttpListenerRequest req, HttpListenerResponse res)
     {
         StreamReader reader = new StreamReader(req.InputStream, req.ContentEncoding);
         string body = reader.ReadToEnd();
@@ -106,10 +94,6 @@ public class PostPuzzle
                           Remember, water can be dangerous. In the dark anything can hide
                           """;
                 break;
-            case "/game/player/chat":
-                Radio chat = new Radio(_db);
-                chat.GameMessage(res);
-                break;
             default:
                 DatabaseHelper dbHelper = new(_db);
                 string js = dbHelper.GetImgContent(7);
@@ -118,7 +102,7 @@ public class PostPuzzle
         }
         SendResponse(res, answer);
     }
-    public void PuzzleTwoP2Post(HttpListenerRequest req, HttpListenerResponse res)
+    public void PuzzleTwoP2(HttpListenerRequest req, HttpListenerResponse res)
     {
         StreamReader reader = new StreamReader(req.InputStream, req.ContentEncoding);
         string body = reader.ReadToEnd().ToUpper();
@@ -132,10 +116,6 @@ public class PostPuzzle
                           "It might be light as a feather, but no less sturdy"
                           """;
                 break;
-            case "/game/player/chat":
-                Radio chat = new Radio(_db);
-                chat.GameMessage(res);
-                break;
             default:
                 answer += """
                           "Not the correct answer my friend", says the dragon in a disappointed tone.
@@ -145,7 +125,7 @@ public class PostPuzzle
         }
         SendResponse(res, answer);
     }
-    public void PuzzleThreeP2Post(HttpListenerRequest req, HttpListenerResponse res)
+    public void PuzzleThreeP2(HttpListenerRequest req, HttpListenerResponse res)
     {
         StreamReader reader = new StreamReader(req.InputStream, req.ContentEncoding);
         string body = reader.ReadToEnd().ToUpper();
@@ -160,10 +140,6 @@ public class PostPuzzle
                           "Maybe you're the only one left..."
                           """;
                 break;
-            case "/game/player/chat":
-                Radio chat = new Radio(_db);
-                chat.GameMessage(res);
-                break;
             default:
                 answer += "You slip on a piece of leather, and suddenly a giant cockroach steals it\n";
                 break;
@@ -171,21 +147,17 @@ public class PostPuzzle
         SendResponse(res, answer);
     }
 
-    private static void SendResponse(HttpListenerResponse response, string content)
+    private void SendResponse(HttpListenerResponse res, string content)
     {
         byte[] buffer = Encoding.UTF8.GetBytes(content);
-        response.ContentType = "text/plain";
-        response.StatusCode = (int)HttpStatusCode.OK;
-
-        using (Stream output = response.OutputStream)
+        res.ContentType = "text/plain";
+        
+        using (Stream output = res.OutputStream)
         {
             output.Write(buffer, 0, buffer.Length);
         }
-        foreach (byte b in buffer)
-        {
-            response.OutputStream.WriteByte(b);
-        }
-        response.StatusCode = (int)HttpStatusCode.Created;
-        response.Close();
+        
+        res.StatusCode = (int)HttpStatusCode.OK;
+        res.Close();
     }
 }

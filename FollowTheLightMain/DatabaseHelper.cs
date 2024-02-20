@@ -61,7 +61,7 @@ public class DatabaseHelper
         //sl = storyline, s = storypoint
         for (int sl = 0; sl < filePaths.Length; sl++)
         {
-            // Load storypoints for each storyline
+          // Load storypoints for each storyline
             int minCount = Math.Min(titles.Length, filePaths[sl].Length);
             for (int s = 0; s < minCount; s++)
             {
@@ -145,7 +145,7 @@ public class DatabaseHelper
     
     public string GetStoryPointContent(int storyPointId)
     {
-        string content = "";
+        string content = string.Empty;
         try
         {
             var cmd = _db.CreateCommand("select content from storypoints where storypoint_id = $1");
@@ -181,5 +181,4 @@ public class DatabaseHelper
         }
         return image;
     }
-
 }
