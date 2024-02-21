@@ -37,6 +37,10 @@ public class Server
             case "GET":
                 switch (request.Url?.AbsolutePath)
                 {
+                    case "/game/player/message":
+                        radio.GameMessage(response);
+                        break;
+
                     case "/intro":
                         get.Intro(response);
                         break;
@@ -100,9 +104,6 @@ public class Server
                     case "/game/player2/10":
                         get.End(response);
                         break;
-                    case "/game/player/message":
-                        radio.GameMessage(response);
-                        break;
                     default:
                         NotFound(response);
                         break;
@@ -112,6 +113,19 @@ public class Server
             case "POST":
                 switch (request.Url?.AbsolutePath)
                 {
+                    case ("/player/register"):
+                        player.Register(request, response);
+                        break;
+                    case ("/player/status"):
+                        player.ViewStatus(request, response);
+                        break;
+                    case ("/player/1/chat"):
+                        radio.SendMessageOne(request, response);
+                        break;
+                    case ("/player/2/chat"):
+                        radio.SendMessageTwo(request, response);
+                        break;
+
                     case "/game/player/1":
                         post.GameOne(request, response);
                         break;
@@ -165,18 +179,6 @@ public class Server
                         break;
                     case "/game/player2/9":
                         postPuzzle.PuzzleThreeP2(request, response);
-                        break;
-                    case ("/player/register"):
-                        player.Register(request, response);
-                        break;
-                    case ("/player/status"):
-                        player.ViewStatus(request, response);
-                        break;
-                    case ("/player/1/chat"):
-                        radio.SendMessageOne(request, response);
-                        break;
-                    case ("/player/2/chat"):
-                        radio.SendMessageTwo(request, response);
                         break;
                     default:
                         NotFound(response);

@@ -11,14 +11,14 @@ public class DatabaseHelper
 
     public void ResetTables()
     {
-        Console.WriteLine("[ Tables: Resetting ]");
+        Console.WriteLine("\n--[          RESET           ]--");
         const string query = "drop schema public cascade; create schema public;";
         _db.CreateCommand(query).ExecuteNonQuery();
     }
 
     public void PopulateStoryPointIntro()
     {
-        Console.WriteLine("[ Populating table: 'storypoints' with the intro ]");
+        Console.WriteLine("--[          Intro           ]--");
         string intro = File.ReadAllText("FollowTheLightMain/sources/storylines/intro.txt");
         var cmd = _db.CreateCommand("insert into storypoints(title, content)" +
                                     "values ($1,$2)");
@@ -28,7 +28,7 @@ public class DatabaseHelper
     }
     public void PopulateStoryPointEnding()
     {
-        Console.WriteLine("[ Populating table: 'storypoints' with the end ]");
+        Console.WriteLine("--[           End            ]--");
         string end = File.ReadAllText("FollowTheLightMain/sources/storylines/end.txt");
         var cmd = _db.CreateCommand("insert into storypoints(title, content)" +
                                     "values ($1,$2)");
@@ -38,7 +38,7 @@ public class DatabaseHelper
     }
     public void PopulateStoryPointsTable()
     {
-        Console.WriteLine("[ Populating table: 'storypoints' ]");
+        Console.WriteLine("--[          Scenes          ]--");
 
         string[] titles = {
             "Story One", "Story Two", "Story Three",
@@ -84,7 +84,7 @@ public class DatabaseHelper
 
     public void PopulatePuzzlesText()
     {
-        Console.WriteLine("[ Populating table: 'storypoints' with puzzles ]");
+        Console.WriteLine("\n--[          Puzzles         ]--");
         
         string puzzle1 = File.ReadAllText("FollowTheLightMain/sources/storylines/puzzles-text/stepstonesp1.txt");
         string puzzle1P2 = File.ReadAllText("FollowTheLightMain/sources/storylines/puzzles-text/stepstonesp2.txt");
@@ -112,7 +112,7 @@ public class DatabaseHelper
     }
     public void PopulateImagesTable()
     {
-        Console.WriteLine("[ Populating table: 'images' ]\n\n");
+        Console.WriteLine("--[          Images          ]--");
 
         string[] filePaths = {
             "FollowTheLightMain/sources/images/jumpscares/js1.txt",

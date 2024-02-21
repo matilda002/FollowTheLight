@@ -12,8 +12,8 @@ dbHelper.ResetTables();
 dbCreator.CreateTables();
 
 dbHelper.PopulateStoryPointIntro();
-dbHelper.PopulateStoryPointEnding();
 dbHelper.PopulateStoryPointsTable();
+dbHelper.PopulateStoryPointEnding();
 
 dbHelper.PopulatePuzzlesText();
 dbHelper.PopulateImagesTable();

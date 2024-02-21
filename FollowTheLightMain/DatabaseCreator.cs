@@ -11,7 +11,7 @@ public class DatabaseCreator
 
     public void CreateTables()
     {
-        Console.WriteLine("[ Tables: Creating ]\n");
+        Console.WriteLine("--[      CREATE TABLES       ]--\n");
 
         const string imagesTable = @"create table if not exists images(
             image_id serial primary key,
