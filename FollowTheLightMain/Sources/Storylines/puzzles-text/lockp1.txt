@@ -1,0 +1,9 @@
+
+You're met by a door with a lock on it, 
+and next to door there's the key in a safe. 
+To unlock it you need a combination of three numbers. 
+
+You search around with no luck finding clues more than a letter saying:
+
+"Contact the other side for the answer,
+Once you receive the answer, tell them to ENTER"
