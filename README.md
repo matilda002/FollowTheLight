@@ -6,4 +6,3 @@
 <p align="center">Irina     ->   Irinapreo</p>
 <p align="center">Paulina      ->   paufer2337</p>
 <p align="center">Lilly      ->   lwcsharp</p>
-<p align="center">Ali      ->   Alikhanxx</p>
