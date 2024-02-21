@@ -1,5 +1,9 @@
-﻿Deeper in the damp dungeon you now face a towering wall that looms over you. 
-You notice the wall is coated with a slimy substance leaking out from some cracks. Seems like there are some symbols further up the wall, they glow with a sinister light and whisper dark secrets.
+﻿
+Deeper in the damp dungeon you now face a towering wall that looms over you. 
+You notice the wall is coated with a slimy substance leaking out from some cracks. 
+Seems like there are some symbols further up the wall, 
+they glow with a sinister light and whisper dark secrets.
+
 What’s your choice?
 
 A) You take the ladder with missing steps. Maybe you’ll find a way to balance and reach the top.

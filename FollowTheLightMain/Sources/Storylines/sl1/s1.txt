@@ -1,5 +1,9 @@
-﻿In the dark, you find matches. Lighting one reveals a cave with paths on your right and left. 
+﻿
+In the dark, you find matches. 
+Lighting one reveals a cave with paths on your right and left. 
+
 Where to? Right or left? 
+
 Your story starts with a spark in the shadows and you feel fear creeping up..
 
 A) You go right. Maybe there’s something interesting there.

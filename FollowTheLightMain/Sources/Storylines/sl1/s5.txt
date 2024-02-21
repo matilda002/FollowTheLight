@@ -1,5 +1,7 @@
-﻿A sudden collapse blocks your way with narrow light streaming in from the 
-other side of the stones. 
+﻿
+A sudden collapse blocks your way with narrow light streaming in, 
+from the other side of the stones. 
+
 Quick, what’s your next move? 
 What's your move?
 
