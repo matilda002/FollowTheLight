@@ -8,13 +8,14 @@ public class Radio
 {
     private readonly NpgsqlDataSource _db;
 
+    public string dbUri = "Host=localhost;Port=5455;Username=postgres;Password=postgres;Database=followthelightdb;";
+
     public Radio(NpgsqlDataSource db)
     {
         _db = db;
     }
     public void GameMessage(HttpListenerResponse response)
     {
-        const string dbUri = "Host=localhost;Port=5455;Username=postgres;Password=postgres;Database=followthelightdb;";
         using (var connection = new NpgsqlConnection(dbUri))
         {
 
@@ -48,7 +49,6 @@ public class Radio
 
     public void SendMessageOne(HttpListenerRequest req, HttpListenerResponse res)
     {
-        const string dbUri = "Host=localhost;Port=5455;Username=postgres;Password=postgres;Database=followthelightdb;";
         using (var connection = new NpgsqlConnection(dbUri))
         {
             try
@@ -95,7 +95,6 @@ public class Radio
 
     public void SendMessageTwo(HttpListenerRequest req, HttpListenerResponse res)
     {
-        const string dbUri = "Host=localhost;Port=5455;Username=postgres;Password=postgres;Database=followthelightdb;";
         using (var connection = new NpgsqlConnection(dbUri))
         {
             try
