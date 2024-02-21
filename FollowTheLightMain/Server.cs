@@ -37,7 +37,7 @@ public class Server
             case "GET":
                 switch (request.Url?.AbsolutePath)
                 {
-                    case "/game/player/chat":
+                    case "/chat":
                         radio.GameMessage(response);
                         break;
 
@@ -113,13 +113,13 @@ public class Server
             case "POST":
                 switch (request.Url?.AbsolutePath)
                 {
-                    case ("/player/register"):
+                    case "/register":
                         player.Register(request, response);
                         break;
-                    case ("/player/1/chat"):
+                    case "/player/1/chat":
                         radio.SendMessageOne(request, response);
                         break;
-                    case ("/player/2/chat"):
+                    case "/player/2/chat":
                         radio.SendMessageTwo(request, response);
                         break;
 

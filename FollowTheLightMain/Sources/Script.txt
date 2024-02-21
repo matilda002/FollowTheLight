@@ -1,7 +1,7 @@
 ﻿-------------------------------------------------------------------------------------------------
 PLAYER 1:
 -------------------------------------------------------------------------------------------------
-curl localhost:3000/player/register -d <username> 
+curl localhost:3000/register -d <username> 
 
 curl localhost:3000/intro
 
@@ -58,7 +58,7 @@ curl localhost:3000/game/player/10 -d <choice>
 -------------------------------------------------------------------------------------------------
 PLAYER 2:
 -------------------------------------------------------------------------------------------------
-curl localhost:3000/player/register -d <username>
+curl localhost:3000/register -d <username>
 
 curl localhost:3000/intro 
 
