@@ -153,6 +153,9 @@ public class Server
                     case "/game/player/9":
                         postPuzzle.PuzzleThreeP1(request, response);
                         break;
+                    case "/game/player/10":
+                        get.End(response);
+                        break;
                     case "/game/player2/1":
                         post.GameSeven(request, response);
                         break;
@@ -180,6 +183,9 @@ public class Server
                     case "/game/player2/9":
                         postPuzzle.PuzzleThreeP2(request, response);
                         break;
+                    case "/game/player2/10":
+                        get.End(response);
+                        break;      
                     default:
                         NotFound(response);
                         break;

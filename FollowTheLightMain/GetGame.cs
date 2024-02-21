@@ -33,7 +33,7 @@ public class GetGame
     }
     public void End(HttpListenerResponse response)
     {
-        string result = _dbHelper.GetStoryPointContent(20);
+        string result = _dbHelper.GetStoryPointContent(14);
         SendResponse(response, result);
     }
     
@@ -101,37 +101,37 @@ public class GetGame
     
     public void PuzzleOneP1(HttpListenerResponse response)
     {
-        string result = _dbHelper.GetStoryPointContent(14);
+        string result = _dbHelper.GetStoryPointContent(15);
         string resultImg = _dbHelper.GetImgContent(10);
         SendResponse(response, result + resultImg);
     }
     public void PuzzleTwoP1(HttpListenerResponse response)
     {
-        string result = _dbHelper.GetStoryPointContent(16);
+        string result = _dbHelper.GetStoryPointContent(17);
         string resultImg = _dbHelper.GetImgContent(11);
         SendResponse(response, result + resultImg);
     }
     public void PuzzleThreeP1(HttpListenerResponse response)
     {
-        string result = _dbHelper.GetStoryPointContent(18);
+        string result = _dbHelper.GetStoryPointContent(19);
         string resultImg = _dbHelper.GetImgContent(13);
         SendResponse(response, result + resultImg);
     }
     public void PuzzleOneP2(HttpListenerResponse response)
     {
-        string result = _dbHelper.GetStoryPointContent(15);
+        string result = _dbHelper.GetStoryPointContent(16);
         string resultImg = _dbHelper.GetImgContent(9);
         SendResponse(response, result + resultImg);
     }
     public void PuzzleTwoP2(HttpListenerResponse response)
     {
-        string result = _dbHelper.GetStoryPointContent(17);
+        string result = _dbHelper.GetStoryPointContent(18);
         string resultImg = _dbHelper.GetImgContent(12);
         SendResponse(response, result + resultImg);
     }
     public void PuzzleThreeP2(HttpListenerResponse response)
     {
-        string result = _dbHelper.GetStoryPointContent(19);
+        string result = _dbHelper.GetStoryPointContent(20);
         string resultImg = _dbHelper.GetImgContent(14);
         SendResponse(response, result + resultImg);
     } 
