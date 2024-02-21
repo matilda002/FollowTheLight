@@ -219,19 +219,18 @@ public class PostGame
         {
             case "a":
                 answer +=
-                    "\nOption A chosen in the first scenario. Taking a closer look, you see the corpse has been mutilated and eaten by something. \nThere is a note on the corpse’s chest pocket. The note has written “Beware of the red frog. It is poisonous but poking it will make it go away”.. Maybe the other player can use it to a public void the dangers that might unfold. \n";
+                    "\nOption A chosen in the first scenario. As you go right, you see\nthe walls are wet and covered with blood. The reflection of the\nlight and walls makes you notice a message on the lantern. It has\nsomething scratched on it. A small message saying “nature provides\nclues”. The other player shouldn't burn/get rid of the paper clue.\n";
                 break;
             case "b":
                 answer +=
-                    "\nYou chose option B in the first scenario. The cave's darkness seems to thicken around you, \nshadows lurking at every turn, each step echoing with bone-chilling uncertainty.\n";
+                    "\nYou chose option B in the first scenario. The cave's darkness\nseems to thicken around you, shadows lurking at every turn, each\nstep echoing with bone-chilling uncertainty\n";
                 break;
             case "c":
                 answer +=
-                    "\nOption C chosen in the first scenario. You disturb a swarm of flesh-eating insects that attack you. \nYou lose a health point.\n";
+                    "\nOption C chosen in the first scenario. A monstrous spider lands on\nyour back and you feel a sharp pain in your back. \n";
                 break;
             case "d":
-                answer +=
-                    "\nOption D chosen in the first scenario. You trip over a wire and trigger a trap that shoots arrows made of human bones at you. \nYou lose a health point. \n";
+                answer += "\nOption D chosen in the first scenario. You stumble in the dark and\nfall into a pit of spikes. \n";
                 break;
             default:
                 answer += "\nInvalid choice.\n";
@@ -249,18 +248,19 @@ public class PostGame
         {
             case "a":
                 answer +=
-                    "\nOption A chosen in the second scenario. The spider seems pleased with the scratches and purrs softly. \nIt pulls a string on the web which opens a secret passage to continue. passing the spider it screeches and whispers “If it can not hear you, it can not see you” before disappearing into the depth. \n";
+                    "\nOption A chosen in the second scenario. Taking a closer look, you see the corpse has been mutilated and eaten by something. \nThere is a note on the corpse’s chest pocket. The note has written “Beware of the red frog. It is poisonous but poking it will make it go away”.. Maybe the other player can use it to a public void the dangers that might unfold. \n";
                 break;
             case "b":
                 answer +=
-                    "\nYou chose option B in the second scenario. The spider gets angry and spits venom at you. \nYou lose a health point.\n";
+                    "\nYou chose option B in the second scenario. The cave's darkness seems to thicken around you, \nshadows lurking at every turn, each step echoing with bone-chilling uncertainty.\n";
                 break;
             case "c":
                 answer +=
-                    "\nOption C chosen in the second scenario. The spider ignores you and wraps you in its web. \nYou lose a health point.\n";
+                    "\nOption C chosen in the second scenario. You disturb a swarm of flesh-eating insects that attack you. \nYou lose a health point.\n";
                 break;
             case "d":
-                answer += "\nOption D chosen in the second scenario. As you venture deeper into the cave, the shadows seem to come alive, \nwhispers of unseen terrors sending a chill down your spine with every passing moment.\n";
+                answer +=
+                    "\nOption D chosen in the second scenario. You trip over a wire and trigger a trap that shoots arrows made of human bones at you. \nYou lose a health point. \n";
                 break;
             default:
                 answer += "\nInvalid choice.\n";
@@ -277,19 +277,19 @@ public class PostGame
         switch (body)
         {
             case "a":
-                answer += "\nOption A chosen in the third scenario.  In the cave's depths, bone-chilling whispers echo off the walls, \nthe darkness concealing lurking horrors that send your heart racing with fear.\n";
+                answer +=
+                    "\nOption A chosen in the third scenario. The spider seems pleased with the scratches and purrs softly. \nIt pulls a string on the web which opens a secret passage to continue. passing the spider it screeches and whispers “If it can not hear you, it can not see you” before disappearing into the depth. \n";
                 break;
             case "b":
                 answer +=
-                    "\nYou chose option B in the third scenario. You hide behind a pile of bones and see a shadowy figure pass by. \nIt looks like a tall repulsing creature with horns and a wretched tail. You notice a ladder engraved on his back.\n";
+                    "\nYou chose option B in the third scenario. The spider gets angry and spits venom at you. \nYou lose a health point.\n";
                 break;
             case "c":
                 answer +=
-                    "\nOption C chosen in the third scenario. You provoke the creature and it attacks you. \nYou lose a health point.\n";
+                    "\nOption C chosen in the third scenario. The spider ignores you and wraps you in its web. \nYou lose a health point.\n";
                 break;
             case "d":
-                answer +=
-                    "\nOption D chosen in the third scenario. You get too close to the creature and it bites you. \nYou lose a health point.\n";
+                answer += "\nOption D chosen in the third scenario. As you venture deeper into the cave, the shadows seem to come alive, \nwhispers of unseen terrors sending a chill down your spine with every passing moment.\n";
                 break;
             default:
                 answer += "\nInvalid choice.\n";
@@ -306,27 +306,27 @@ public class PostGame
         switch (body)
         {
             case "a":
-                answer +=
-                    "\nOption A chosen in the fourth scenario. The raft is sturdy despite looking half done and takes you safely \nto the other side where you spot a withered sign saying: “Stop running and Follow The Light”... \n";
+                answer += "\nOption A chosen in the fourth scenario.  In the cave's depths, bone-chilling whispers echo off the walls, \nthe darkness concealing lurking horrors that send your heart racing with fear.\n";
                 break;
             case "b":
                 answer +=
-                    "\nYou chose option B in the fourth scenario. Embarking the boat you notice little too late that it has holes. \nThe boat starts to leak and sink rapidly. You try to swim back to the shore, but you feel something grab your leg and pull you down. You scream, but no one can hear you as you get washed up ashore again. \n";
+                    "\nYou chose option B in the fourth scenario. You hide behind a pile of bones and see a shadowy figure pass by. \nIt looks like a tall repulsing creature with horns and a wretched tail. You notice a ladder engraved on his back.\n";
                 break;
             case "c":
                 answer +=
-                    "\nOption C chosen in the fourth scenario. Swept away by the current, you hit your head on a rock and almost lose consciousness. \nYou lose a health point. You wake up back on the shore.\n";
+                    "\nOption C chosen in the fourth scenario. You provoke the creature and it attacks you. \nYou lose a health point.\n";
                 break;
             case "d":
                 answer +=
-                    "\nOption D chosen in the fourth scenario. The waterfall is not a gentle shower, but a raging torrent. \nIt slams you against the rocks and pushes you back to the shore. You are bruised, battered, and soaked. \nYou lose a health point and your dignity. That was stupid.\n";
+                    "\nOption D chosen in the fourth scenario. You get too close to the creature and it bites you. \nYou lose a health point.\n";
                 break;
             default:
-                answer += "Invalid choice.\n";
+                answer += "\nInvalid choice.\n";
                 break;
         }
         SendResponse(res, answer);
     }
+    
     public void GameEleven(HttpListenerRequest req, HttpListenerResponse res)
     {
         StreamReader reader = new StreamReader(req.InputStream, req.ContentEncoding);
@@ -337,25 +337,27 @@ public class PostGame
         {
             case "a":
                 answer +=
-                    "\nOption A chosen in the fifth scenario. By quietly standing still, the danger does not sense your presence. \nWhen passing you, it is sinisterly almost inaudible repeating “Honor the Gods, Honor the Gods…” \n";
+                    "\nOption A chosen in the fifth scenario. The raft is sturdy despite looking half done and takes you safely \nto the other side where you spot a withered sign saying: “Stop running and Follow The Light”... \n";
                 break;
             case "b":
                 answer +=
-                    "\nYou chose option B in the fifth scenario. You trip over a skull and fall to the ground. \nThe figure catches up to you and slashes you with its claws. You lose a health point.\n";
+                    "\nYou chose option B in the fifth scenario. Embarking the boat you notice little too late that it has holes. \nThe boat starts to leak and sink rapidly. You try to swim back to the shore, but you feel something grab your leg and pull you down. You scream, but no one can hear you as you get washed up ashore again. \n";
                 break;
             case "c":
                 answer +=
-                    "\nOption C chosen in the fifth scenario. You grab a bone and swing it at the figure. \nIt breaks the bone and grabs you by the neck and mangle you. [ YOU DIED ] \n";
+                    "\nOption C chosen in the fifth scenario. Swept away by the current, you hit your head on a rock and almost lose consciousness. \nYou lose a health point. You wake up back on the shore.\n";
                 break;
             case "d":
-                answer += "\nOption D chosen in the fifth scenario. The deeper you go into the cave, the more the shadows seem to \nclose in around you, suffocating and oppressive, their presence a constant reminder of the lurking danger that surrounds you.\n";
+                answer +=
+                    "\nOption D chosen in the fifth scenario. The waterfall is not a gentle shower, but a raging torrent. \nIt slams you against the rocks and pushes you back to the shore. You are bruised, battered, and soaked. \nYou lose a health point and your dignity. That was stupid.\n";
                 break;
             default:
-                answer += "\nInvalid choice.\n";
+                answer += "Invalid choice.\n";
                 break;
         }
         SendResponse(res, answer);
     }
+    
     public void GameTwelve(HttpListenerRequest req, HttpListenerResponse res) 
     {
         StreamReader reader = new StreamReader(req.InputStream, req.ContentEncoding);
