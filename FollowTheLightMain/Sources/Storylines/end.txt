@@ -1,3 +1,6 @@
 ﻿You’ve found the exit, but desperate screams plead for rescue within the 
 cave. What’s your choice now? Leave or venture back into the darkness 
 to investigate?
+
+A) Leave
+B) Go back
