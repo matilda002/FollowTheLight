@@ -14,9 +14,18 @@ dbCreator.CreateTables();
 dbHelper.PopulateStoryPointIntro();
 dbHelper.PopulateStoryPointsTable();
 dbHelper.PopulateStoryPointEnding();
-
 dbHelper.PopulatePuzzlesText();
 dbHelper.PopulateImagesTable();
+
+Console.WriteLine(@"
+ ________       __   __                         _   __               _____      _         __       _                
+|_   __  |     [  | [  |                       / |_[  |             |_   _|    (_)       [  |     / |_              
+  | |_ \_|.--.  | |  | |  .--.   _   _   __   `| |-'| |--.  .---.     | |      __   .--./)| |--. `| |-'             
+  |  _| / .'`\ \| |  | |/ .'`\ \[ \ [ \ [  ]   | |  | .-. |/ /__\\    | |   _ [  | / /'`\;| .-. | | |               
+ _| |_  | \__. || |  | || \__. | \ \/\ \/ /    | |, | | | || \__.,   _| |__/ | | | \ \._//| | | | | |,   _   _   _  
+|_____|  '.__.'[___][___]'.__.'   \__/\__/     \__/[___]|__]'.__.'  |________|[___].',__`[___]|__]\__/  (_) (_) (_) 
+                                                                                 ( ( __))                           ");
+Console.WriteLine(@"Follow the clues masked in whispers of terror, and uncover the chilling secrets that lurk in the darkness to get out");
 
 bool listen = true;
 int port = 3000;
@@ -42,3 +51,4 @@ finally
 {
     listener.Stop();
 }
+
