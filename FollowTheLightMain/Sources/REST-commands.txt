@@ -26,4 +26,3 @@ curl localhost:3000/game/player/1 -d <choice>
 
 Player Two:
 curl localhost:3000/game/player2/1 -d <choice>
-
