@@ -1,0 +1,113 @@
+﻿-------------------------------------------------------------------------------------------------
+PLAYER 1:
+-------------------------------------------------------------------------------------------------
+curl localhost:3000/player/register -d <username> 
+
+curl localhost:3000/intro
+
+curl localhost:3000/game/player/1 
+curl localhost:3000/game/player/1 -d <choice> 
+
+
+curl localhost:3000/game/player/2 -s
+curl localhost:3000/game/player/2 -d <choice> 
+
+
+curl -X GET localhost:3000/game/player/3 
+curl localhost:3000/game/player/3 -d <choice> 
+
+curl localhost:3000/player/1/chat -d "I got a clue!"
+curl localhost: 3000/game/player/chat
+
+
+curl localhost:3000/game/player/4
+curl localhost:3000/game/player/4 -d <choice>
+
+
+curl localhost:3000/game/player/5
+curl localhost:3000/game/player/5 -d <choice>
+
+
+curl localhost:3000/player/status -d <username>
+
+
+curl localhost:3000/game/player/6
+curl localhost:3000/game/player/6 -d <choice>
+
+
+curl localhost:3000/game/player/7
+curl localhost:3000/game/player/7 -d <choice>
+
+
+curl localhost:3000/player/1/chat -d "Where are you my friend?"
+curl localhost: 3000/game/player/chat
+
+
+curl localhost:3000/game/player/8
+curl localhost:3000/game/player/8 -d <choice>
+
+
+curl localhost:3000/game/player/9
+curl localhost:3000/game/player/9 -d <choice>
+
+
+curl localhost:3000/game/player/10
+curl localhost:3000/game/player/10 -d <choice>
+
+
+-------------------------------------------------------------------------------------------------
+PLAYER 2:
+-------------------------------------------------------------------------------------------------
+curl localhost:3000/player/register -d <username>
+
+curl localhost:3000/intro 
+
+curl localhost:3000/game/player2/1
+curl localhost:3000/game/player2/1 -d <choice>
+
+
+curl localhost:3000/game/player2/2
+curl localhost:3000/game/player2/2 -d <choice>
+
+
+curl localhost:3000/player/2/chat -d "We need to get out!"
+curl localhost: 3000/game/player/chat
+
+
+curl localhost:3000/game/player2/3
+curl localhost:3000/game/player2/3 -d <choice>
+
+
+curl localhost:3000/game/player2/4
+curl localhost:3000/game/player2/4 -d <choice>
+
+
+curl localhost:3000/player/status -d <username>
+
+
+curl localhost:3000/game/player2/5
+curl localhost:3000/game/player2/5 -d <choice>
+
+
+curl localhost:3000/game/player2/6 -s
+curl localhost:3000/game/player2/6 -d <choice>
+
+
+curl localhost:3000/game/player2/7
+curl localhost:3000/game/player2/7 -d <choice>
+
+
+curl localhost:3000/player/2/chat -d "Are we near the exit?"
+curl localhost: 3000/game/player/chat
+
+
+curl localhost:3000/game/player2/8
+curl localhost:3000/game/player2/8 -d <choice>
+
+
+curl localhost:3000/game/player2/9
+curl localhost:3000/game/player2/9 -d <choice>
+
+
+curl localhost:3000/game/player2/10
+curl localhost:3000/game/player2/10 -d <choice>

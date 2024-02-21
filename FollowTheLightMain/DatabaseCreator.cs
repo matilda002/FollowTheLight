@@ -29,7 +29,6 @@ public class DatabaseCreator
         const string playersTable = @"create table if not exists players(
             player_id serial primary key,
             username text,
-            current_storypoint int default (1) references storypoints(storypoint_id),
             unique(username)
         )";
         _db.CreateCommand(playersTable).ExecuteNonQuery();

@@ -1,9 +1,16 @@
 ﻿using System.Net;
 using System.Text;
+using Npgsql;
 namespace FollowTheLightMain;
 
 public class PostGame
 {
+    private readonly DatabaseHelper _dbHelper; 
+    public PostGame(NpgsqlDataSource db) 
+    {
+        _dbHelper = new(db);
+    }
+    
     private void SendResponse(HttpListenerResponse response, string content)
     {
         byte[] buffer = Encoding.UTF8.GetBytes(content);
@@ -373,6 +380,36 @@ public class PostGame
                 break;
             default:
                 answer += "Invalid choice.\n";
+                break;
+        }
+        SendResponse(res, answer);
+    }
+    
+    public void Ending(HttpListenerRequest req, HttpListenerResponse res)
+    {
+        StreamReader reader = new StreamReader(req.InputStream, req.ContentEncoding);
+        string body = reader.ReadToEnd().ToLower();
+        string answer = string.Empty;
+        string resultImg = _dbHelper.GetImgContent(6);
+
+
+        switch (body)
+        {
+            case "a":
+                answer +=
+                    "You successfully left the cave, leaving the screams behind. You were never alone after all...\n";
+                break;
+            case "b":
+                answer += """
+                          You follow the screams, but as you get closer the screams get less human-like.
+                          Maybe this weren't screams for help, then you see a light in the distance. Looks like a
+                          light from a lantern. As you get close a big human-like creature appears and snatches you...
+                          It's hungry, and ready to eat you!
+                          """;
+                answer += $"{resultImg}";
+                break;
+            default:
+                answer += "Invalid choice in the first scenario.\n";
                 break;
         }
         SendResponse(res, answer);
