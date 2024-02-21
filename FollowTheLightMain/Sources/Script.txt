@@ -17,7 +17,7 @@ curl -X GET localhost:3000/game/player/3
 curl localhost:3000/game/player/3 -d <choice> 
 
 curl localhost:3000/player/1/chat -d "I got a clue!"
-curl localhost: 3000/game/player/chat
+curl localhost: 3000/chat
 
 
 curl localhost:3000/game/player/4
@@ -40,7 +40,7 @@ curl localhost:3000/game/player/7 -d <choice>
 
 
 curl localhost:3000/player/1/chat -d "Where are you my friend?"
-curl localhost: 3000/game/player/chat
+curl localhost: 3000/chat
 
 
 curl localhost:3000/game/player/8
@@ -71,7 +71,7 @@ curl localhost:3000/game/player2/2 -d <choice>
 
 
 curl localhost:3000/player/2/chat -d "We need to get out!"
-curl localhost: 3000/game/player/chat
+curl localhost: 3000/chat
 
 
 curl localhost:3000/game/player2/3
@@ -98,7 +98,7 @@ curl localhost:3000/game/player2/7 -d <choice>
 
 
 curl localhost:3000/player/2/chat -d "Are we near the exit?"
-curl localhost: 3000/game/player/chat
+curl localhost: 3000/chat
 
 
 curl localhost:3000/game/player2/8
