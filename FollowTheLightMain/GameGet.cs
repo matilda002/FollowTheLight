@@ -19,12 +19,12 @@ public class GameGet
         StreamReader reader1 = new StreamReader(request.InputStream, request.ContentEncoding);
         string username = reader1.ReadToEnd().ToLower();
         
-        string query = @"UPDATE players SET hp = hp - (select effect 
+        string queryHpUpdate = @"UPDATE players SET hp = hp - (select effect 
         from player_paths where choice = @2 AND username = @1),
             storypoint_id = (SELECT to_point FROM player_paths WHERE choice = @2 AND username = @1)
         WHERE username = @1;
         SELECT content FROM player_paths WHERE choice = @2 AND username = @1;";
-        var updateCmd = _db.CreateCommand(query);
+        var updateCmd = _db.CreateCommand(queryHpUpdate);
         updateCmd.Parameters.AddWithValue("@1", username);
         updateCmd.Parameters.AddWithValue("@2", "CONTINUE");
         
