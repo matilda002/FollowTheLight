@@ -1,9 +1,16 @@
 ﻿using System.Net;
 using System.Text;
+using Npgsql;
 namespace FollowTheLightMain;
 
 public class PostGame
 {
+    private readonly DatabaseHelper _dbHelper; 
+    public PostGame(NpgsqlDataSource db) 
+    {
+        _dbHelper = new(db);
+    }
+    
     private void SendResponse(HttpListenerResponse response, string content)
     {
         byte[] buffer = Encoding.UTF8.GetBytes(content);
@@ -32,7 +39,8 @@ public class PostGame
                     "Option A chosen in the first scenario. You found a torch and noticed that the cave wall has “Fear not the dead” written creepily in blood.\n";
                 break;
             case "b":
-                answer += "You chose option B in the first scenario.\n";
+                answer += 
+                    "You chose option B in the first scenario. The cave's darkness seems to thicken around you, shadows lurking at every turn, each step echoing with bone-chilling uncertainty.\n";
                 break;
             case "c":
                 answer +=
@@ -43,7 +51,7 @@ public class PostGame
                     "Option D chosen in the first scenario. You waste a match and attract unwanted attention. You lose a health point.\n";
                 break;
             default:
-                answer += "Invalid choice in the first scenario.\n";
+                answer += "Invalid choice.\n";
                 break;
         }
         SendResponse(res, answer);
@@ -61,7 +69,8 @@ public class PostGame
                     "Option A chosen in the second scenario. The paper has a drawing of a spider and a note. Maybe the other player can use it, the note has written “Webby loves leg scratches”.\r\n\n";
                 break;
             case "b":
-                answer += "You chose option B in the second scenario.\n";
+                answer += 
+                    "You chose option B in the second scenario. As you venture deeper into the cave, the shadows seem to come alive, whispers of unseen terrors sending a chill down your spine with every passing moment.\n";
                 break;
             case "c":
                 answer +=
@@ -72,7 +81,7 @@ public class PostGame
                     "Option D chosen in the second scenario. You choke on the paper, stupid. You lose a health point.\n";
                 break;
             default:
-                answer += "Invalid choice in Game One.\n";
+                answer += "Invalid choice.\n";
                 break;
         }
 
@@ -95,7 +104,7 @@ public class PostGame
                     "You chose option B in the third scenario. The frog is disgusted and bites your lip, and you get poisoned by the bite. You lose a health point.\n";
                 break;
             case "c":
-                answer += "Option C chosen in the third scenario.\n";
+                answer += "Option C chosen in the third scenario.  In the cave's depths, bone-chilling whispers echo off the walls, the darkness concealing lurking horrors that send your heart racing with fear.\n";
                 break;
             case "d":
                 answer +=
@@ -103,7 +112,7 @@ public class PostGame
                 break;
            
             default:
-                answer += "Invalid choice in Game One.\n";
+                answer += "Invalid choice.\n";
                 break;
         }
         SendResponse(res, answer);
@@ -134,7 +143,7 @@ public class PostGame
                     "Option D chosen in the forth scenario. You look around for another way. Maybe you’ll discover a hidden passage or a secret door. \n";
                 break;
             default:
-                answer += "Invalid choice in Game One.\n";
+                answer += "Invalid choice.\n";
                 break;
         }
         SendResponse(res, answer);
@@ -152,7 +161,8 @@ public class PostGame
                     "Option A chosen in the fifth scenario. Removing some stones reveals a hidden passage. You see a faint light at the end of it.\n";
                 break;
             case "b":
-                answer += "You chose option B in the fifth scenario. \n";
+                answer +=
+                    "You chose option B in the fifth scenario. In the oppressive darkness of the cave, unseen horrors lurk just beyond the reach of your feeble light, their presence felt in the chill that grips your heart.\n";
                 break;
             case "c":
                 answer +=
@@ -163,7 +173,7 @@ public class PostGame
                     "Option D chosen in the fifth scenario.  You hear a hissing sound and realize the stones are now covered with snakes. You lose a health point.\n";
                 break;
             default:
-                answer += "Invalid choice in Game One.\n";
+                answer += "Invalid choice.\n";
                 break;
         }
         SendResponse(res, answer);
@@ -189,10 +199,11 @@ public class PostGame
                     "Option C chosen in the sixth scenario. You grab a bone and swing it at the figure. It breaks the bone and grabs you by the neck and mangle you. [ YOU DIED ] \n";
                 break;
             case "d":
-                answer += "Option D chosen in the sixth scenario. You go back to previous scenario. \n";
+                answer += 
+                    "Option D chosen in the sixth scenario. Amidst the darkness of the cave, shadows seem to coil around you, their presence invoking a primal sense of fear as you tread cautiously forward. \n";
                 break;
             default:
-                answer += "Invalid choice in Game One.\n";
+                answer += "Invalid choice.\n";
                 break;
         }
         SendResponse(res, answer);
@@ -210,7 +221,8 @@ public class PostGame
                     "Option A chosen in the first scenario. Taking a closer look, you see the corpse has been mutilated and eaten by something. There is a note on the corpse’s chest pocket. The note has written “Beware of the red frog. It is poisonous but poking it will make it go away”.. Maybe the other player can use it to a public void the dangers that might unfold. \n";
                 break;
             case "b":
-                answer += "You chose option B in the first scenario.\n";
+                answer += 
+                    "You chose option B in the first scenario. The cave's darkness seems to thicken around you, shadows lurking at every turn, each step echoing with bone-chilling uncertainty.\n";
                 break;
             case "c":
                 answer +=
@@ -221,7 +233,7 @@ public class PostGame
                     "Option D chosen in the first scenario. You trip over a wire and trigger a trap that shoots arrows made of human bones at you. You lose a health point. \n";
                 break;
             default:
-                answer += "Invalid choice in Game One.\n";
+                answer += "Invalid choice.\n";
                 break;
         }
         SendResponse(res, answer);
@@ -247,10 +259,10 @@ public class PostGame
                     "Option C chosen in the second scenario. The spider ignores you and wraps you in its web. You lose a health point.\n";
                 break;
             case "d":
-                answer += "Option D chosen in the second scenario. \n";
+                answer += "Option D chosen in the second scenario. As you venture deeper into the cave, the shadows seem to come alive, whispers of unseen terrors sending a chill down your spine with every passing moment.\n";
                 break;
             default:
-                answer += "Invalid choice in Game One.\n";
+                answer += "Invalid choice.\n";
                 break;
         }
         SendResponse(res, answer);
@@ -264,7 +276,7 @@ public class PostGame
         switch (body)
         {
             case "a":
-                answer += "Option A chosen in the third scenario. \n";
+                answer += "Option A chosen in the third scenario.  In the cave's depths, bone-chilling whispers echo off the walls, the darkness concealing lurking horrors that send your heart racing with fear.\n";
                 break;
             case "b":
                 answer +=
@@ -279,7 +291,7 @@ public class PostGame
                     "Option D chosen in the third scenario. You get too close to the creature and it bites you. You lose a health point.\r\n\n";
                 break;
             default:
-                answer += "Invalid choice in Game One.\n";
+                answer += "Invalid choice.\n";
                 break;
         }
         SendResponse(res, answer);
@@ -298,7 +310,7 @@ public class PostGame
                 break;
             case "b":
                 answer +=
-                    "You chose option B in the fourth scenario. Embarking the boat you notice little too late that it has holes. The boat starts to leak and sink rapidly. You try to swim back to the shore, but you feel something grab your leg and pull you down. You scream, but no one can hear you. You drowned. [ YOU DIED ] \n";
+                    "You chose option B in the fourth scenario. Embarking the boat you notice little too late that it has holes. The boat starts to leak and sink rapidly. You try to swim back to the shore, but you feel something grab your leg and pull you down. You scream, but no one can hear you as you get washed up ashore again. \n";
                 break;
             case "c":
                 answer +=
@@ -309,7 +321,7 @@ public class PostGame
                     "Option D chosen in the fourth scenario. The waterfall is not a gentle shower, but a raging torrent. It slams you against the rocks and pushes you back to the shore. You are bruised, battered, and soaked. You lose a health point and your dignity. That was stupid.\n";
                 break;
             default:
-                answer += "Invalid choice in Game One.\n";
+                answer += "Invalid choice.\n";
                 break;
         }
         SendResponse(res, answer);
@@ -335,10 +347,10 @@ public class PostGame
                     "Option C chosen in the fifth scenario. You grab a bone and swing it at the figure. It breaks the bone and grabs you by the neck and mangle you. [ YOU DIED ] \n";
                 break;
             case "d":
-                answer += "Option D chosen in the fifth scenario. \n";
+                answer += "Option D chosen in the fifth scenario. he deeper you go into the cave, the more the shadows seem to close in around you, suffocating and oppressive, their presence a constant reminder of the lurking danger that surrounds you.\n";
                 break;
             default:
-                answer += "Invalid choice in Game One.\n";
+                answer += "Invalid choice.\n";
                 break;
         }
         SendResponse(res, answer);
@@ -364,10 +376,40 @@ public class PostGame
                     "Option C chosen in the sixth scenario. Ah yes, you have angered the Gods. You feel a excruciating pain around your hand and drop the candle. You lose a health point.\n";
                 break;
             case "d":
-                answer += "Option D chosen in the sixth scenario. \n";
+                answer += "Option D chosen in the sixth scenario. Amidst the darkness of the cave, shadows seem to coil around you, their presence invoking a primal sense of fear as you tread cautiously forward.\n";
                 break;
             default:
-                answer += "Invalid choice in Game One.\n";
+                answer += "Invalid choice.\n";
+                break;
+        }
+        SendResponse(res, answer);
+    }
+    
+    public void Ending(HttpListenerRequest req, HttpListenerResponse res)
+    {
+        StreamReader reader = new StreamReader(req.InputStream, req.ContentEncoding);
+        string body = reader.ReadToEnd().ToLower();
+        string answer = string.Empty;
+        string resultImg = _dbHelper.GetImgContent(6);
+
+
+        switch (body)
+        {
+            case "a":
+                answer +=
+                    "You successfully left the cave, leaving the screams behind. You were never alone after all...\n";
+                break;
+            case "b":
+                answer += """
+                          You follow the screams, but as you get closer the screams get less human-like.
+                          Maybe this weren't screams for help, then you see a light in the distance. Looks like a
+                          light from a lantern. As you get close a big human-like creature appears and snatches you...
+                          It's hungry, and ready to eat you!
+                          """;
+                answer += $"{resultImg}";
+                break;
+            default:
+                answer += "Invalid choice in the first scenario.\n";
                 break;
         }
         SendResponse(res, answer);

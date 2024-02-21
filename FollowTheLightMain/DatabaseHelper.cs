@@ -26,16 +26,7 @@ public class DatabaseHelper
         cmd.Parameters.AddWithValue($"{intro}");
         cmd.ExecuteNonQuery();
     }
-    public void PopulateStoryPointEnding()
-    {
-        Console.WriteLine("--[           End            ]--");
-        string end = File.ReadAllText("FollowTheLightMain/sources/storylines/end.txt");
-        var cmd = _db.CreateCommand("insert into storypoints(title, content)" +
-                                    "values ($1,$2)");
-        cmd.Parameters.AddWithValue("End");
-        cmd.Parameters.AddWithValue($"{end}");
-        cmd.ExecuteNonQuery();
-    }
+    
     public void PopulateStoryPointsTable()
     {
         Console.WriteLine("--[          Scenes          ]--");
@@ -110,6 +101,18 @@ public class DatabaseHelper
         cmd.Parameters.AddWithValue($"{puzzle3P2}");
         cmd.ExecuteNonQuery();
     }
+    
+    public void PopulateStoryPointEnding()
+    {
+        Console.WriteLine("--[           End            ]--");
+        string end = File.ReadAllText("FollowTheLightMain/sources/storylines/end.txt");
+        var cmd = _db.CreateCommand("insert into storypoints(title, content)" +
+                                    "values ($1,$2)");
+        cmd.Parameters.AddWithValue("End");
+        cmd.Parameters.AddWithValue($"{end}");
+        cmd.ExecuteNonQuery();
+    }
+    
     public void PopulateImagesTable()
     {
         Console.WriteLine("--[          Images          ]--");

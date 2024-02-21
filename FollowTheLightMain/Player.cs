@@ -1,15 +1,16 @@
-﻿using Npgsql;
+using Npgsql;
 using System.Net;
 using System.Text;
 namespace FollowTheLightMain;
 
 public class Player
 {
+    public string dbUri = "Host=localhost;Port=5455;Username=postgres;Password=postgres;Database=followthelightdb;";
+
     public void Register(HttpListenerRequest req, HttpListenerResponse res)
     {
         try
         {
-            const string dbUri = "Host=localhost;Port=5455;Username=postgres;Password=postgres;Database=followthelightdb;";
             var db = NpgsqlDataSource.Create(dbUri);
             StreamReader reader = new(req.InputStream, req.ContentEncoding);
             string body = reader.ReadToEnd();
