@@ -1,5 +1,8 @@
-﻿When reaching the new surface you see a wall with glowing letters. It looks 
-like it can spell out a word, what is it? 
+﻿
+When reaching the new surface you see a wall with glowing letters. 
+
+It looks like it can spell out a word, what is it? 
+
 Next to the symbols there's an engraving saying:
 
 "An answer is clear as the light,

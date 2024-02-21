@@ -1,10 +1,17 @@
-You step inside an open space, with no direction but to go forward. 
-In the distance you see a light and when you arrive it's candle sitting in
-blood on a table. The light reveals some carved in symbols in a line, 
+
+You step inside an open space, 
+with no direction but to go forward. 
+
+In the distance you see a light,
+and when you arrive it's candle sitting in blood on a table. 
+
+The light reveals some carved in symbols in a line, 
 what does this mean?
 
-Next to the table there's a stone blocking your way, looks like some 
-sort of path behind it. On closer inspection there is a message on it:
+Next to the table there's a stone blocking your way,
+looks like some sort of path behind it. 
+
+On closer inspection there is a message on it:
 
 "With this blood, write the number on the wall,
 You won't find it here, maybe make a call."

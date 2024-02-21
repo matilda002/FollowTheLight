@@ -1,5 +1,8 @@
-You see a door in front of you, and it's locked. When looking at the door you
-see some engraving followed by a mathematical problem. 
+
+You see a door in front of you, and it's locked. 
+When looking at the door you see some engravings, 
+followed by a mathematical problem. 
+
 Maybe it's a code for someone else?...
 
 A sign next to the door says:
