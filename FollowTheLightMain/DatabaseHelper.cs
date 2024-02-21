@@ -77,31 +77,22 @@ public class DatabaseHelper
     {
         Console.WriteLine("\n--[          Puzzles         ]--");
         
-        string puzzle1 = File.ReadAllText("FollowTheLightMain/sources/storylines/puzzles-text/stepstonesp1.txt");
-        string puzzle2 = File.ReadAllText("FollowTheLightMain/sources/storylines/puzzles-text/wallp1.txt");
-        string puzzle3 = File.ReadAllText("FollowTheLightMain/sources/storylines/puzzles-text/lockp1.txt");
-        string puzzle1P2 = File.ReadAllText("FollowTheLightMain/sources/storylines/puzzles-text/stepstonesp2.txt");
-        string puzzle2P2 = File.ReadAllText("FollowTheLightMain/sources/storylines/puzzles-text/wallp2.txt");
-        string puzzle3P2 = File.ReadAllText("FollowTheLightMain/sources/storylines/puzzles-text/lockp2.txt"); 
+        string[] filepath = File.ReadAllLines("FollowTheLightMain/Sources/Storylines/puzzle-text.csv");
+        const string qInsertPuzzles = @"insert into storypoints (title, content)
+                                        values ($1, $2)";
         
-        var cmd = _db.CreateCommand("insert into storypoints(title, content)" +
-                                    "values ($1,$2), ($3,$4), ($5,$6), ($7,$8), ($9,$10), ($11,$12)");
-
-        cmd.Parameters.AddWithValue("Puzzle One");
-        cmd.Parameters.AddWithValue($"{puzzle1}");
-        cmd.Parameters.AddWithValue("Puzzle Two");
-        cmd.Parameters.AddWithValue($"{puzzle2}");
-        cmd.Parameters.AddWithValue("Puzzle Three");
-        cmd.Parameters.AddWithValue($"{puzzle3}");
-        cmd.Parameters.AddWithValue("Puzzle One - P2");
-        cmd.Parameters.AddWithValue($"{puzzle1P2}");
-        cmd.Parameters.AddWithValue("Puzzle Two - P2");
-        cmd.Parameters.AddWithValue($"{puzzle2P2}");
-        cmd.Parameters.AddWithValue("Puzzle Three - P2");
-        cmd.Parameters.AddWithValue($"{puzzle3P2}");
-        cmd.ExecuteNonQuery();
+        for (int i = 1; i < filepath.Length; i++)
+        {
+            string[] seperatedPath = filepath[i].Split(',');
+            using (var cmd = _db.CreateCommand(qInsertPuzzles))
+            {
+                cmd.Parameters.AddWithValue(seperatedPath[0]);
+                cmd.Parameters.AddWithValue("\n" + seperatedPath[1] + "\n" + seperatedPath[2] + "\n" + seperatedPath[3]+ "\n\n" + seperatedPath[4] + "\n" + seperatedPath[5] + "\n");
+                cmd.ExecuteNonQuery();
+            }
+        }
     }
-    
+
     public void PopulateStoryPointEnding()
     {
         Console.WriteLine("--[           End            ]--");
