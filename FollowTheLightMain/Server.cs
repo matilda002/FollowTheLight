@@ -37,7 +37,7 @@ public class Server
             case "GET":
                 switch (request.Url?.AbsolutePath)
                 {
-                    case "/game/player/message":
+                    case "/game/player/chat":
                         radio.GameMessage(response);
                         break;
 
