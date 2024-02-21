@@ -5,13 +5,10 @@ namespace FollowTheLightMain;
 
 public class GamePost
 {
-    private readonly DatabaseHelper _dbHelper; 
     private readonly NpgsqlDataSource _db;
-
     public GamePost(NpgsqlDataSource db)
     {
         _db = db;
-        _dbHelper = new(db);
     } 
     public void Game(HttpListenerRequest req, HttpListenerResponse res)
     {
