@@ -1,4 +1,5 @@
-﻿In the dark, you find a lantern. Lighting it reveals a cave with paths on your right and left. 
+﻿In the dark, you find a lantern. Lighting it reveals a cave with paths on your 
+right and left. 
 Where to? Right or left? 
 Your story starts with a flame in the darkness.
 
