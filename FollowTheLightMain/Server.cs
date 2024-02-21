@@ -30,7 +30,7 @@ public class Server
         Player player = new();
         Radio radio = new(_db);
         GetGame get = new(_db);
-        PostGame post = new();
+        PostGame post = new(_db);
 
         switch (request.HttpMethod)
         {
@@ -154,7 +154,7 @@ public class Server
                         postPuzzle.PuzzleThreeP1(request, response);
                         break;
                     case "/game/player/10":
-                        get.End(response);
+                        post.Ending(request, response);
                         break;
                     case "/game/player2/1":
                         post.GameSeven(request, response);
@@ -184,7 +184,7 @@ public class Server
                         postPuzzle.PuzzleThreeP2(request, response);
                         break;
                     case "/game/player2/10":
-                        get.End(response);
+                        post.Ending(request, response);
                         break;      
                     default:
                         NotFound(response);
