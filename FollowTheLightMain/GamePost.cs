@@ -17,7 +17,9 @@ public class GamePost
     {
         StreamReader reader1 = new StreamReader(req.InputStream, req.ContentEncoding);
         string username = reader1.ReadToEnd().ToLower();
-        
+       // metod ska ta in svar till fråga och anv namn från curl samt parsa de
+       // query ska skicka ut rätt svartext
+       // query ska uppdatera hp beroende på svar
         string queryresult = @"update players
         set hp= hp - (select effect from player_paths where choice = @2 and username = @1),
         storypoint_id = (select to_point from player_paths where choice = @2 and username = @1)

@@ -18,25 +18,39 @@ public class GameGet
     {
         StreamReader reader1 = new StreamReader(request.InputStream, request.ContentEncoding);
         string username = reader1.ReadToEnd().ToLower();
+        // uppdatera storypoint id då man flyttar sig till nästa storypoint
+        string updateQuery = @"update players
+            set storypoint_id = (
+            select sp_to.storypoint_id from storypoints sp_to
+            join storypaths sp on sp.to_point = sp_to.storypoint_id
+            join players p ON p.storypoint_id = sp.from_point
+            where p.username = $1)
+            where username = $1;";
+
+        var updateCmd = _db.CreateCommand();
+        updateCmd.CommandText = updateQuery;
+        updateCmd.Parameters.AddWithValue("$1", username); 
         
-        string queryHpUpdate = @"UPDATE players SET hp = hp - (select effect 
-        from player_paths where choice = @2 AND username = @1),
-            storypoint_id = (SELECT to_point FROM player_paths WHERE choice = @2 AND username = @1)
-        WHERE username = @1;
-        SELECT content FROM player_paths WHERE choice = @2 AND username = @1;";
-        var updateCmd = _db.CreateCommand(queryHpUpdate);
-        updateCmd.Parameters.AddWithValue("@1", username);
-        updateCmd.Parameters.AddWithValue("@2", "CONTINUE");
         
-        var result = "";
+        // query för att visa storypoint content för rätt spelare beroende på anv.namn
+        string query = @"select title, content
+        from storypoints
+        join players on storypoints.storypoint_id = players.storypoint_id
+        where (players.player_role = storypoints.player_role or storypoints.player_role is null)
+        and username = $1;";
+        var cmd = _db.CreateCommand();
+        cmd.CommandText = queryresult;
+        cmd.Parameters.AddWithValue("$1", username);
+        
+        string result = "";
         using (var reader = updateCmd.ExecuteReader())
         {
-            while (reader.Read())
+            if (reader.Read())
             {
-                result = reader.GetString(0); 
+                result = reader.GetString(0);
             }
         }
-        SendResponse(response, result);
+        SendResponse(response, result); 
     }
     
     private void SendResponse(HttpListenerResponse response, string content)
