@@ -78,15 +78,15 @@ curl localhost:3000/player/1/chat -d "Where are you my friend?" -s
 curl localhost: 3000/game/player/message -s
 
 
-curl -X GET localhost:3000/game/player/8 -s
+curl localhost:3000/game/player/8 -s
 curl localhost:3000/game/player/8 -d <choice> -s
 
 
-curl -X GET localhost:3000/game/player/9 -s
+curl localhost:3000/game/player/9 -s
 curl localhost:3000/game/player/9 -d <choice> -s
 
 
-curl -X GET localhost:3000/game/player/10 -s
+curl localhost:3000/game/player/10 -s
 curl localhost:3000/game/player/10 -d <choice> -s
 
 -------------------------------------------------------------------------------------------------
@@ -94,14 +94,14 @@ player 2:
 curl localhost:3000/player/register -d <username> -s
 
 
-curl -X GET localhost:3000/intro -s
+curl localhost:3000/intro -s
 
 
-curl -X GET localhost:3000/game/player2/1 -s
+curl localhost:3000/game/player2/1 -s
 curl localhost:3000/game/player2/1 -d <choice> -s
 
 
-curl -X GET localhost:3000/game/player2/2 -s
+curl localhost:3000/game/player2/2 -s
 curl localhost:3000/game/player2/2 -d <choice> -s
 
 
@@ -109,26 +109,26 @@ curl localhost:3000/player/2/chat -d "We need to get out!" -s
 curl localhost: 3000/game/player/message -s
 
 
-curl -X GET localhost:3000/game/player2/3 -s
+curl localhost:3000/game/player2/3 -s
 curl localhost:3000/game/player2/3 -d <choice> -s
 
 
-curl -X GET localhost:3000/game/player2/4 -s
+curl localhost:3000/game/player2/4 -s
 curl localhost:3000/game/player2/4 -d <choice> -s
 
 
 curl localhost:3000/player/status -d <username> -s
 
 
-curl -X GET localhost:3000/game/player2/5 -s
+curl localhost:3000/game/player2/5 -s
 curl localhost:3000/game/player2/5 -d <choice> -s
 
 
-curl -X GET localhost:3000/game/player2/6 -s
+curl localhost:3000/game/player2/6 -s
 curl localhost:3000/game/player2/6 -d <choice> -s
 
 
-curl -X GET localhost:3000/game/player2/7 -s
+curl localhost:3000/game/player2/7 -s
 curl localhost:3000/game/player2/7 -d <choice> -s
 
 
@@ -136,13 +136,13 @@ curl localhost:3000/player/2/chat -d "Are we near the exit?" -s
 curl localhost: 3000/game/player/message -s
 
 
-curl -X GET localhost:3000/game/player2/8 -s
+curl localhost:3000/game/player2/8 -s
 curl localhost:3000/game/player2/8 -d <choice> -s
 
 
-curl -X GET localhost:3000/game/player2/9 -s
+curl localhost:3000/game/player2/9 -s
 curl localhost:3000/game/player2/9 -d <choice> -s
 
 
-curl -X GET localhost:3000/game/player2/10 -s
+curl localhost:3000/game/player2/10 -s
 curl localhost:3000/game/player2/10 -d <choice> -s
