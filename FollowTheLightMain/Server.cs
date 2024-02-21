@@ -21,7 +21,6 @@ public class Server
             requestListener.BeginGetContext(HandleRequest, requestListener);
         }
     }
-
     public void Router(HttpListenerContext context)
     {
         HttpListenerRequest request = context.Request;
@@ -30,8 +29,8 @@ public class Server
         PostPuzzle postPuzzle = new(_db);
         Player player = new();
         Radio radio = new(_db);
-        GameGet get = new(_db);
-        GamePost post = new();
+        GetGame get = new(_db);
+        PostGame post = new();
 
         switch (request.HttpMethod)
         {
@@ -189,7 +188,6 @@ public class Server
                 break;
         }
     }
-
     void NotFound(HttpListenerResponse res)
     {
         res.StatusCode = (int)HttpStatusCode.NotFound;

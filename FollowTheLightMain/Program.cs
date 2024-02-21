@@ -10,10 +10,12 @@ var dbHelper = new DatabaseHelper(db);
 
 dbHelper.ResetTables();
 dbCreator.CreateTables();
+
 dbHelper.PopulateStoryPointIntro();
-dbHelper.PopulateStoryPointsTable();
-dbHelper.PopulateSpTablePuzzle();
 dbHelper.PopulateStoryPointEnding();
+dbHelper.PopulateStoryPointsTable();
+
+dbHelper.PopulatePuzzlesText();
 dbHelper.PopulateImagesTable();
 
 bool listen = true;
