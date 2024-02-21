@@ -116,9 +116,6 @@ public class Server
                     case ("/player/register"):
                         player.Register(request, response);
                         break;
-                    case ("/player/status"):
-                        player.ViewStatus(request, response);
-                        break;
                     case ("/player/1/chat"):
                         radio.SendMessageOne(request, response);
                         break;
