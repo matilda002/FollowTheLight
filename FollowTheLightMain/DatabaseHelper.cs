@@ -11,24 +11,34 @@ public class DatabaseHelper
 
     public void ResetTables()
     {
-        Console.WriteLine("[ Tables: Resetting ]");
+        Console.WriteLine("\n--[          RESET           ]--");
         const string query = "drop schema public cascade; create schema public;";
         _db.CreateCommand(query).ExecuteNonQuery();
     }
 
     public void PopulateStoryPointIntro()
     {
-        Console.WriteLine("[ Populating table: 'storypoints' with the intro ]");
-        string intro = File.ReadAllText("FollowTheLightMain/Storylines/intro.txt");
+        Console.WriteLine("--[          Intro           ]--");
+        string intro = File.ReadAllText("FollowTheLightMain/sources/storylines/intro.txt");
         var cmd = _db.CreateCommand("insert into storypoints(title, content)" +
                                     "values ($1,$2)");
         cmd.Parameters.AddWithValue("Intro");
         cmd.Parameters.AddWithValue($"{intro}");
         cmd.ExecuteNonQuery();
     }
+    public void PopulateStoryPointEnding()
+    {
+        Console.WriteLine("--[           End            ]--");
+        string end = File.ReadAllText("FollowTheLightMain/sources/storylines/end.txt");
+        var cmd = _db.CreateCommand("insert into storypoints(title, content)" +
+                                    "values ($1,$2)");
+        cmd.Parameters.AddWithValue("End");
+        cmd.Parameters.AddWithValue($"{end}");
+        cmd.ExecuteNonQuery();
+    }
     public void PopulateStoryPointsTable()
     {
-        Console.WriteLine("[ Populating table: 'storypoints' ]");
+        Console.WriteLine("--[          Scenes          ]--");
 
         string[] titles = {
             "Story One", "Story Two", "Story Three",
@@ -39,21 +49,21 @@ public class DatabaseHelper
         string[][] filePaths = {
             new string[]
             {
-                "FollowTheLightMain/storylines/sl1/s1.txt",
-                "FollowTheLightMain/storylines/sl1/s2.txt",
-                "FollowTheLightMain/storylines/sl1/s3.txt",
-                "FollowTheLightMain/storylines/sl1/s4.txt",
-                "FollowTheLightMain/storylines/sl1/s5.txt",
-                "FollowTheLightMain/storylines/sl1/s6.txt",
+                "FollowTheLightMain/sources/storylines/sl1/s1.txt",
+                "FollowTheLightMain/sources/storylines/sl1/s2.txt",
+                "FollowTheLightMain/sources/storylines/sl1/s3.txt",
+                "FollowTheLightMain/sources/storylines/sl1/s4.txt",
+                "FollowTheLightMain/sources/storylines/sl1/s5.txt",
+                "FollowTheLightMain/sources/storylines/sl1/s6.txt",
             },
             new string[]
             {
-                "FollowTheLightMain/storylines/sl2/s1.txt",
-                "FollowTheLightMain/storylines/sl2/s2.txt",
-                "FollowTheLightMain/storylines/sl2/s3.txt",
-                "FollowTheLightMain/storylines/sl2/s4.txt",
-                "FollowTheLightMain/storylines/sl2/s5.txt",
-                "FollowTheLightMain/storylines/sl2/s6.txt",
+                "FollowTheLightMain/sources/storylines/sl2/s1.txt",
+                "FollowTheLightMain/sources/storylines/sl2/s2.txt",
+                "FollowTheLightMain/sources/storylines/sl2/s3.txt",
+                "FollowTheLightMain/sources/storylines/sl2/s4.txt",
+                "FollowTheLightMain/sources/storylines/sl2/s5.txt",
+                "FollowTheLightMain/sources/storylines/sl2/s6.txt",
             }
         };
 
@@ -71,16 +81,17 @@ public class DatabaseHelper
             }
         }
     }
-    public void PopulateSpTablePuzzle()
+
+    public void PopulatePuzzlesText()
     {
-        Console.WriteLine("[ Populating table: 'storypoints' with puzzles ]");
+        Console.WriteLine("\n--[          Puzzles         ]--");
         
-        string puzzle1 = File.ReadAllText("FollowTheLightMain/Storylines/puzzles-text/stepstonesp1.txt");
-        string puzzle1P2 = File.ReadAllText("FollowTheLightMain/Storylines/puzzles-text/stepstonesp2.txt");
-        string puzzle2 = File.ReadAllText("FollowTheLightMain/Storylines/puzzles-text/wallp1.txt");
-        string puzzle2P2 = File.ReadAllText("FollowTheLightMain/Storylines/puzzles-text/wallp2.txt");
-        string puzzle3 = File.ReadAllText("FollowTheLightMain/Storylines/puzzles-text/lockp1.txt");
-        string puzzle3P2 = File.ReadAllText("FollowTheLightMain/Storylines/puzzles-text/lockp2.txt"); 
+        string puzzle1 = File.ReadAllText("FollowTheLightMain/sources/storylines/puzzles-text/stepstonesp1.txt");
+        string puzzle1P2 = File.ReadAllText("FollowTheLightMain/sources/storylines/puzzles-text/stepstonesp2.txt");
+        string puzzle2 = File.ReadAllText("FollowTheLightMain/sources/storylines/puzzles-text/wallp1.txt");
+        string puzzle2P2 = File.ReadAllText("FollowTheLightMain/sources/storylines/puzzles-text/wallp2.txt");
+        string puzzle3 = File.ReadAllText("FollowTheLightMain/sources/storylines/puzzles-text/lockp1.txt");
+        string puzzle3P2 = File.ReadAllText("FollowTheLightMain/sources/storylines/puzzles-text/lockp2.txt"); 
         
         var cmd = _db.CreateCommand("insert into storypoints(title, content)" +
                                     "values ($1,$2), ($3,$4), ($5,$6), ($7,$8), ($9,$10), ($11,$12)");
@@ -99,35 +110,25 @@ public class DatabaseHelper
         cmd.Parameters.AddWithValue($"{puzzle3P2}");
         cmd.ExecuteNonQuery();
     }
-    public void PopulateStoryPointEnding()
-    {
-        Console.WriteLine("[ Populating table: 'storypoints' with the end ]");
-        string end = File.ReadAllText("FollowTheLightMain/Storylines/end.txt");
-        var cmd = _db.CreateCommand("insert into storypoints(title, content)" +
-                                    "values ($1,$2)");
-        cmd.Parameters.AddWithValue("End");
-        cmd.Parameters.AddWithValue($"{end}");
-        cmd.ExecuteNonQuery();
-    }
     public void PopulateImagesTable()
     {
-        Console.WriteLine("[ Populating table: 'images' ]\n\n");
+        Console.WriteLine("--[          Images          ]--");
 
         string[] filePaths = {
-            "FollowTheLightMain/images/jumpscares/js1.txt",
-            "FollowTheLightMain/images/jumpscares/js2.txt",
-            "FollowTheLightMain/images/jumpscares/js3.txt",
-            "FollowTheLightMain/images/Jumpscares/js4.txt",
-            "FollowTheLightMain/images/jumpscares/js5.txt",
-            "FollowTheLightMain/images/jumpscares/js6.txt",
-            "FollowTheLightMain/images/jumpscares/js7.txt",
-            "FollowTheLightMain/images/frog.txt",
-            "FollowTheLightMain/images/puzzles/stepstonesp2-stones.txt",
-            "FollowTheLightMain/images/puzzles/stepstonesp1-table.txt",
-            "FollowTheLightMain/images/puzzles/wallp1-wall.txt", 
-            "FollowTheLightMain/images/puzzles/wallp2-sign.txt",
-            "FollowTheLightMain/images/puzzles/lockp1-lock.txt", 
-            "FollowTheLightMain/images/puzzles/lockp2-door.txt", 
+            "FollowTheLightMain/sources/images/jumpscares/js1.txt",
+            "FollowTheLightMain/sources/images/jumpscares/js2.txt",
+            "FollowTheLightMain/sources/images/jumpscares/js3.txt",
+            "FollowTheLightMain/sources/images/Jumpscares/js4.txt",
+            "FollowTheLightMain/sources/images/jumpscares/js5.txt",
+            "FollowTheLightMain/sources/images/jumpscares/js6.txt",
+            "FollowTheLightMain/sources/images/jumpscares/js7.txt",
+            "FollowTheLightMain/sources/images/frog.txt",
+            "FollowTheLightMain/sources/images/puzzles/stepstonesp2-stones.txt",
+            "FollowTheLightMain/sources/images/puzzles/stepstonesp1-table.txt",
+            "FollowTheLightMain/sources/images/puzzles/wallp1-wall.txt",
+            "FollowTheLightMain/sources/images/puzzles/wallp2-sign.txt",
+            "FollowTheLightMain/sources/images/puzzles/lockp1-lock.txt",
+            "FollowTheLightMain/sources/images/puzzles/lockp2-door.txt", 
         };
 
         var cmd = _db.CreateCommand("insert into images(image) values ($1)");

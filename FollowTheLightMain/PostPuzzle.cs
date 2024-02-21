@@ -10,8 +10,21 @@ public class PostPuzzle
     {
         _db = db;
     }
-    
-    // Player One
+
+    private void SendResponse(HttpListenerResponse res, string content)
+    {
+        byte[] buffer = Encoding.UTF8.GetBytes(content);
+        res.ContentType = "text/plain";
+
+        using (Stream output = res.OutputStream)
+        {
+            output.Write(buffer, 0, buffer.Length);
+        }
+
+        res.StatusCode = (int)HttpStatusCode.OK;
+        res.Close();
+    }
+
     public void PuzzleOneP1(HttpListenerRequest req, HttpListenerResponse res)
     {
         StreamReader reader = new StreamReader(req.InputStream, req.ContentEncoding);
@@ -79,7 +92,6 @@ public class PostPuzzle
         SendResponse(res, answer);
     }
     
-    // Player Two
     public void PuzzleOneP2(HttpListenerRequest req, HttpListenerResponse res)
     {
         StreamReader reader = new StreamReader(req.InputStream, req.ContentEncoding);
@@ -145,19 +157,5 @@ public class PostPuzzle
                 break;
         }
         SendResponse(res, answer);
-    }
-
-    private void SendResponse(HttpListenerResponse res, string content)
-    {
-        byte[] buffer = Encoding.UTF8.GetBytes(content);
-        res.ContentType = "text/plain";
-        
-        using (Stream output = res.OutputStream)
-        {
-            output.Write(buffer, 0, buffer.Length);
-        }
-        
-        res.StatusCode = (int)HttpStatusCode.OK;
-        res.Close();
     }
 }

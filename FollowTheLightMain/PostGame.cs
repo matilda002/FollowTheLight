@@ -2,8 +2,23 @@
 using System.Text;
 namespace FollowTheLightMain;
 
-public class GamePost
+public class PostGame
 {
+    private void SendResponse(HttpListenerResponse response, string content)
+    {
+        byte[] buffer = Encoding.UTF8.GetBytes(content);
+        response.ContentType = "text/plain";
+        response.StatusCode = (int)HttpStatusCode.OK;
+
+        using (Stream output = response.OutputStream)
+        {
+            output.Write(buffer, 0, buffer.Length);
+        }
+
+        response.StatusCode = (int)HttpStatusCode.Created;
+        response.Close();
+    }
+
     public void GameOne(HttpListenerRequest req, HttpListenerResponse res)
     {
         StreamReader reader = new StreamReader(req.InputStream, req.ContentEncoding);
@@ -182,9 +197,7 @@ public class GamePost
         }
         SendResponse(res, answer);
     }
-
-    // Player Two Storyline
-    public void GameSeven(HttpListenerRequest req, HttpListenerResponse res) // Scenario One
+    public void GameSeven(HttpListenerRequest req, HttpListenerResponse res)
     {
         StreamReader reader = new StreamReader(req.InputStream, req.ContentEncoding);
         string body = reader.ReadToEnd().ToLower();
@@ -213,7 +226,7 @@ public class GamePost
         }
         SendResponse(res, answer);
     }
-    public void GameEight(HttpListenerRequest req, HttpListenerResponse res) // Scenario Two
+    public void GameEight(HttpListenerRequest req, HttpListenerResponse res)
     {
         StreamReader reader = new StreamReader(req.InputStream, req.ContentEncoding);
         string body = reader.ReadToEnd().ToLower();
@@ -242,7 +255,7 @@ public class GamePost
         }
         SendResponse(res, answer);
     }
-    public void GameNine(HttpListenerRequest req, HttpListenerResponse res) // Scenario Three
+    public void GameNine(HttpListenerRequest req, HttpListenerResponse res)
     {
         StreamReader reader = new StreamReader(req.InputStream, req.ContentEncoding);
         string body = reader.ReadToEnd().ToLower();
@@ -301,7 +314,7 @@ public class GamePost
         }
         SendResponse(res, answer);
     }
-    public void GameEleven(HttpListenerRequest req, HttpListenerResponse res) // Scenario Five
+    public void GameEleven(HttpListenerRequest req, HttpListenerResponse res)
     {
         StreamReader reader = new StreamReader(req.InputStream, req.ContentEncoding);
         string body = reader.ReadToEnd().ToLower();
@@ -330,7 +343,7 @@ public class GamePost
         }
         SendResponse(res, answer);
     }
-    public void GameTwelve(HttpListenerRequest req, HttpListenerResponse res) // Scenario Six
+    public void GameTwelve(HttpListenerRequest req, HttpListenerResponse res) 
     {
         StreamReader reader = new StreamReader(req.InputStream, req.ContentEncoding);
         string body = reader.ReadToEnd().ToLower();
@@ -358,20 +371,5 @@ public class GamePost
                 break;
         }
         SendResponse(res, answer);
-    }
-    
-    private void SendResponse(HttpListenerResponse response, string content)
-    {
-        byte[] buffer = Encoding.UTF8.GetBytes(content);
-        response.ContentType = "text/plain";
-        response.StatusCode = (int)HttpStatusCode.OK;
-
-        using (Stream output = response.OutputStream)
-        {
-            output.Write(buffer, 0, buffer.Length);
-        }
-
-        response.StatusCode = (int)HttpStatusCode.Created;
-        response.Close();
     }
 }
