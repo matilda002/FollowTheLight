@@ -72,32 +72,31 @@ public class DatabaseHelper
             }
         }
     }
-
     public void PopulatePuzzlesText()
     {
         Console.WriteLine("\n--[          Puzzles         ]--");
-        
+
         string puzzle1 = File.ReadAllText("FollowTheLightMain/sources/storylines/puzzles-text/stepstonesp1.txt");
-        string puzzle1P2 = File.ReadAllText("FollowTheLightMain/sources/storylines/puzzles-text/stepstonesp2.txt");
         string puzzle2 = File.ReadAllText("FollowTheLightMain/sources/storylines/puzzles-text/wallp1.txt");
-        string puzzle2P2 = File.ReadAllText("FollowTheLightMain/sources/storylines/puzzles-text/wallp2.txt");
         string puzzle3 = File.ReadAllText("FollowTheLightMain/sources/storylines/puzzles-text/lockp1.txt");
+        string puzzle1P2 = File.ReadAllText("FollowTheLightMain/sources/storylines/puzzles-text/stepstonesp2.txt");
+        string puzzle2P2 = File.ReadAllText("FollowTheLightMain/sources/storylines/puzzles-text/wallp2.txt");
         string puzzle3P2 = File.ReadAllText("FollowTheLightMain/sources/storylines/puzzles-text/lockp2.txt"); 
-        
+
         var cmd = _db.CreateCommand("insert into storypoints(title, content)" +
                                     "values ($1,$2), ($3,$4), ($5,$6), ($7,$8), ($9,$10), ($11,$12)");
 
-        cmd.Parameters.AddWithValue("Challenge One");
+        cmd.Parameters.AddWithValue("Puzzle One");
         cmd.Parameters.AddWithValue($"{puzzle1}");
-        cmd.Parameters.AddWithValue("Challenge One - P2");
-        cmd.Parameters.AddWithValue($"{puzzle1P2}");
-        cmd.Parameters.AddWithValue("Challenge Two");
+        cmd.Parameters.AddWithValue("Puzzle Two");
         cmd.Parameters.AddWithValue($"{puzzle2}");
-        cmd.Parameters.AddWithValue("Challenge Two - P2");
-        cmd.Parameters.AddWithValue($"{puzzle2P2}");
-        cmd.Parameters.AddWithValue("Challenge Three");
+        cmd.Parameters.AddWithValue("Puzzle Three");
         cmd.Parameters.AddWithValue($"{puzzle3}");
-        cmd.Parameters.AddWithValue("Challenge Three - P2");
+        cmd.Parameters.AddWithValue("Puzzle One - P2");
+        cmd.Parameters.AddWithValue($"{puzzle1P2}");
+        cmd.Parameters.AddWithValue("Puzzle Two - P2");
+        cmd.Parameters.AddWithValue($"{puzzle2P2}");
+        cmd.Parameters.AddWithValue("Puzzle Three - P2");
         cmd.Parameters.AddWithValue($"{puzzle3P2}");
         cmd.ExecuteNonQuery();
     }
@@ -126,11 +125,11 @@ public class DatabaseHelper
             "FollowTheLightMain/sources/images/jumpscares/js6.txt",
             "FollowTheLightMain/sources/images/jumpscares/js7.txt",
             "FollowTheLightMain/sources/images/frog.txt",
-            "FollowTheLightMain/sources/images/puzzles/stepstonesp2-stones.txt",
             "FollowTheLightMain/sources/images/puzzles/stepstonesp1-table.txt",
             "FollowTheLightMain/sources/images/puzzles/wallp1-wall.txt",
-            "FollowTheLightMain/sources/images/puzzles/wallp2-sign.txt",
             "FollowTheLightMain/sources/images/puzzles/lockp1-lock.txt",
+            "FollowTheLightMain/sources/images/puzzles/stepstonesp2-stones.txt",
+            "FollowTheLightMain/sources/images/puzzles/wallp2-sign.txt",
             "FollowTheLightMain/sources/images/puzzles/lockp2-door.txt", 
         };
 

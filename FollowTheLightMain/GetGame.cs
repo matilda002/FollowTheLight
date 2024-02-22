@@ -102,31 +102,31 @@ public class GetGame
     public void PuzzleOneP1(HttpListenerResponse response)
     {
         string result = _dbHelper.GetStoryPointContent(15);
-        string resultImg = _dbHelper.GetImgContent(10);
+        string resultImg = _dbHelper.GetImgContent(9);
         SendResponse(response, result + resultImg);
     }
     public void PuzzleTwoP1(HttpListenerResponse response)
+    {
+        string result = _dbHelper.GetStoryPointContent(16);
+        string resultImg = _dbHelper.GetImgContent(10);
+        SendResponse(response, result + resultImg);
+    }
+    public void PuzzleThreeP1(HttpListenerResponse response)
     {
         string result = _dbHelper.GetStoryPointContent(17);
         string resultImg = _dbHelper.GetImgContent(11);
         SendResponse(response, result + resultImg);
     }
-    public void PuzzleThreeP1(HttpListenerResponse response)
-    {
-        string result = _dbHelper.GetStoryPointContent(19);
-        string resultImg = _dbHelper.GetImgContent(13);
-        SendResponse(response, result + resultImg);
-    }
     public void PuzzleOneP2(HttpListenerResponse response)
     {
-        string result = _dbHelper.GetStoryPointContent(16);
-        string resultImg = _dbHelper.GetImgContent(9);
+        string result = _dbHelper.GetStoryPointContent(18);
+        string resultImg = _dbHelper.GetImgContent(12);
         SendResponse(response, result + resultImg);
     }
     public void PuzzleTwoP2(HttpListenerResponse response)
     {
-        string result = _dbHelper.GetStoryPointContent(18);
-        string resultImg = _dbHelper.GetImgContent(12);
+        string result = _dbHelper.GetStoryPointContent(19);
+        string resultImg = _dbHelper.GetImgContent(13);
         SendResponse(response, result + resultImg);
     }
     public void PuzzleThreeP2(HttpListenerResponse response)
