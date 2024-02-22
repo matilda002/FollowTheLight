@@ -101,26 +101,6 @@ public class DatabaseHelper
         cmd.ExecuteNonQuery();
     }
     
-    public void PopulatePuzzlesTextCsv()
-    {
-        Console.WriteLine("\n--[          Puzzles         ]--");
-        
-        string[] filepath = File.ReadAllLines("FollowTheLightMain/Sources/Storylines/puzzle-text.csv");
-        const string qInsertPuzzles = @"insert into storypoints (title, content)
-                                        values ($1, $2)";
-        
-        for (int i = 1; i < filepath.Length; i++)
-        {
-            string[] seperatedPath = filepath[i].Split(',');
-            using (var cmd = _db.CreateCommand(qInsertPuzzles))
-            {
-                cmd.Parameters.AddWithValue(seperatedPath[0]);
-                cmd.Parameters.AddWithValue("\n" + seperatedPath[1] + "\n" + seperatedPath[2] + "\n" + seperatedPath[3]+ "\n\n" + seperatedPath[4] + "\n" + seperatedPath[5] + "\n");
-                cmd.ExecuteNonQuery();
-            }
-        }
-    }
-
     public void PopulateStoryPointEnding()
     {
         Console.WriteLine("--[           End            ]--");
