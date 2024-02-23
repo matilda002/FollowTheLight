@@ -55,7 +55,7 @@ public class Player
         cmd2.Parameters.AddWithValue("@1", username);
         int hp = Convert.ToInt32(cmd2.ExecuteScalar());
 
-        const string queryCsp = "select current_storypoint from players where username = @1";
+        const string queryCsp = "select storypoint_id from players where username = @1";
         var cmd3 = db.CreateCommand(queryCsp);
         cmd3.Parameters.AddWithValue("@1", username);
         int csp = Convert.ToInt32(cmd3.ExecuteScalar());

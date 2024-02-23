@@ -31,25 +31,20 @@ public class GameGet
         updateCmd.Parameters.AddWithValue("$1", username);
         updateCmd.ExecuteNonQuery();
 
-        // 
-        string query = @"select title, content
-                     from storypoints
-                     join players on storypoints.storypoint_id = players.storypoint_id
-                     where (players.player_role = storypoints.player_role or storypoints.player_role is null)
-                     and username = $1;";
-        var cmd = _db.CreateCommand();
-        cmd.CommandText = query;
-        cmd.Parameters.AddWithValue("$1", username);
-
+        //call view
+        string callView = "select storypoint_content from player_storypoints";
+        var viewCmd = _db.CreateCommand();
+        viewCmd.CommandText = callView;
+        
         string result = "";
-        using (var reader = cmd.ExecuteReader())
+        using (var reader = viewCmd.ExecuteReader())
         {
-            if (reader.Read())
+            while (reader.Read())
             {
-                result = reader.GetString(0);
+                string storypointContent = reader["storypoint_content"].ToString();
+                result += storypointContent;
             }
         }
-
         SendResponse(response, result);
     }
 

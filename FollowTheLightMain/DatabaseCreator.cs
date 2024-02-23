@@ -73,6 +73,13 @@ public class DatabaseCreator
     and players.player_role = storypoints.player_role
         ;";
         _db.CreateCommand(view).ExecuteNonQuery();
+        
+        const string storypointView = @"CREATE OR REPLACE VIEW player_storypoints AS
+SELECT p.username, sp.title AS storypoint_title, sp.content AS storypoint_content
+FROM players p
+JOIN storypoints sp ON p.storypoint_id = sp.storypoint_id;";
+        
+        _db.CreateCommand(storypointView).ExecuteNonQuery();
+        
     }
-    
 }
